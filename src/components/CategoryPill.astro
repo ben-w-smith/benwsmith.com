@@ -1,0 +1,19 @@
+---
+interface Props {
+  category: "Technical" | "Essay" | "Project";
+}
+
+const { category } = Astro.props;
+
+const colors: Record<string, { text: string; bg: string }> = {
+  Technical: { text: "var(--color-technical)", bg: "var(--color-technical-bg)" },
+  Essay: { text: "var(--color-essay)", bg: "var(--color-essay-bg)" },
+  Project: { text: "var(--color-project)", bg: "var(--color-project-bg)" },
+};
+
+const { text, bg } = colors[category];
+---
+
+<span style={`font-size:var(--font-size-label);font-weight:var(--font-weight-medium);color:${text};background:${bg};padding:2px 8px;border-radius:var(--radius-sm);display:inline-block`}>
+  {category}
+</span>
