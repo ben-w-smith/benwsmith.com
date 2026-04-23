@@ -67,8 +67,32 @@ const formattedDate = date.toLocaleDateString("en-US", {
     margin: 6px 0 0 0;
   }
 
-  .post-card:hover :global(.category-pill) {
-    opacity: 0.85;
-    box-shadow: 0 0 0 2px currentColor;
+  :global(.category-pill) {
+    position: relative;
+  }
+
+  :global(.category-pill)::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 1.5px solid currentColor;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .post-card:hover :global(.category-pill)::after {
+    animation: pillPulse 1s var(--ease-out) infinite;
+  }
+
+  @keyframes pillPulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(1.35);
+      opacity: 0;
+    }
   }
 </style>
