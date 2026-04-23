@@ -1,0 +1,21 @@
+---
+const currentPath = Astro.url.pathname;
+const navLinks = [
+  { href: "/", label: "Blog" },
+  { href: "/about", label: "About" },
+];
+---
+
+<header style="display:flex;align-items:center;justify-content:space-between;padding:var(--spacing-lg) 0;border-bottom:1px solid var(--color-border);margin-bottom:var(--spacing-xl)">
+  <a href="/" style="font-size:15px;font-weight:600;color:var(--color-text-primary);text-decoration:none">Ben Smith</a>
+  <nav style="display:flex;gap:var(--spacing-lg)">
+    {navLinks.map((link) => (
+      <a
+        href={link.href}
+        style={`font-size:13px;color:${currentPath === link.href ? "var(--color-text-primary)" : "var(--color-text-secondary)"};text-decoration:none`}
+      >
+        {link.label}
+      </a>
+    ))}
+  </nav>
+</header>
