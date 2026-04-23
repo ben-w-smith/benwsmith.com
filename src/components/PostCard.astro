@@ -23,6 +23,8 @@ const formattedDate = date.toLocaleDateString("en-US", {
 <a
   href={`/blog/${slug}`}
   class="post-stagger post-card"
+  data-reveal
+  data-reveal-delay={staggerIndex * 80}
   style={`--stagger-index:${staggerIndex};${last ? 'border-bottom:none;' : ''}`}
 >
   <div class="post-meta">

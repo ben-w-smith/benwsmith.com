@@ -9,8 +9,8 @@ const posts = (await getCollection("blog")).sort(
 ---
 <BaseLayout title="Blog">
   <section style="padding:var(--spacing-2xl) 0">
-    <h1 style="font-size:var(--font-size-site-name);font-weight:var(--font-weight-bold);line-height:1.1;margin-bottom:var(--spacing-sm)">Ben Smith</h1>
-    <p style="font-size:15px;color:var(--color-text-secondary);letter-spacing:0.02em">Software Developer · Writer</p>
+    <h1 data-reveal style="font-size:var(--font-size-site-name);font-weight:var(--font-weight-bold);line-height:1.1;margin-bottom:var(--spacing-sm)">Ben Smith</h1>
+    <p data-reveal data-reveal-delay="100" style="font-size:15px;color:var(--color-text-secondary);letter-spacing:0.02em">Software Developer · Writer</p>
   </section>
 
   <section>
