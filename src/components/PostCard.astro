@@ -20,11 +20,67 @@ const formattedDate = date.toLocaleDateString("en-US", {
 });
 ---
 
-<a href={`/blog/${slug}`} class="post-stagger" style={`--stagger-index:${staggerIndex};text-decoration:none;display:block;padding:var(--spacing-lg) 0;${!last ? 'border-bottom:1px solid var(--color-border)' : ''}`}>
-  <div style="display:flex;align-items:center;gap:var(--spacing-sm);margin-bottom:var(--spacing-sm)">
+<a
+  href={`/blog/${slug}`}
+  class="post-stagger post-card"
+  style={`--stagger-index:${staggerIndex};${last ? 'border-bottom:none;' : ''}`}
+>
+  <div class="post-meta">
     <CategoryPill category={category} />
     <span class="text-label">{formattedDate}</span>
   </div>
-  <h3 style="font-size:var(--font-size-title);font-weight:var(--font-weight-semibold);color:var(--color-text-primary);margin:0 0 6px 0">{title}</h3>
-  <p style="font-size:14px;line-height:1.6;color:var(--color-text-secondary);margin:6px 0 0 0">{excerpt}</p>
+  <h3 class="post-title">{title}</h3>
+  <p class="post-excerpt">{excerpt}</p>
 </a>
+
+<style>
+  .post-card {
+    text-decoration: none;
+    display: block;
+    padding: var(--spacing-lg) 0;
+    border-bottom: 1px solid var(--color-border);
+    transition:
+      transform var(--duration-fast) var(--ease-out),
+      padding-left var(--duration-fast) var(--ease-out);
+  }
+
+  .post-card:hover {
+    transform: translateY(-2px);
+    padding-left: var(--spacing-sm);
+  }
+
+  .post-card:active {
+    transform: translateY(0);
+    padding-left: 0;
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .post-title {
+    font-size: var(--font-size-title);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin: 0 0 6px 0;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .post-card:hover .post-title {
+    color: var(--color-accent);
+  }
+
+  .post-excerpt {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 6px 0 0 0;
+  }
+
+  .post-card:hover :global(.category-pill) {
+    transform: scale(1.08);
+  }
+</style>
