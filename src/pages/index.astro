@@ -14,13 +14,14 @@ const posts = (await getCollection("blog")).sort(
   </section>
 
   <section>
-    {posts.map((post) => (
+    {posts.map((post, i) => (
       <PostCard
         title={post.data.title}
         date={post.data.date}
         category={post.data.category}
         excerpt={post.data.excerpt}
         slug={post.id}
+        last={i === posts.length - 1}
       />
     ))}
   </section>
