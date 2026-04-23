@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
@@ -17,11 +18,12 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title} — Ben Smith</title>
+    <ClientRouter />
   </head>
   <body>
     <div class="page-wrapper">
       <Header />
-      <main class="content-wrapper">
+      <main class="content-wrapper page-enter" transition:animate="fade">
         <slot />
       </main>
       <Footer />
