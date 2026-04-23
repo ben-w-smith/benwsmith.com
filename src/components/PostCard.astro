@@ -39,19 +39,6 @@ const formattedDate = date.toLocaleDateString("en-US", {
     display: block;
     padding: var(--spacing-lg) 0;
     border-bottom: 1px solid var(--color-border);
-    transition:
-      transform var(--duration-fast) var(--ease-out),
-      padding-left var(--duration-fast) var(--ease-out);
-  }
-
-  .post-card:hover {
-    transform: translateY(-2px);
-    padding-left: var(--spacing-sm);
-  }
-
-  .post-card:active {
-    transform: translateY(0);
-    padding-left: 0;
   }
 
   .post-meta {
@@ -81,6 +68,7 @@ const formattedDate = date.toLocaleDateString("en-US", {
   }
 
   .post-card:hover :global(.category-pill) {
-    transform: scale(1.08);
+    opacity: 0.85;
+    box-shadow: 0 0 0 2px currentColor;
   }
 </style>
