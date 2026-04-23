@@ -84,22 +84,17 @@ const formattedDate = date.toLocaleDateString("en-US", {
   }
 
   .post-card:hover :global(.category-pill)::after {
-    animation: pillPing 2.4s var(--ease-out) forwards;
+    animation: pillPing 0.5s var(--ease-out) forwards,
+               pillThrob 1.4s var(--ease-in-out) 0.5s infinite;
   }
 
   @keyframes pillPing {
-    0% { transform: scale(1); opacity: 0.6; }
-    14% { transform: scale(1.35); opacity: 0; }
-    17% { transform: scale(1); opacity: 0; }
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(1.4); opacity: 0; }
+  }
 
-    33% { transform: scale(1); opacity: 0.4; }
-    47% { transform: scale(1.25); opacity: 0; }
-    50% { transform: scale(1); opacity: 0; }
-
-    66% { transform: scale(1); opacity: 0.2; }
-    79% { transform: scale(1.15); opacity: 0; }
-    82% { transform: scale(1); opacity: 0; }
-
-    100% { transform: scale(1); opacity: 0; }
+  @keyframes pillThrob {
+    0%, 100% { transform: scale(1); opacity: 0.12; }
+    50% { transform: scale(1.06); opacity: 0.22; }
   }
 </style>
