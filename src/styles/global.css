@@ -235,6 +235,7 @@ a {
 .prose img {
   border-radius: var(--radius-md);
   margin: var(--spacing-lg) 0;
+  background: var(--color-bg-off);
 }
 
 .prose a {
