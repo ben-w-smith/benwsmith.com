@@ -29,7 +29,7 @@ class GameOfLife {
     this.canvas.height = height * dpr;
     this.canvas.style.width = `${width}px`;
     this.canvas.style.height = `${height}px`;
-    this.ctx.scale(dpr, dpr);
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     const newCols = Math.ceil(width / this.cellSize);
     const newRows = Math.ceil(height / this.cellSize);
@@ -103,11 +103,11 @@ class GameOfLife {
     const nearOpacity = isDark ? 0.16 : 0.12;
     const mouseRadius = 120;
 
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    const w = this.canvas.width / (window.devicePixelRatio || 1);
+    const h = this.canvas.height / (window.devicePixelRatio || 1);
+    this.ctx.clearRect(0, 0, w, h);
 
-    const r = isDark ? 255 : 0;
-    const g = isDark ? 255 : 0;
-    const b = isDark ? 255 : 0;
+    this.ctx.fillStyle = isDark ? "#fff" : "#000";
 
     for (let y = 0; y < this.rows; y++) {
       for (let x = 0; x < this.cols; x++) {
@@ -115,17 +115,23 @@ class GameOfLife {
 
         const px = x * this.cellSize;
         const py = y * this.cellSize;
-        const dist = Math.hypot(
-          px + this.cellSize / 2 - this.mouseX,
-          py + this.cellSize / 2 - this.mouseY
-        );
-        const t = Math.max(0, 1 - dist / mouseRadius);
-        const opacity = baseOpacity + t * (nearOpacity - baseOpacity);
 
-        this.ctx.fillStyle = `rgba(${r},${g},${b},${opacity})`;
+        if (this.mouseX < 0) {
+          this.ctx.globalAlpha = baseOpacity;
+        } else {
+          const dist = Math.hypot(
+            px + this.cellSize / 2 - this.mouseX,
+            py + this.cellSize / 2 - this.mouseY
+          );
+          const t = Math.max(0, 1 - dist / mouseRadius);
+          this.ctx.globalAlpha = baseOpacity + t * (nearOpacity - baseOpacity);
+        }
+
         this.ctx.fillRect(px + 1, py + 1, this.cellSize - 2, this.cellSize - 2);
       }
     }
+
+    this.ctx.globalAlpha = 1;
   }
 
   onMouseMove(x: number, y: number) {
@@ -155,18 +161,27 @@ let game: GameOfLife | null = null;
 let resizeTimeout: ReturnType<typeof setTimeout>;
 
 const onMouseMove = (e: MouseEvent) => game?.onMouseMove(e.clientX, e.clientY);
+const onMouseLeave = () => {
+  if (game) {
+    game.mouseX = -1000;
+    game.mouseY = -1000;
+  }
+};
 const onResize = () => {
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(() => game?.resize(), 200);
 };
 
 function cleanup() {
+  clearTimeout(resizeTimeout);
   if (game) {
     game.stop();
     game = null;
   }
   document.removeEventListener("mousemove", onMouseMove);
+  document.removeEventListener("mouseleave", onMouseLeave);
   window.removeEventListener("resize", onResize);
+  document.removeEventListener("astro:before-swap", cleanup);
 }
 
 function initAmbientCanvas() {
@@ -180,6 +195,7 @@ function initAmbientCanvas() {
   game = new GameOfLife(canvas);
 
   document.addEventListener("mousemove", onMouseMove);
+  document.addEventListener("mouseleave", onMouseLeave);
   window.addEventListener("resize", onResize);
 
   requestAnimationFrame(() => canvas.classList.add("is-active"));
@@ -187,4 +203,5 @@ function initAmbientCanvas() {
   game.start();
 }
 
+document.addEventListener("astro:before-swap", cleanup);
 document.addEventListener("astro:page-load", initAmbientCanvas);
