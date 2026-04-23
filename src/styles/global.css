@@ -1,9 +1,6 @@
-/* Google Fonts — Inter */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-
 /* Design Tokens */
 :root {
-  --font-family: "Inter", system-ui, sans-serif;
+  --font-inter: var(--font-inter, "Inter", system-ui, sans-serif);
 
   --color-bg: #F7F7F8;
   --color-bg-off: #F7F7F8;
@@ -58,7 +55,7 @@
 }
 
 html {
-  font-family: var(--font-family);
+  font-family: var(--font-inter);
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
