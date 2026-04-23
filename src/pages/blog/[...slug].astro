@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, remarkPluginFrontmatter } = await render(post);
 
 const formattedDate = post.data.date.toLocaleDateString("en-US", {
   month: "long",
@@ -21,9 +21,8 @@ const formattedDate = post.data.date.toLocaleDateString("en-US", {
   year: "numeric",
 });
 
-const readingTime = Math.ceil(
-  (await render(post)).remarkPluginFrontmatter?.wordCount / 200
-) || 5;
+const readingTime =
+  Math.ceil((remarkPluginFrontmatter as any)?.wordCount / 200) || 5;
 ---
 
 <BaseLayout title={post.data.title}>
