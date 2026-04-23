@@ -1,0 +1,20 @@
+---
+const socialLinks = [
+  { href: "https://github.com/ben-w-smith", label: "GitHub" },
+  { href: "https://twitter.com/benwsmith", label: "Twitter" },
+  { href: "mailto:hello@benwsmith.com", label: "Email" },
+];
+---
+
+<footer style="padding:var(--spacing-2xl) 0;border-top:1px solid var(--color-border);margin-top:var(--spacing-2xl);display:flex;gap:var(--spacing-lg);justify-content:center">
+  {socialLinks.map((link) => (
+    <a
+      href={link.href}
+      target={link.href.startsWith("http") ? "_blank" : undefined}
+      rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+      style="font-size:13px;color:var(--color-text-secondary);text-decoration:none"
+    >
+      {link.label}
+    </a>
+  ))}
+</footer>
