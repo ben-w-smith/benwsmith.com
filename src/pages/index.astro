@@ -22,6 +22,7 @@ const posts = (await getCollection("blog")).sort(
         excerpt={post.data.excerpt}
         slug={post.id}
         last={i === posts.length - 1}
+        staggerIndex={i}
       />
     ))}
   </section>
