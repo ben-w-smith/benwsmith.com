@@ -304,7 +304,7 @@ a {
 
 /* Page transition classes */
 .page-enter {
-  animation: fadeIn var(--duration-normal) var(--ease-out) both;
+  animation: fadeInSlide var(--duration-normal) var(--ease-out) both;
 }
 
 .post-stagger {
