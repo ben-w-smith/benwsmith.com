@@ -1,0 +1,24 @@
+<canvas class="ambient-canvas" aria-hidden="true"></canvas>
+<script src="../scripts/ambient-canvas.ts"></script>
+
+<style>
+  .ambient-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--duration-slow) var(--ease-out);
+  }
+
+  .ambient-canvas.is-active {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ambient-canvas {
+      display: none;
+    }
+  }
+</style>
