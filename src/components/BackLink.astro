@@ -1,7 +1,34 @@
 ---
-
 ---
 
-<a href="/" style="font-size:13px;color:var(--color-accent);text-decoration:none;display:inline-block;margin-bottom:var(--spacing-lg)">
+<a href="/" class="back-link">
   &larr; Back to Blog
 </a>
+
+<style>
+  .back-link {
+    position: relative;
+    font-size: 13px;
+    color: var(--color-accent);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: var(--spacing-lg);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .back-link::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -2px;
+    width: 0;
+    height: 1px;
+    background: var(--color-accent);
+    transition: width var(--duration-fast) var(--ease-out), left var(--duration-fast) var(--ease-out);
+  }
+
+  .back-link:hover::after {
+    width: 100%;
+    left: 0;
+  }
+</style>
