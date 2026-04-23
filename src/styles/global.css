@@ -40,6 +40,8 @@
 
   --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05);
   --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --color-skeleton: #E5E5E5;
+  --color-skeleton-shine: #F0F0F0;
 
   --max-width: 640px;
   --max-width-wide: 960px;
@@ -54,6 +56,40 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-theme="dark"] {
+  --color-bg: #1a1a1a;
+  --color-bg-off: #242424;
+  --color-text-primary: #E8E8E8;
+  --color-text-secondary: #999;
+  --color-border: #333;
+  --color-accent: #4DA3FF;
+
+  --color-technical: #4DA3FF;
+  --color-technical-bg: #4DA3FF1A;
+  --color-essay: #FF8A8A;
+  --color-essay-bg: #FF8A8A1A;
+  --color-project: #6EDDD4;
+  --color-project-bg: #6EDDD41A;
+
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --color-skeleton: #333;
+  --color-skeleton-shine: #3a3a3a;
+}
+
+/* View Transitions — circular reveal for theme toggle */
+[data-theme-vt="active"] * {
+  view-transition-name: none !important;
+}
+
+[data-theme-vt="active"]::view-transition-old(root) {
+  animation: none;
+}
+
+[data-theme-vt="active"]::view-transition-new(root) {
+  animation: none;
 }
 
 /* Reset */
@@ -180,7 +216,7 @@ a {
 }
 
 .prose pre {
-  background: #FFFFFF;
+  background: var(--color-bg-off);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: var(--spacing-md);
@@ -243,6 +279,27 @@ a {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-skeleton) 25%,
+    var(--color-skeleton-shine) 50%,
+    var(--color-skeleton) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--radius-sm);
 }
 
 /* Page transition classes */
