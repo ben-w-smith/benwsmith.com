@@ -27,6 +27,7 @@ const { title } = Astro.props;
     <div class="reading-progress"></div>
     <div class="page-transition-bar"></div>
     <div class="page-wrapper">
+      <slot name="background" />
       <Header />
       <main class="content-wrapper page-enter" transition:animate={slide()}>
         <slot />

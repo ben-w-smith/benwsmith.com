@@ -129,6 +129,8 @@ a {
   max-width: var(--max-width-wide);
   margin: 0 auto;
   padding: 0 var(--spacing-lg);
+  position: relative;
+  background: linear-gradient(to bottom, transparent 0%, transparent 180px, var(--color-bg) 350px);
 }
 
 .content-wrapper {
