@@ -2,6 +2,9 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import GolSandbox from "../components/lab/GolSandbox.astro";
 ---
+<script is:inline>
+  if (location.hostname !== "localhost" && location.hostname !== "127.0.0.1" && !location.hostname.startsWith("192.168")) location.replace("/");
+</script>
 <BaseLayout title="Lab">
   <section style="padding:var(--spacing-2xl) 0">
     <h1 style="font-size:var(--font-size-site-name);font-weight:var(--font-weight-bold);line-height:1.1;margin-bottom:var(--spacing-sm)">Lab</h1>
