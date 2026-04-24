@@ -15,8 +15,6 @@ class GameOfLife {
   mouseY = -1000;
   private prevTrailX = -1000;
   private prevTrailY = -1000;
-  private lastSeedX = -1000;
-  private lastSeedY = -1000;
   private frame = 0;
   private rafId = 0;
   private palette: string[] = [];
@@ -196,28 +194,6 @@ class GameOfLife {
     }
   }
 
-  seedNearMouse() {
-    if (this.mouseX < 0) return;
-    const dx = this.mouseX - this.lastSeedX;
-    const dy = this.mouseY - this.lastSeedY;
-    if (Math.abs(dx) < 2 && Math.abs(dy) < 2) return;
-
-    const cx = Math.floor(this.mouseX / this.cellSize);
-    const cy = Math.floor(this.mouseY / this.cellSize);
-    for (let sdy = -1; sdy <= 1; sdy++) {
-      for (let sdx = -1; sdx <= 1; sdx++) {
-        if (Math.random() > 0.25) continue;
-        const col = ((cx + sdx) % this.cols + this.cols) % this.cols;
-        const row = ((cy + sdy) % this.rows + this.rows) % this.rows;
-        const i = row * this.cols + col;
-        this.grid[i] = 1;
-        this.heatGrid[i] = 1.0;
-      }
-    }
-    this.lastSeedX = this.mouseX;
-    this.lastSeedY = this.mouseY;
-  }
-
   render() {
     const isDark = document.documentElement.getAttribute("data-theme") === "dark";
     if (isDark !== this.isDarkTheme) {
@@ -281,11 +257,35 @@ class GameOfLife {
   onMouseMove(x: number, y: number) {
     if (this.prevTrailX >= 0) {
       this.paintTrail(this.prevTrailX, this.prevTrailY, x, y);
+      this.seedAlongPath(this.prevTrailX, this.prevTrailY, x, y);
     }
     this.mouseX = x;
     this.mouseY = y;
     this.prevTrailX = x;
     this.prevTrailY = y;
+  }
+
+  private seedAlongPath(x0: number, y0: number, x1: number, y1: number) {
+    const dist = Math.hypot(x1 - x0, y1 - y0);
+    const steps = Math.max(1, Math.ceil(dist / this.cellSize));
+    for (let s = 0; s <= steps; s++) {
+      const t = s / steps;
+      const px = x0 + (x1 - x0) * t;
+      const py = y0 + (y1 - y0) * t;
+      const col = Math.floor(px / this.cellSize);
+      const row = Math.floor(py / this.cellSize);
+      for (let sdy = -1; sdy <= 1; sdy++) {
+        for (let sdx = -1; sdx <= 1; sdx++) {
+          if (Math.random() > 0.25) continue;
+          const c = ((col + sdx) % this.cols + this.cols) % this.cols;
+          const r = ((row + sdy) % this.rows + this.rows) % this.rows;
+          const i = r * this.cols + c;
+          this.grid[i] = 1;
+          this.heatGrid[i] = 1.0;
+          this.alphaGrid[i] = 1.0;
+        }
+      }
+    }
   }
 
   start() {
@@ -300,7 +300,6 @@ class GameOfLife {
 
       this.frame++;
       if (this.frame % this.stepInterval === 0) {
-        this.seedNearMouse();
         this.step();
       }
       this.updateAlpha();
