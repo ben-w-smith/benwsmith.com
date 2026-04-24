@@ -1,0 +1,216 @@
+---
+---
+
+<div class="sandbox-wrapper">
+  <div class="sandbox-header">
+    <h2 class="sandbox-title">Game of Life</h2>
+    <p class="sandbox-desc">Click and drag to seed cells. Adjust parameters below.</p>
+  </div>
+
+  <div class="sandbox-canvas-container">
+    <canvas class="sandbox-canvas"></canvas>
+  </div>
+
+  <div class="sandbox-controls">
+    <div class="control-group">
+      <label for="slider-stepInterval">Simulation Speed</label>
+      <input type="range" id="slider-stepInterval" min="1" max="20" value="5" step="1" />
+      <span class="control-value" data-for="stepInterval">5</span>
+    </div>
+
+    <div class="control-group">
+      <label for="slider-fadeIn">Cell Fade In</label>
+      <input type="range" id="slider-fadeIn" min="0.01" max="0.2" value="0.06" step="0.01" />
+      <span class="control-value" data-for="fadeIn">0.06</span>
+    </div>
+
+    <div class="control-group">
+      <label for="slider-fadeOut">Cell Fade Out</label>
+      <input type="range" id="slider-fadeOut" min="0.005" max="0.1" value="0.02" step="0.005" />
+      <span class="control-value" data-for="fadeOut">0.02</span>
+    </div>
+
+    <div class="control-group">
+      <label for="slider-trailFade">Trail Fade</label>
+      <input type="range" id="slider-trailFade" min="0.01" max="0.2" value="0.08" step="0.01" />
+      <span class="control-value" data-for="trailFade">0.08</span>
+    </div>
+
+    <div class="control-group">
+      <label for="slider-baseOpacityLight">Base Opacity</label>
+      <input type="range" id="slider-baseOpacityLight" min="0.01" max="0.3" value="0.06" step="0.01" />
+      <span class="control-value" data-for="baseOpacityLight">0.06</span>
+    </div>
+
+    <div class="control-group">
+      <label for="slider-nearOpacityLight">Mouse Glow</label>
+      <input type="range" id="slider-nearOpacityLight" min="0.05" max="0.6" value="0.18" step="0.01" />
+      <span class="control-value" data-for="nearOpacityLight">0.18</span>
+    </div>
+
+    <div class="control-group">
+      <label for="slider-mouseRadius">Mouse Radius</label>
+      <input type="range" id="slider-mouseRadius" min="50" max="300" value="120" step="10" />
+      <span class="control-value" data-for="mouseRadius">120</span>
+    </div>
+
+    <div class="control-group">
+      <label for="slider-seedDensity">Seed Density</label>
+      <input type="range" id="slider-seedDensity" min="0.05" max="1.0" value="0.25" step="0.05" />
+      <span class="control-value" data-for="seedDensity">0.25</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { GameOfLife } from "../../scripts/gol-engine.ts";
+
+  document.addEventListener("astro:page-load", () => {
+    const canvas = document.querySelector<HTMLCanvasElement>(".sandbox-canvas");
+    const container = document.querySelector<HTMLElement>(".sandbox-canvas-container");
+    if (!canvas || !container) return;
+
+    const gol = new GameOfLife(canvas);
+
+    function resizeToContainer() {
+      const dpr = window.devicePixelRatio || 1;
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      const ctx = canvas.getContext("2d");
+      if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      gol.resize();
+    }
+
+    // Initial sizing
+    resizeToContainer();
+
+    // Mouse listeners on canvas
+    canvas.addEventListener("mousemove", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      gol.onMouseMove(e.clientX - rect.left, e.clientY - rect.top);
+    });
+
+    canvas.addEventListener("mouseleave", () => {
+      gol.mouseX = -1000;
+      gol.mouseY = -1000;
+    });
+
+    // Resize observer on container
+    const ro = new ResizeObserver(() => {
+      resizeToContainer();
+    });
+    ro.observe(container);
+
+    // Wire sliders
+    type GolProp = "stepInterval" | "fadeIn" | "fadeOut" | "trailFade" | "baseOpacityLight" | "nearOpacityLight" | "mouseRadius" | "seedDensity";
+
+    const props: GolProp[] = [
+      "stepInterval",
+      "fadeIn",
+      "fadeOut",
+      "trailFade",
+      "baseOpacityLight",
+      "nearOpacityLight",
+      "mouseRadius",
+      "seedDensity",
+    ];
+
+    for (const prop of props) {
+      const input = document.querySelector<HTMLInputElement>("#slider-" + prop);
+      if (!input) continue;
+      const valueDisplay = document.querySelector<HTMLElement>('.control-value[data-for="' + prop + '"]');
+      input.addEventListener("input", () => {
+        const val = parseFloat(input.value);
+        (gol as Record<string, number>)[prop] = val;
+        if (valueDisplay) valueDisplay.textContent = input.value;
+      });
+    }
+
+    gol.start();
+
+    document.addEventListener("astro:before-swap", () => {
+      gol.stop();
+      ro.disconnect();
+    });
+  });
+</script>
+
+<style>
+  .sandbox-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .sandbox-header {
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .sandbox-title {
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .sandbox-desc {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.01em;
+  }
+
+  .sandbox-canvas-container {
+    width: 100%;
+    height: 400px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .sandbox-canvas {
+    display: block;
+    width: 100%;
+    height: 400px;
+    cursor: crosshair;
+  }
+
+  .sandbox-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md) var(--spacing-xl);
+    padding-top: var(--spacing-md);
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .control-group label {
+    font-size: 13px;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    letter-spacing: 0.01em;
+  }
+
+  .control-group input[type="range"] {
+    width: 100%;
+    accent-color: var(--color-accent, #007aff);
+  }
+
+  .control-value {
+    font-size: 12px;
+    font-family: var(--font-family-mono, monospace);
+    color: var(--color-text-tertiary, #999);
+  }
+
+  @media (max-width: 600px) {
+    .sandbox-controls {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
