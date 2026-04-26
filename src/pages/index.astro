@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
-import AmbientCanvas from "../components/AmbientCanvas.astro";
 import { getCollection } from "astro:content";
 
 const posts = (await getCollection("blog")).sort(
@@ -9,7 +8,6 @@ const posts = (await getCollection("blog")).sort(
 );
 ---
 <BaseLayout title="Blog">
-  <AmbientCanvas slot="background" />
   <section class="hero-section">
     <h1 data-reveal class="hero-name">Ben Smith</h1>
     <p data-reveal data-reveal-delay="100" class="hero-tagline">Software Developer · Writer</p>
