@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Only run on main branch
+branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+if [ "$branch" != "main" ]; then
+  exit 0
+fi
+
+# Get staged .md files in src/posts/
+staged=$(git diff --cached --name-only --diff-filter=ACM -- 'src/posts/*.md')
+
+if [ -z "$staged" ]; then
+  exit 0
+fi
+
+# Run the guard
+node scripts/check-draft.mjs $staged
+exit_code=$?
+
+if [ $exit_code -ne 0 ]; then
+  echo ""
+  echo "❌ Draft guard found issues. Fix them before committing to main."
+  echo "   Run: npm run check:draft -- <file>"
+  exit 1
+fi
+
+exit 0
