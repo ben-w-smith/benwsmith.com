@@ -1,0 +1,45 @@
+---
+import { ClientRouter, slide } from "astro:transitions";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} — Ben Smith</title>
+    <ClientRouter />
+    <script is:inline>
+      (function(){var t=localStorage.getItem("theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme:dark)").matches)){document.documentElement.setAttribute("data-theme","dark")}})()
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+    <div class="reading-progress"></div>
+    <div class="page-transition-bar"></div>
+    <div class="page-wrapper">
+      <Header />
+      <main id="main-content" class="content-wrapper page-enter" transition:animate={slide()}>
+        <slot />
+      </main>
+      <Footer />
+      <script src="../scripts/scroll-reveal.ts"></script>
+      <script src="../scripts/reading-progress.ts"></script>
+      <script src="../scripts/heading-anchors.ts"></script>
+      <script src="../scripts/image-zoom.ts"></script>
+      <script src="../scripts/theme-toggle.ts"></script>
+      <script src="../scripts/page-transition-bar.ts"></script>
+      <script src="../scripts/image-loading.ts"></script>
+    </div>
+  </body>
+</html>
