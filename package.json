@@ -1,7 +1,7 @@
 {
   "name": "benwsmith-com",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "engines": {
     "node": ">=22.12.0"
   },
@@ -9,9 +9,13 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "check:draft": "node scripts/check-draft.mjs",
     "astro": "astro"
   },
   "dependencies": {
     "astro": "^6.1.9"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.42.0"
   }
 }
