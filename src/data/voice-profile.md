@@ -287,7 +287,7 @@ Ben's natural voice is conversational and thinking-out-loud. For blog posts, ada
 
 3. **Leave in the reasoning process.** Don't polish away the "maybe" and "I'm not sure." Those are honest markers, not weaknesses. Ben's voice gains credibility from owning uncertainty.
 
-4. **Use "so" and "but" as connectors.** Not "furthermore" or "moreover." The connective tissue should be conversational.
+4. **Use "so" and "but" as connectors.** Not "furthermore" or "moreover." The connective tissue should be conversational. "So" works at section-bridge level too: "So I started thinking about..." or "So the question became..."
 
 5. **Be specific.** Name the tool, the version, the file, the person. Concrete details are how Ben makes abstract arguments feel real.
 
@@ -296,6 +296,28 @@ Ben's natural voice is conversational and thinking-out-loud. For blog posts, ada
 7. **Profanity should be calibrated.** Light profanity for emphasis in personal/casual writing. Dial it back for more formal pieces but don't eliminate the directness.
 
 8. **Think in paragraphs, not sentences.** Ben's natural unit of thought is a paragraph-length reasoning chain, not individual polished sentences. Build a paragraph as one connected thought.
+
+9. **Use "the thing" as a structural anchor.** "The thing I kept coming back to is..." / "The thing I spent the most time on is..." / "The thing I find really interesting is..." This isn't just a sentence opener — it's how Ben naturally sections his thinking in long-form. Use it to open sections or pivot between ideas within sections.
+
+10. **Name concepts with coined-term headings.** "The Leisure Thesis." "The Signal." "Clean. Precise. Alive." Ben names ideas and uses them as section headings, which makes arguments feel architectural rather than sequential. Don't use generic descriptive headings like "Implementation Details" or "Design Choices."
+
+11. **Reach for analogies outside tech.** The peacock's tail. The Bootstrap parallel. Ben maps completed cycles from biology, history, economics onto current problems. The strongest arguments let the reader complete the pattern. Don't restrict borrowed frameworks to technical domains.
+
+12. **Write impact, not implementation.** When describing technical work, explain what the choices mean as signals, not what the choices are. "One font, three sizes" is implementation. "That reads as discipline" is impact. The impact is the argument; the implementation is evidence.
+
+13. **Blog closings are definitive.** One short, declarative sentence. No hedging ("my hope is"), no calls to action, no questions. The last line must stand alone as the thesis. The closer should feel like the final word, not an invitation.
+
+14. **Blend casual and essay registers.** Blog posts aren't fully casual or fully essay — they're conversational voice with essay-grade structure. Use "I think" and first person throughout (casual), but build structured arguments with escalating specificity (essay). Don't treat the registers as mutually exclusive. Specifically: sentences should feel like talking to a colleague; paragraphs should be tight, finished arguments. The "thinking out loud" quality lives in the "I think" markers and "so/but" connectors, not in actual disorganization or mid-sentence pivots.
+
+15. **Drop "I think" for your strongest conclusions.** Use "I think" heavily while building arguments, then remove it entirely when landing the punch. "Those decisions require taste, and taste requires caring about the result enough to be opinionated" — no hedge. The absence of "I think" at a section close or thesis statement is deliberate. It marks the claim as settled.
+
+16. **Use the reversal closer.** A signature section-ending move: describe something that seems like waste or weakness, then reveal it as the thesis. "It serves zero functional purpose. And I think that's the whole point." / "I spent way too long figuring that out, but that's kind of the point too — the debugging is part of the investment." Apparent liability becomes the proof.
+
+17. **Let technical specifics perform the argument.** In craft/philosophy posts, concrete details don't just evidence the argument — they demonstrate it. The debugging story proves the investment thesis by being a story about investment. Don't just describe what was built; let the description itself prove the point about caring.
+
+18. **The thesis closer.** For blog posts, the final sentence should be the most opinionated, unhedged claim in the piece. Not a summary. An escalation. It should be the one sentence that couldn't appear earlier because the rest of the post hasn't yet earned it.
+
+19. **Omit explicit counterargument in blog posts.** The profile's argumentation structure includes "acknowledge alternatives." In blog posts, the "I think" markers do that work — they own uncertainty without needing to explicitly entertain objections. Don't force devil's advocate into a piece that's already honest about its perspective.
 
 ---
 
@@ -312,3 +334,13 @@ Ben's natural voice is conversational and thinking-out-loud. For blog posts, ada
 - [ ] Sections close on declarative statements
 - [ ] Technical terms used precisely but without ceremony
 - [ ] Tone is peer-to-peer, not expert-to-audience
+- [ ] "The thing" used as structural anchor for sections and pivots
+- [ ] Section headings are coined terms, not generic descriptions
+- [ ] Analogies drawn from outside tech (biology, history, economics)
+- [ ] Technical descriptions explain impact/meaning, not just implementation
+- [ ] Closing is one short, definitive, declarative sentence — no hedging
+- [ ] Casual voice blended with essay structure (not one or the other)
+- [ ] "I think" dropped from strongest conclusions — absence is deliberate
+- [ ] Reversal closers used where appropriate (apparent weakness revealed as thesis)
+- [ ] Technical specifics perform the argument, not just evidence it
+- [ ] Final sentence is the most opinionated claim — escalation, not summary
