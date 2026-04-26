@@ -1,96 +1,68 @@
 ---
-title: "Building benwsmith.com"
+title: "The Signal — Craft in the Age of Slop"
 date: 2026-04-26
 category: Technical
-excerpt: "A React site abandoned in 2017. An Astro rebuild in 2026. What changed in nine years — and what didn't."
+excerpt: "Websites are easy to make now. That's the problem."
 ---
 
-## Nine Years Between Commits
+## The Problem with Easy
 
-The git log tells the story better than I could.
+Websites are easy to make now. Really easy. Describe what you want to an AI, wait thirty seconds, and you've got something that looks professional enough. Clean layout, responsive, maybe even a dark mode toggle. Ship it.
 
-```
-3a58e7b  2017-10-15  initial commit
-954390e  2017-10-15  added some header animation
-078ce53  2017-10-16  refined header animations
-3a7488f  2017-10-17  rewrote animation staggering to use promises
-719dc20  2017-10-17  not sure what I changed here
-7e45075  2017-10-27  animation fades in... now to stagger stuff
-edd82de  2017-10-27  using staggeredmotion... not perfect
-2c3d718  2018-04-02  too long ago to remember what I'm doing now, dang
-3290fa2  2026-04-23  init: Astro project with Inter font config
-```
+Something happened with Bootstrap around 2014 that I think is about to happen again. Every second website looked the same — same grid, same hero unit, same blue buttons. Bootstrap wasn't bad. It was excellent, which was exactly the problem. When everyone uses the same excellent tool, the tool becomes a signal. And the signal wasn't quality. It was the absence of investment.
 
-Nine years between commit messages. The first batch is a React + Webpack personal site with SCSS, Google Fonts, and a header animation system built on promises. The commit messages read like a developer thinking out loud — "not sure what I changed here," "too long ago to remember what I'm doing now, dang." That last one from April 2018 is where the trail went cold.
+I think AI-generated sites are heading there fast. The telltales are already visible if you look for them: certain layout patterns, certain ways of filling space, certain stock photo choices that look designed without having been designed. A clean but generic site won't read as professional much longer. It'll read as unmarked. A null signal.
 
-The site never shipped. It had potential — a layered header with foreground and background text, staggered animations, a fluid effect component. But it was a framework without a foundation. No content. No posts. No real reason for anyone to visit.
+So I started thinking about what actually separates a site that signals investment from one that doesn't.
 
-## What Changed
+## The Leisure Thesis
 
-In 2017, I was building a personal brand site from scratch: React, Webpack, SCSS, a custom animation system. It was the right stack for the wrong problem. I was optimizing the delivery mechanism before I had anything to deliver.
+The thing I kept coming back to is effort — specifically, why effort is visible in some products and invisible in others. I think it comes down to skill level. If you take me and a junior developer and tell us both to build a responsive personal site, the junior is going to spend most of their time on the basics. Getting the layout right. Making it not break on mobile. Figuring out why the footer is overlapping the content. I've done all of that hundreds of times, so it takes me a fraction of the time.
 
-In 2026, the constraints flipped. I had things to say — essays on AI and taste, reflections on fifteen years of writing software, technical notes from projects I'd shipped. What I needed was a site that would get out of the way. Zero JavaScript by default. Markdown files and a build step. Content, not framework.
+That speed difference is where the signal comes from. I have what you might call "leisure time" at the craft level — time that isn't consumed by fundamentals, time I can spend on things that are, strictly speaking, unnecessary. Small animations. Custom easing curves. A cellular automaton running behind the hero text.
 
-Astro gave me exactly that.
+The superfluousness is the entire point. It's the peacock's tail — expensive to grow, serves no survival purpose, and that's exactly why it works as a signal. If I can afford to spend time on things that don't affect functionality, it means the fundamentals came easy.
 
-## The Rebuild
+## Clean. Precise. Alive.
 
-The 2026 rebuild happened in one long day. Thirty commits on April 23rd:
+So the question became: what should that signal actually feel like? I settled on three words. Clean. Precise. Alive.
 
-1. **Scaffold** — Astro project, Inter font via Fontsource, global CSS with design tokens
-2. **Content layer** — Blog posts as Markdown with Zod-validated frontmatter, content collections via Astro's glob loader
-3. **Layout** — Base layout with header/footer slots, responsive nav, social links
-4. **Components** — Post cards, category pills, back links — all Astro components, zero client-side JS
-5. **Blog pages** — File-based routing (`blog/[...slug].astro`), homepage with post feed, individual post pages
+Not flashy. Not loud. Not demanding attention. Clean at first glance, rewarding if you pay attention, and subtly in motion even when nothing is happening. The craft whispers. It doesn't shout. Animations register subconsciously as "that's cool" and then get out of the way. Nothing competes for your attention because nothing needs to.
 
-The pattern is the opposite of the 2017 approach. Then, I started with the animation system. Now, I started with the content. The blog posts existed before the homepage did.
+That philosophy became the rule set for every decision I made. And I think working within a narrow set of rules like that is its own signal — maybe the strongest one. It says I didn't reach for the next shiny thing. I decided what the site should feel like and I stuck with it.
 
-## View Transitions
+## What Specificity Signals
 
-The one place where Astro's approach let me be ambitious was page transitions. Using the View Transitions API with Astro's `ClientRouter`, I got SPA-like navigation for free — slide transitions between pages, a loading indicator bar during swaps, and fade-in animations on initial load. No React, no client-side router, no hydration overhead.
+I don't think craft is about having more features. I think it's about making narrow decisions and committing to them. And the reason those decisions matter is that they're visible — not as individual choices, but as a kind of coherence that you feel when you use the site.
 
-```css
-@keyframes fadeInSlide {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-```
+Take the font. One font, three sizes, consistent weights. That reads as discipline. A site with six fonts reads as "I opened the font picker and couldn't decide." The impact isn't the font itself. It's the fact that someone made a call and stuck with it.
 
-The design system is built on CSS custom properties — animation durations, easing curves, spacing scales, shadow levels. All defined in `:root`, all consistent. The 2017 site had hardcoded values scattered through SCSS partials. This time, I got the system right before I wrote a single animation.
+The color palette works the same way. Off-white background, near-black text, system blue for interactive elements. Nothing screams. The impact is that the site feels considered — like every color is there because it belongs, not because it was available.
 
-## The Ambient Canvas
+But the thing I find really interesting is where specificity crosses over into the subconscious. The post cards don't move at a constant speed when you hover. They decelerate, like a physical object settling into place. I think your brain registers that difference even if you can't name it. You feel that someone thought about how it should move — not just that it should move.
 
-The homepage has a Game of Life simulation running behind the hero text. It's subtle — blue cells fading in and out, barely visible until you move your mouse and seed new cells along your cursor path.
+Page transitions work the same way. Content slides in rather than flashing white. The page never blanks, never makes you wait without acknowledgment. You probably won't consciously notice any of this. But you'd absolutely feel the absence. And I think that's the strongest kind of signal — the stuff that registers below articulation.
 
-The implementation went through several iterations:
+## The Canvas Behind the Hero
 
-1. Basic GoL engine with cell birth/death
-2. Mouse interaction — click to toggle cells
-3. Continuous brush seeding — cells spawn on every mousemove via path interpolation
-4. Heat system — cells interpolate between desaturated blue (ambient) and vivid blue (mouse-seeded) based on heat that decays each simulation step
-5. Trail grid — an independent layer that captures mouse brush strokes and fades over ~0.4s
-6. Theme awareness — colors adapt when you toggle between light and dark mode
+The thing I spent the most time on is the thing nobody needs. The homepage has a Game of Life simulation running behind the hero text — blue cells fading in and out, barely visible until you move your mouse and seed new ones along your cursor path. Cells near your mouse shift from desaturated blue to vivid blue based on a heat system that decays each simulation step. A separate trail grid captures your brush strokes and fades over about 0.4 seconds. The whole thing renders at 30fps, simulation ticking at roughly six steps per second.
 
-It renders at 30fps with time-based throttling, simulation steps at ~6/second. There's a mask-image fade so the canvas disappears below the hero area. And it respects `prefers-reduced-motion` — if you'd rather not see animations, the canvas hides entirely.
+It serves zero functional purpose. And I think that's the whole point.
 
-The architectural lesson was specific and painful: the `<main>` element has a `transform` animation (`fadeInSlide`) which creates a new containing block, breaking `position: fixed` for anything inside it. The canvas needs to live outside `<main>`, in a named slot that's positioned before the header in the DOM.
+The hardest bug wasn't in the simulation. It was a CSS containment issue. The main element has a `fadeInSlide` animation that uses `transform`, which creates a new containing block and breaks `position: fixed` for anything inside it. The canvas had to live outside main, in a named slot positioned before the header in the DOM. I spent way too long figuring that out, but that's kind of the point too — the debugging is part of the investment.
 
-## The Lab
+## Working Within Constraints
 
-After the homepage canvas, I extracted the Game of Life engine into a standalone module and built a lab page — a full-interactive sandbox where you can play with the simulation directly. It's linked from the nav, separate from the blog.
+The site is built with Astro, which appealed to me because it ships zero JavaScript by default. Pages are static HTML at build time. Blog posts are Markdown files. No CMS, no database. I write a file, commit it, and rsync the build output to a DigitalOcean droplet.
 
-The lab is the 2017 site's spirit, done right. Then, I built an animation demo site with nothing to animate. Now, I have a playground for things that are genuinely fun to interact with.
+The design system is CSS custom properties — animation durations, easing curves, spacing scales, shadow levels, all defined in `:root` before I wrote a single animation. The animation system runs in three layers: micro-interactions for the small stuff like hover states, reusable effects for medium things like animated dividers, and ambient effects for scene-setting like the canvas. Each layer has a different purpose and a different build cadence.
 
-## What Didn't Change
+Everything respects `prefers-reduced-motion`. If you'd rather not see animations, the canvas hides entirely and all motion stops. Light and dark theme follows system preference with a manual override. The reading experience always wins over visual flourish.
 
-Good software still comes from understanding the problem before reaching for a solution. The best code is still the code you don't write. And shipping something real still beats perfecting something imaginary.
+## The Signal
 
-The 2017 commit messages already knew this. The problem wasn't the tech stack. It was that I was building a site for a writer who hadn't started writing.
+AI can generate a competent personal site in seconds. It'll be clean, well-structured, responsive. It'll also be interchangeable with every other AI-generated personal site on the internet.
 
-So I started writing.
+The craft isn't in the features. It's in the decisions. The specific easing curve. The choice to use one font. The discipline to work within a narrow rule set instead of reaching for the next shiny thing. The cellular automaton behind the hero text that exists because it felt right to put it there.
+
+Those decisions require taste, and taste requires caring about the result enough to be opinionated.
