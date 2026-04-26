@@ -37,6 +37,11 @@ const CHECKS = [
     description: (match) => `SSN pattern: "${match}"`,
   },
   {
+    name: "Street address",
+    pattern: /\b\d+\s+[A-Z][a-z]+(?:\s+(?:Street|St|Avenue|Ave|Boulevard|Blvd|Drive|Dr|Lane|Ln|Road|Rd|Court|Ct|Way|Place|Pl))\.?\b/g,
+    description: (match) => `Street address: "${match}"`,
+  },
+  {
     name: "AI-generated pattern",
     pattern:
       /\b(delve(?:d|s)? into|it'?s worth noting|in conclusion|in this (?:essay|post|article)|let'?s dive in|it'?s important to note|in today'?s (?:world|landscape|digital))\b/gi,
