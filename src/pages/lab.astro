@@ -1,12 +1,12 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import LabLayout from "../layouts/LabLayout.astro";
 import ThemeToggleSandbox from "../components/lab/ThemeToggleSandbox.astro";
 import PostCardSandbox from "../components/lab/PostCardSandbox.astro";
 import BadgePingSandbox from "../components/lab/BadgePingSandbox.astro";
 import GolSandbox from "../components/lab/GolSandbox.astro";
 import LinkHoverSandbox from "../components/lab/LinkHoverSandbox.astro";
 ---
-<BaseLayout title="Lab">
+<LabLayout title="Lab">
   <section style="padding:var(--spacing-2xl) 0">
     <h1 style="font-size:var(--font-size-site-name);font-weight:var(--font-weight-bold);line-height:1.1;margin-bottom:var(--spacing-sm)">Lab</h1>
     <p style="font-size:15px;color:var(--color-text-secondary);letter-spacing:0.02em">Animation sandbox. Local only.</p>
@@ -39,4 +39,4 @@ import LinkHoverSandbox from "../components/lab/LinkHoverSandbox.astro";
   <section style="margin-bottom:var(--spacing-2xl)">
     <LinkHoverSandbox />
   </section>
-</BaseLayout>
+</LabLayout>
