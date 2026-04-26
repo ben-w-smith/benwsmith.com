@@ -2,6 +2,7 @@
 import { ClientRouter, slide } from "astro:transitions";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import AmbientCanvas from "../components/AmbientCanvas.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -28,7 +29,7 @@ const { title } = Astro.props;
     <div class="reading-progress"></div>
     <div class="page-transition-bar"></div>
     <div class="page-wrapper">
-      <slot name="background" />
+      <AmbientCanvas transition:persist="gol-background" />
       <Header />
       <main id="main-content" class="content-wrapper page-enter" transition:animate={slide()}>
         <slot />
