@@ -448,11 +448,15 @@ The skill receives a single argument string. Parse it as follows:
 2. **Run privacy guard** — `npm run check:draft -- src/posts/<slug>.md`
 3. If guard fails, show issues and stop. Do not proceed.
 4. **Ask for final read-through** — "Please read through the post one more time. Ready to publish?"
-5. **Commit final version** — stage `src/posts/<slug>.md`, commit with message like `feat: add "<post title>" blog post`
+5. **Commit final version** — stage `src/posts/<slug>.md`, commit with message like `feat: add "<post title>" blog post`. **Do NOT add Co-Authored-By trailers to blog post commits.** The author wrote the post; AI assisted with tooling, not authorship.
 6. **Merge to main** — `git checkout main && git merge draft/<slug>`
 7. **Deploy** — run `npm run build && rsync -avz --delete dist/ root@146.190.61.214:/var/www/html/`
 8. **Delete draft branch** — `git branch -d draft/<slug>`
 9. **Confirm** — tell the user the post is live at `https://benwsmith.com/blog/<slug>`
+
+## Attribution
+
+Blog posts are the author's work. AI agents assist with tooling (branch setup, formatting, privacy checks) but do not co-author posts. Never add `Co-Authored-By` or similar attribution trailers to blog post commits. Infrastructure and tooling commits may use standard co-authorship.
 
 ## Privacy Guard
 
@@ -553,6 +557,8 @@ git add src/posts/tax-correction.md
 git commit -m "draft: add tax correction post"
 ```
 
+**No `Co-Authored-By` trailer.** Blog posts are the author's work.
+
 Note: The pre-commit hook won't fire here since we're on `draft/tax-correction`, not `main`.
 
 - [ ] **Step 8: Test publish flow (dry run)**
@@ -591,3 +597,5 @@ If edits were made during the test, commit them:
 git add -A
 git commit -m "feat: add tax correction blog post"
 ```
+
+**No `Co-Authored-By` trailer on blog post commits.**

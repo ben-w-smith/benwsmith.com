@@ -1,10 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ThemeToggleSandbox from "../components/lab/ThemeToggleSandbox.astro";
+import PostCardSandbox from "../components/lab/PostCardSandbox.astro";
+import BadgePingSandbox from "../components/lab/BadgePingSandbox.astro";
 import GolSandbox from "../components/lab/GolSandbox.astro";
+import LinkHoverSandbox from "../components/lab/LinkHoverSandbox.astro";
 ---
-<script is:inline>
-  if (location.hostname !== "localhost" && location.hostname !== "127.0.0.1" && !location.hostname.startsWith("192.168")) location.replace("/");
-</script>
 <BaseLayout title="Lab">
   <section style="padding:var(--spacing-2xl) 0">
     <h1 style="font-size:var(--font-size-site-name);font-weight:var(--font-weight-bold);line-height:1.1;margin-bottom:var(--spacing-sm)">Lab</h1>
@@ -12,6 +13,30 @@ import GolSandbox from "../components/lab/GolSandbox.astro";
   </section>
 
   <section style="margin-bottom:var(--spacing-2xl)">
+    <ThemeToggleSandbox />
+  </section>
+
+  <hr style="border:none;border-top:1px solid var(--color-border);margin:var(--spacing-2xl) 0;" />
+
+  <section style="margin-bottom:var(--spacing-2xl)">
+    <PostCardSandbox />
+  </section>
+
+  <hr style="border:none;border-top:1px solid var(--color-border);margin:var(--spacing-2xl) 0;" />
+
+  <section style="margin-bottom:var(--spacing-2xl)">
+    <BadgePingSandbox />
+  </section>
+
+  <hr style="border:none;border-top:1px solid var(--color-border);margin:var(--spacing-2xl) 0;" />
+
+  <section style="margin-bottom:var(--spacing-2xl)">
     <GolSandbox />
+  </section>
+
+  <hr style="border:none;border-top:1px solid var(--color-border);margin:var(--spacing-2xl) 0;" />
+
+  <section style="margin-bottom:var(--spacing-2xl)">
+    <LinkHoverSandbox />
   </section>
 </BaseLayout>

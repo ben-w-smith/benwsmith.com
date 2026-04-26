@@ -1,0 +1,472 @@
+---
+---
+
+<div class="sandbox-wrapper">
+  <div class="sandbox-header">
+    <h2 class="sandbox-title">Post Card Hover</h2>
+    <p class="sandbox-desc">Title color transition and pill ping animation</p>
+  </div>
+
+  <div class="sandbox-demo">
+    <div class="demo-card" id="demo-card">
+      <div class="demo-card-top">
+        <div class="demo-pill-wrapper">
+          <span class="demo-pill-ring" id="pill-ring"></span>
+          <span class="demo-pill">Technical</span>
+        </div>
+        <span class="demo-date">Apr 23, 2026</span>
+      </div>
+      <h3 class="demo-title" id="demo-title">Example Post Title</h3>
+      <p class="demo-description">
+        A brief description of the post that spans two lines and demonstrates
+        the hover effect.
+      </p>
+    </div>
+  </div>
+
+  <div class="sandbox-controls">
+    <div class="control-group">
+      <label for="slider-titleDuration">Title Transition Duration</label>
+      <input
+        type="range"
+        id="slider-titleDuration"
+        min="50"
+        max="1000"
+        value="200"
+        step="25"
+      />
+      <span class="control-value" data-for="titleDuration">200ms</span>
+    </div>
+
+    <div class="control-group">
+      <label for="select-titleEasing">Title Transition Easing</label>
+      <select id="select-titleEasing">
+        <option value="cubic-bezier(0.16, 1, 0.3, 1)" selected>
+          ease-out (0.16, 1, 0.3, 1)
+        </option>
+        <option value="cubic-bezier(0.45, 0, 0.55, 1)">
+          ease-in-out (0.45, 0, 0.55, 1)
+        </option>
+        <option value="cubic-bezier(0.34, 1.56, 0.64, 1)">
+          ease-spring (0.34, 1.56, 0.64, 1)
+        </option>
+        <option value="linear">linear</option>
+      </select>
+      <span class="control-value" data-for="titleEasing">
+        cubic-bezier(0.16, 1, 0.3, 1)
+      </span>
+    </div>
+
+    <div class="control-group">
+      <label for="slider-pingDuration">Ping Duration</label>
+      <input
+        type="range"
+        id="slider-pingDuration"
+        min="100"
+        max="2000"
+        value="500"
+        step="50"
+      />
+      <span class="control-value" data-for="pingDuration">500ms</span>
+    </div>
+
+    <div class="control-group">
+      <label for="slider-pingScale">Ping Scale</label>
+      <input
+        type="range"
+        id="slider-pingScale"
+        min="1.1"
+        max="2.0"
+        value="1.4"
+        step="0.1"
+      />
+      <span class="control-value" data-for="pingScale">1.4</span>
+    </div>
+
+    <div class="control-group">
+      <label for="slider-throbDuration">Throb Duration</label>
+      <input
+        type="range"
+        id="slider-throbDuration"
+        min="200"
+        max="4000"
+        value="1400"
+        step="100"
+      />
+      <span class="control-value" data-for="throbDuration">1400ms</span>
+    </div>
+
+    <div class="control-group">
+      <label for="slider-throbScale">Throb Scale</label>
+      <input
+        type="range"
+        id="slider-throbScale"
+        min="1.01"
+        max="1.3"
+        value="1.06"
+        step="0.01"
+      />
+      <span class="control-value" data-for="throbScale">1.06</span>
+    </div>
+
+    <div class="control-group">
+      <label for="slider-staggerDelay">Stagger Delay</label>
+      <input
+        type="range"
+        id="slider-staggerDelay"
+        min="0"
+        max="300"
+        value="80"
+        step="10"
+      />
+      <span class="control-value" data-for="staggerDelay">80ms</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const card = document.getElementById("demo-card");
+    const title = document.getElementById("demo-title");
+    const ring = document.getElementById("pill-ring");
+    if (!card || !title || !ring) return;
+
+    // Slider elements
+    const sliderTitleDuration = document.getElementById(
+      "slider-titleDuration"
+    ) as HTMLInputElement | null;
+    const selectTitleEasing = document.getElementById(
+      "select-titleEasing"
+    ) as HTMLSelectElement | null;
+    const sliderPingDuration = document.getElementById(
+      "slider-pingDuration"
+    ) as HTMLInputElement | null;
+    const sliderPingScale = document.getElementById(
+      "slider-pingScale"
+    ) as HTMLInputElement | null;
+    const sliderThrobDuration = document.getElementById(
+      "slider-throbDuration"
+    ) as HTMLInputElement | null;
+    const sliderThrobScale = document.getElementById(
+      "slider-throbScale"
+    ) as HTMLInputElement | null;
+    const sliderStaggerDelay = document.getElementById(
+      "slider-staggerDelay"
+    ) as HTMLInputElement | null;
+
+    // Current params (read from controls)
+    function getTitleDuration(): number {
+      return sliderTitleDuration ? parseFloat(sliderTitleDuration.value) : 200;
+    }
+
+    function getTitleEasing(): string {
+      return selectTitleEasing ? selectTitleEasing.value : "cubic-bezier(0.16, 1, 0.3, 1)";
+    }
+
+    function getPingDuration(): number {
+      return sliderPingDuration ? parseFloat(sliderPingDuration.value) : 500;
+    }
+
+    function getPingScale(): number {
+      return sliderPingScale ? parseFloat(sliderPingScale.value) : 1.4;
+    }
+
+    function getThrobDuration(): number {
+      return sliderThrobDuration ? parseFloat(sliderThrobDuration.value) : 1400;
+    }
+
+    function getThrobScale(): number {
+      return sliderThrobScale ? parseFloat(sliderThrobScale.value) : 1.06;
+    }
+
+    function getStaggerDelay(): number {
+      return sliderStaggerDelay ? parseFloat(sliderStaggerDelay.value) : 80;
+    }
+
+    // Animation state
+    let pingAnimation: Animation | null = null;
+    let throbAnimation: Animation | null = null;
+    let staggerTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    function startHover() {
+      // Title color transition via CSS
+      const duration = getTitleDuration();
+      const easing = getTitleEasing();
+      title!.style.transition = `color ${duration}ms ${easing}`;
+      title!.style.color = "var(--color-accent)";
+
+      // Ping phase (one-shot)
+      const pingDuration = getPingDuration();
+      const pingScale = getPingScale();
+
+      // Cancel any running animations
+      cancelAnimations();
+
+      pingAnimation = ring!.animate(
+        [
+          { transform: "scale(1)", opacity: 0.7 },
+          { transform: `scale(${pingScale})`, opacity: 0 },
+        ],
+        {
+          duration: pingDuration,
+          easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+          fill: "none",
+        }
+      );
+
+      pingAnimation!.onfinish = () => {
+        // Start throb phase after ping completes
+        const throbDuration = getThrobDuration();
+        const throbScale = getThrobScale();
+
+        throbAnimation = ring!.animate(
+          [
+            { transform: "scale(1)", opacity: 0.12 },
+            { transform: `scale(${throbScale})`, opacity: 0.22 },
+            { transform: "scale(1)", opacity: 0.12 },
+          ],
+          {
+            duration: throbDuration,
+            iterations: Infinity,
+            easing: "ease-in-out",
+          }
+        );
+      };
+    }
+
+    function cancelAnimations() {
+      if (pingAnimation) {
+        pingAnimation.cancel();
+        pingAnimation = null;
+      }
+      if (throbAnimation) {
+        throbAnimation.cancel();
+        throbAnimation = null;
+      }
+    }
+
+    function endHover() {
+      // Reset title color
+      title!.style.color = "";
+      // Cancel animations
+      cancelAnimations();
+    }
+
+    // Wire card hover events
+    card.addEventListener("mouseenter", () => {
+      const delay = getStaggerDelay();
+      if (delay > 0) {
+        staggerTimeout = setTimeout(() => startHover(), delay);
+      } else {
+        startHover();
+      }
+    });
+
+    card.addEventListener("mouseleave", () => {
+      if (staggerTimeout) {
+        clearTimeout(staggerTimeout);
+        staggerTimeout = null;
+      }
+      endHover();
+    });
+
+    // Wire sliders to update display values
+    type SliderConfig = {
+      id: string;
+      suffix: string;
+    };
+
+    const sliders: SliderConfig[] = [
+      { id: "titleDuration", suffix: "ms" },
+      { id: "pingDuration", suffix: "ms" },
+      { id: "pingScale", suffix: "" },
+      { id: "throbDuration", suffix: "ms" },
+      { id: "throbScale", suffix: "" },
+      { id: "staggerDelay", suffix: "ms" },
+    ];
+
+    for (const { id, suffix } of sliders) {
+      const input = document.getElementById(
+        "slider-" + id
+      ) as HTMLInputElement | null;
+      if (!input) continue;
+      const display = document.querySelector<HTMLElement>(
+        '.control-value[data-for="' + id + '"]'
+      );
+      input.addEventListener("input", () => {
+        if (display) display.textContent = input.value + suffix;
+      });
+    }
+
+    // Wire easing select
+    if (selectTitleEasing) {
+      const easingDisplay = document.querySelector<HTMLElement>(
+        '.control-value[data-for="titleEasing"]'
+      );
+      selectTitleEasing.addEventListener("change", () => {
+        if (easingDisplay) easingDisplay.textContent = selectTitleEasing.value;
+      });
+    }
+
+    // Cleanup
+    document.addEventListener("astro:before-swap", () => {
+      if (staggerTimeout) {
+        clearTimeout(staggerTimeout);
+        staggerTimeout = null;
+      }
+      cancelAnimations();
+      card.removeEventListener("mouseenter", () => {});
+      card.removeEventListener("mouseleave", () => {});
+    });
+  });
+</script>
+
+<style>
+  .sandbox-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .sandbox-header {
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .sandbox-title {
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .sandbox-desc {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.01em;
+  }
+
+  .sandbox-demo {
+    display: flex;
+    justify-content: center;
+    padding: var(--spacing-lg) 0;
+  }
+
+  .demo-card {
+    width: 100%;
+    max-width: 400px;
+    background: var(--color-bg-off, #f7f7f8);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md, 8px);
+    padding: var(--spacing-lg, 24px);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  [data-theme="dark"] .demo-card {
+    background: #242424;
+  }
+
+  .demo-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .demo-pill-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .demo-pill-ring {
+    position: absolute;
+    inset: -2px;
+    border: 1.5px solid var(--color-technical, #007aff);
+    border-radius: inherit;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .demo-pill {
+    font-size: var(--font-size-label, 12px);
+    font-weight: var(--font-weight-medium, 500);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm, 6px);
+    color: var(--color-technical, #007aff);
+    background: var(--color-technical-bg, #007aff1a);
+  }
+
+  .demo-date {
+    font-size: var(--font-size-label, 12px);
+    color: var(--color-text-secondary);
+  }
+
+  .demo-title {
+    font-size: var(--font-size-title, 18px);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: var(--spacing-xs) 0;
+    line-height: 1.3;
+  }
+
+  .demo-description {
+    font-size: var(--font-size-body, 15px);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .sandbox-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md) var(--spacing-xl);
+    padding-top: var(--spacing-md);
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .control-group label {
+    font-size: 13px;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    letter-spacing: 0.01em;
+  }
+
+  .control-group input[type="range"] {
+    width: 100%;
+    accent-color: var(--color-accent, #007aff);
+  }
+
+  .control-group select {
+    width: 100%;
+    font-size: 12px;
+    font-family: var(--font-family-mono, monospace);
+    padding: 4px 6px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm, 6px);
+    background: var(--color-bg-off, #f7f7f8);
+    color: var(--color-text-primary);
+  }
+
+  [data-theme="dark"] .control-group select {
+    background: #242424;
+  }
+
+  .control-value {
+    font-size: 12px;
+    font-family: var(--font-family-mono, monospace);
+    color: var(--color-text-tertiary, #999);
+  }
+
+  @media (max-width: 600px) {
+    .sandbox-controls {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

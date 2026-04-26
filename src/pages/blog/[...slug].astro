@@ -29,12 +29,12 @@ const readingTime =
   <BackLink />
 
   <article>
-    <header style="margin-bottom:var(--spacing-xl)">
-      <div style="display:flex;align-items:center;gap:var(--spacing-sm);margin-bottom:var(--spacing-sm)">
+    <header class="article-header">
+      <div class="article-meta">
         <CategoryPill category={post.data.category} />
         <span class="text-label">{formattedDate} &middot; {readingTime} min read</span>
       </div>
-      <h1 style="font-size:var(--font-size-hero-title);font-weight:var(--font-weight-bold);color:var(--color-text-primary);line-height:1.3;margin:0">{post.data.title}</h1>
+      <h1 class="article-title">{post.data.title}</h1>
     </header>
 
     <div class="prose">
@@ -42,3 +42,24 @@ const readingTime =
     </div>
   </article>
 </BaseLayout>
+
+<style>
+  .article-header {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .article-title {
+    font-size: var(--font-size-hero-title);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    line-height: 1.3;
+    margin: 0;
+  }
+</style>

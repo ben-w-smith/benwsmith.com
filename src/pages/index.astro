@@ -10,9 +10,9 @@ const posts = (await getCollection("blog")).sort(
 ---
 <BaseLayout title="Blog">
   <AmbientCanvas slot="background" />
-  <section style="padding:var(--spacing-2xl) 0">
-    <h1 data-reveal style="font-size:var(--font-size-site-name);font-weight:var(--font-weight-bold);line-height:1.1;margin-bottom:var(--spacing-sm)">Ben Smith</h1>
-    <p data-reveal data-reveal-delay="100" style="font-size:15px;color:var(--color-text-secondary);letter-spacing:0.02em">Software Developer · Writer</p>
+  <section class="hero-section">
+    <h1 data-reveal class="hero-name">Ben Smith</h1>
+    <p data-reveal data-reveal-delay="100" class="hero-tagline">Software Developer · Writer</p>
   </section>
 
   <section>
@@ -29,3 +29,22 @@ const posts = (await getCollection("blog")).sort(
     ))}
   </section>
 </BaseLayout>
+
+<style>
+  .hero-section {
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .hero-name {
+    font-size: var(--font-size-site-name);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.1;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .hero-tagline {
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.02em;
+  }
+</style>

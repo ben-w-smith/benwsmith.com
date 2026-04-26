@@ -1,0 +1,407 @@
+---
+---
+
+<div class="sandbox-wrapper">
+  <div class="sandbox-header">
+    <h2 class="sandbox-title">Theme Toggle</h2>
+    <p class="sandbox-desc">Circular clip-path reveal with View Transitions API</p>
+  </div>
+
+  <div class="sandbox-demo">
+    <!-- Toggle button -->
+    <button class="theme-toggle-btn" type="button" aria-label="Toggle theme">
+      <span class="theme-toggle-icon">☀️</span>
+    </button>
+
+    <!-- Demo layers -->
+    <div class="demo-layer demo-layer--light">
+      <div class="demo-content">
+        <div class="demo-label">Light Theme</div>
+        <div class="demo-line"></div>
+        <div class="demo-dot" style="background: var(--color-accent);"></div>
+        <div class="demo-dot" style="background: var(--color-essay);"></div>
+        <div class="demo-dot" style="background: var(--color-project);"></div>
+      </div>
+    </div>
+
+    <div class="demo-layer demo-layer--dark">
+      <div class="demo-content">
+        <div class="demo-label">Dark Theme</div>
+        <div class="demo-line"></div>
+        <div class="demo-dot" style="background: var(--color-accent);"></div>
+        <div class="demo-dot" style="background: var(--color-essay);"></div>
+        <div class="demo-dot" style="background: var(--color-project);"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sandbox-controls">
+    <div class="control-group">
+      <label for="slider-duration">Duration</label>
+      <input type="range" id="slider-duration" min="100" max="1500" value="500" step="50" />
+      <span class="control-value" data-for="duration">500ms</span>
+    </div>
+
+    <div class="control-group">
+      <label for="select-easing">Easing</label>
+      <select id="select-easing" class="control-select">
+        <option value="ease-in-out">ease-in-out</option>
+        <option value="cubic-bezier(0.16, 1, 0.3, 1)" selected>ease-out</option>
+        <option value="cubic-bezier(0.34, 1.56, 0.64, 1)">ease-spring</option>
+        <option value="linear">linear</option>
+      </select>
+      <span class="control-value" data-for="easing">ease-out</span>
+    </div>
+
+    <div class="control-group">
+      <label for="slider-offsetX">Start X Offset</label>
+      <input type="range" id="slider-offsetX" min="-200" max="200" value="0" step="10" />
+      <span class="control-value" data-for="offsetX">0px</span>
+    </div>
+
+    <div class="control-group">
+      <label for="slider-offsetY">Start Y Offset</label>
+      <input type="range" id="slider-offsetY" min="-200" max="200" value="0" step="10" />
+      <span class="control-value" data-for="offsetY">0px</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  function init() {
+    const wrapper = document.querySelector<HTMLElement>(".sandbox-wrapper");
+    if (!wrapper) return;
+
+    const demo = wrapper.querySelector<HTMLElement>(".sandbox-demo");
+    const btn = wrapper.querySelector<HTMLButtonElement>(".theme-toggle-btn");
+    const iconEl = wrapper.querySelector<HTMLElement>(".theme-toggle-icon");
+    const darkLayer = wrapper.querySelector<HTMLElement>(".demo-layer--dark");
+
+    const durationSlider = wrapper.querySelector<HTMLInputElement>("#slider-duration");
+    const easingSelect = wrapper.querySelector<HTMLSelectElement>("#select-easing");
+    const offsetXSlider = wrapper.querySelector<HTMLInputElement>("#slider-offsetX");
+    const offsetYSlider = wrapper.querySelector<HTMLInputElement>("#slider-offsetY");
+
+    const durationValue = wrapper.querySelector<HTMLElement>('.control-value[data-for="duration"]');
+    const easingValue = wrapper.querySelector<HTMLElement>('.control-value[data-for="easing"]');
+    const offsetXValue = wrapper.querySelector<HTMLElement>('.control-value[data-for="offsetX"]');
+    const offsetYValue = wrapper.querySelector<HTMLElement>('.control-value[data-for="offsetY"]');
+
+    if (!demo || !btn || !iconEl || !darkLayer) return;
+
+    let isDark = false;
+    let currentAnimation: Animation | null = null;
+
+    const easingLabels: Record<string, string> = {
+      "ease-in-out": "ease-in-out",
+      "cubic-bezier(0.16, 1, 0.3, 1)": "ease-out",
+      "cubic-bezier(0.34, 1.56, 0.64, 1)": "ease-spring",
+      "linear": "linear",
+    };
+
+    function getParams() {
+      return {
+        duration: durationSlider ? parseInt(durationSlider.value, 10) : 500,
+        easing: easingSelect ? easingSelect.value : "cubic-bezier(0.16, 1, 0.3, 1)",
+        offsetX: offsetXSlider ? parseInt(offsetXSlider.value, 10) : 0,
+        offsetY: offsetYSlider ? parseInt(offsetYSlider.value, 10) : 0,
+      };
+    }
+
+    function handleToggle() {
+      // Cancel any in-flight animation
+      if (currentAnimation) {
+        currentAnimation.cancel();
+        currentAnimation = null;
+      }
+
+      const { duration, easing, offsetX, offsetY } = getParams();
+      const demoRect = demo.getBoundingClientRect();
+      const btnRect = btn.getBoundingClientRect();
+
+      // Circle center = toggle button center + offsets
+      const cx = btnRect.left - demoRect.left + btnRect.width / 2 + offsetX;
+      const cy = btnRect.top - demoRect.top + btnRect.height / 2 + offsetY;
+
+      // Max radius to cover the entire demo area
+      const maxRadius = Math.hypot(
+        Math.max(cx, demoRect.width - cx),
+        Math.max(cy, demoRect.height - cy)
+      );
+
+      // Determine direction — always animate the dark layer
+      const goingDark = !isDark;
+      const fromRadius = goingDark ? 0 : maxRadius;
+      const toRadius = goingDark ? maxRadius : 0;
+
+      // Set clip-path origin before animating
+      darkLayer.style.clipPath = `circle(${fromRadius}px at ${cx}px ${cy}px)`;
+
+      currentAnimation = darkLayer.animate(
+        [
+          { clipPath: `circle(${fromRadius}px at ${cx}px ${cy}px)` },
+          { clipPath: `circle(${toRadius}px at ${cx}px ${cy}px)` },
+        ],
+        {
+          duration,
+          easing,
+          fill: "forwards",
+        }
+      );
+
+      currentAnimation.onfinish = () => {
+        // Persist final state
+        if (goingDark) {
+          darkLayer.style.clipPath = `circle(${maxRadius}px at ${cx}px ${cy}px)`;
+        } else {
+          darkLayer.style.clipPath = `circle(0px at ${cx}px ${cy}px)`;
+        }
+        currentAnimation = null;
+      };
+
+      isDark = goingDark;
+      iconEl.textContent = isDark ? "🌙" : "☀️";
+    }
+
+    function handleDurationInput() {
+      if (!durationSlider || !durationValue) return;
+      durationValue.textContent = durationSlider.value + "ms";
+    }
+
+    function handleEasingChange() {
+      if (!easingSelect || !easingValue) return;
+      easingValue.textContent = easingLabels[easingSelect.value] || easingSelect.value;
+    }
+
+    function handleOffsetXInput() {
+      if (!offsetXSlider || !offsetXValue) return;
+      offsetXValue.textContent = offsetXSlider.value + "px";
+    }
+
+    function handleOffsetYInput() {
+      if (!offsetYSlider || !offsetYValue) return;
+      offsetYValue.textContent = offsetYSlider.value + "px";
+    }
+
+    // Bind events
+    btn.addEventListener("click", handleToggle);
+    durationSlider?.addEventListener("input", handleDurationInput);
+    easingSelect?.addEventListener("change", handleEasingChange);
+    offsetXSlider?.addEventListener("input", handleOffsetXInput);
+    offsetYSlider?.addEventListener("input", handleOffsetYInput);
+
+    // Set initial dark layer state (hidden)
+    darkLayer.style.clipPath = "circle(0px at 0px 0px)";
+
+    // Store cleanup references
+    (wrapper as any)._themeSandboxCleanup = () => {
+      if (currentAnimation) {
+        currentAnimation.cancel();
+        currentAnimation = null;
+      }
+      btn.removeEventListener("click", handleToggle);
+      durationSlider?.removeEventListener("input", handleDurationInput);
+      easingSelect?.removeEventListener("change", handleEasingChange);
+      offsetXSlider?.removeEventListener("input", handleOffsetXInput);
+      offsetYSlider?.removeEventListener("input", handleOffsetYInput);
+    };
+  }
+
+  function cleanup() {
+    const wrapper = document.querySelector<HTMLElement>(".sandbox-wrapper");
+    if (wrapper && (wrapper as any)._themeSandboxCleanup) {
+      (wrapper as any)._themeSandboxCleanup();
+      delete (wrapper as any)._themeSandboxCleanup;
+    }
+  }
+
+  document.addEventListener("astro:page-load", init);
+  document.addEventListener("astro:before-swap", cleanup);
+</script>
+
+<style>
+  .sandbox-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .sandbox-header {
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .sandbox-title {
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .sandbox-desc {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.01em;
+  }
+
+  .sandbox-demo {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  .demo-layer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .demo-layer--light {
+    background: #F7F7F8;
+    z-index: 1;
+  }
+
+  .demo-layer--dark {
+    background: #1a1a1a;
+    z-index: 2;
+    clip-path: circle(0px at 0px 0px);
+  }
+
+  .demo-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+
+  .demo-label {
+    font-size: 20px;
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.02em;
+  }
+
+  .demo-layer--light .demo-label {
+    color: #1a1a1a;
+  }
+
+  .demo-layer--dark .demo-label {
+    color: #E8E8E8;
+  }
+
+  .demo-line {
+    width: 120px;
+    height: 2px;
+    border-radius: 1px;
+  }
+
+  .demo-layer--light .demo-line {
+    background: #E5E5E5;
+  }
+
+  .demo-layer--dark .demo-line {
+    background: #333;
+  }
+
+  .demo-dots {
+    display: flex;
+    gap: var(--spacing-sm);
+  }
+
+  .demo-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  /* Toggle button */
+  .theme-toggle-btn {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+    transition: box-shadow var(--duration-fast) var(--ease-out);
+    backdrop-filter: blur(8px);
+  }
+
+  .theme-toggle-btn:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  }
+
+  .theme-toggle-btn:active {
+    transform: scale(0.95);
+  }
+
+  .theme-toggle-icon {
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  /* Controls */
+  .sandbox-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md) var(--spacing-xl);
+    padding-top: var(--spacing-md);
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .control-group label {
+    font-size: 13px;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    letter-spacing: 0.01em;
+  }
+
+  .control-group input[type="range"] {
+    width: 100%;
+    accent-color: var(--color-accent, #007aff);
+  }
+
+  .control-value {
+    font-size: 12px;
+    font-family: var(--font-family-mono, monospace);
+    color: var(--color-text-tertiary, #999);
+  }
+
+  .control-select {
+    width: 100%;
+    font-size: 13px;
+    font-family: inherit;
+    padding: 6px 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    background: var(--color-bg, #F7F7F8);
+    color: var(--color-text-primary, #1a1a1a);
+    cursor: pointer;
+  }
+
+  .control-select:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+  }
+
+  @media (max-width: 600px) {
+    .sandbox-controls {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
