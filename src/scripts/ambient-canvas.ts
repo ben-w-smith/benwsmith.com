@@ -30,7 +30,7 @@ function cleanup() {
 }
 
 function initAmbientCanvas() {
-  cleanup();
+  if (game) return;
 
   const canvas = document.querySelector<HTMLCanvasElement>(".ambient-canvas");
   if (!canvas) return;
@@ -48,5 +48,4 @@ function initAmbientCanvas() {
   game.start();
 }
 
-document.addEventListener("astro:before-swap", cleanup);
 document.addEventListener("astro:page-load", initAmbientCanvas);
