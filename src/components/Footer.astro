@@ -6,7 +6,8 @@ const socialLinks = [
 ];
 ---
 
-<footer class="site-footer" data-reveal>
+<footer data-reveal>
+<div class="site-footer">
   {socialLinks.map((link) => (
     <a
       href={link.href}
@@ -32,16 +33,40 @@ const socialLinks = [
       )}
     </a>
   ))}
+</div>
 </footer>
 
 <style>
+  footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+
+  footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: color-mix(in srgb, var(--color-bg) 33%, transparent);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    mask-image: linear-gradient(to right, transparent, black 50%, black 50%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 50%, black 50%, transparent);
+  }
+
   .site-footer {
+    width: var(--max-width-wide);
     padding: var(--spacing-2xl) 0;
     border-top: 1px solid var(--color-border);
     margin-top: var(--spacing-2xl);
     display: flex;
     gap: var(--spacing-lg);
     justify-content: center;
+    position: relative;
   }
 
   .footer-link {
