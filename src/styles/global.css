@@ -156,6 +156,7 @@ a {
 .content-wrapper {
   max-width: var(--max-width);
   margin: 0 auto;
+  padding: var(--spacing-lg);
   background: var(--color-bg);
   box-shadow: 0 0 32px 32px var(--color-bg);
 }
@@ -360,7 +361,7 @@ a {
   height: 2px;
   background: var(--color-accent);
   z-index: 100;
-  transition: width 50ms linear;
+  transition: width var(--duration-slow) var(--ease-out);
 }
 
 /* Heading anchors */

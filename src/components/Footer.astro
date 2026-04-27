@@ -51,11 +51,17 @@ const socialLinks = [
     bottom: 0;
     left: 0;
     right: 0;
-    background: color-mix(in srgb, var(--color-bg) 33%, transparent);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-    mask-image: linear-gradient(to right, transparent, black 50%, black 50%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 50%, black 50%, transparent);
+    background: color-mix(in srgb, var(--color-bg) 90%, transparent);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    mask-image:
+      linear-gradient(to right, transparent, black 50%, black 50%, transparent),
+      linear-gradient(to top, transparent, black 30%);
+    -webkit-mask-image:
+      linear-gradient(to right, transparent, black 50%, black 50%, transparent),
+      linear-gradient(to top, transparent, black 30%);
+    mask-composite: intersect;
+    -webkit-mask-composite: source-in;
   }
 
   .site-footer {
