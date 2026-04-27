@@ -39,7 +39,7 @@ Take the font. One font, three sizes, consistent weights. That reads as discipli
 
 The color palette works the same way. Off-white background, near-black text, system blue for interactive elements. Nothing screams. The impact is that the site feels considered — like every color is there because it belongs, not because it was available.
 
-But the thing I find really interesting is where specificity crosses over into the subconscious. The post cards don't move at a constant speed when you hover. They decelerate, like a physical object settling into place. I think your brain registers that difference even if you can't name it. You feel that someone thought about how it should move — not just that it should move.
+But the thing I find really interesting is where specificity crosses over into the subconscious. When you hover a post card, a ring expands outward from the category pill and decelerates as it fades — like a ripple losing momentum at the edge. The animation is half a second. You'd never consciously clock it. But I think your brain registers that it decelerated rather than moving at a constant speed, and registers what that implies: someone thought about how it should feel, not just that it should do something.
 
 Page transitions work the same way. Content slides in rather than flashing white. The page never blanks, never makes you wait without acknowledgment. You probably won't consciously notice any of this. But you'd absolutely feel the absence. And I think that's the strongest kind of signal — the stuff that registers below articulation.
 
@@ -55,7 +55,7 @@ The hardest bug wasn't in the simulation. It was a CSS containment issue. The ma
 
 The site is built with Astro, which appealed to me because it ships zero JavaScript by default. Pages are static HTML at build time. Blog posts are Markdown files. No CMS, no database. I write a file, commit it, and rsync the build output to a DigitalOcean droplet.
 
-The design system is CSS custom properties — animation durations, easing curves, spacing scales, shadow levels, all defined in `:root` before I wrote a single animation. The animation system runs in three layers: micro-interactions for the small stuff like hover states, reusable effects for medium things like animated dividers, and ambient effects for scene-setting like the canvas. Each layer has a different purpose and a different build cadence.
+The design system is CSS custom properties — animation durations, easing curves, spacing scales, shadow levels, all defined in `:root` before I wrote a single animation. Every motion decision references those tokens. Nothing is a magic number buried in a component. If I want to adjust how the whole site feels, I change one value.
 
 Everything respects `prefers-reduced-motion`. If you'd rather not see animations, the canvas hides entirely and all motion stops. Light and dark theme follows system preference with a manual override. The reading experience always wins over visual flourish.
 
