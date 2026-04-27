@@ -7,7 +7,8 @@ const navLinks = [
 ];
 ---
 
-<header class="site-header">
+<header>
+<div class="site-header">
   <a href="/" class="site-name">Ben Smith</a>
   <nav class="site-nav" aria-label="Main navigation">
     {navLinks.map((link) => (
@@ -31,13 +32,23 @@ const navLinks = [
 </header>
 
 <style>
+  header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: color-mix(in srgb, var(--color-bg) 33%, transparent);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    margin-bottom: var(--spacing-xl);
+  }
+
   .site-header {
+    width: var(--max-width-wide);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: var(--spacing-lg) 0;
     border-bottom: 1px solid var(--color-border);
-    margin-bottom: var(--spacing-xl);
   }
 
   .site-name {

@@ -2,19 +2,19 @@
 :root {
   --font-inter: var(--font-inter, "Inter", system-ui, sans-serif);
 
-  --color-bg: #F7F7F8;
-  --color-bg-off: #F7F7F8;
+  --color-bg: #f7f7f8;
+  --color-bg-off: #f7f7f8;
   --color-text-primary: #1a1a1a;
   --color-text-secondary: #666;
-  --color-border: #E5E5E5;
-  --color-accent: #007AFF;
+  --color-border: #e5e5e5;
+  --color-accent: #007aff;
 
-  --color-technical: #007AFF;
-  --color-technical-bg: #007AFF1A;
-  --color-essay: #FF6B6B;
-  --color-essay-bg: #FF6B6B1A;
-  --color-project: #4ECDC4;
-  --color-project-bg: #4ECDC41A;
+  --color-technical: #007aff;
+  --color-technical-bg: #007aff1a;
+  --color-essay: #ff6b6b;
+  --color-essay-bg: #ff6b6b1a;
+  --color-project: #4ecdc4;
+  --color-project-bg: #4ecdc41a;
 
   --font-size-label: 12px;
   --font-size-body: 15px;
@@ -41,8 +41,8 @@
   --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05);
   --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.08);
   --color-overlay: rgba(0, 0, 0, 0.85);
-  --color-skeleton: #E5E5E5;
-  --color-skeleton-shine: #F0F0F0;
+  --color-skeleton: #e5e5e5;
+  --color-skeleton-shine: #f0f0f0;
 
   --max-width: 640px;
   --max-width-wide: 960px;
@@ -62,17 +62,17 @@
 [data-theme="dark"] {
   --color-bg: #1a1a1a;
   --color-bg-off: #242424;
-  --color-text-primary: #E8E8E8;
+  --color-text-primary: #e8e8e8;
   --color-text-secondary: #999;
   --color-border: #333;
-  --color-accent: #4DA3FF;
+  --color-accent: #4da3ff;
 
-  --color-technical: #4DA3FF;
-  --color-technical-bg: #4DA3FF1A;
-  --color-essay: #FF8A8A;
-  --color-essay-bg: #FF8A8A1A;
-  --color-project: #6EDDD4;
-  --color-project-bg: #6EDDD41A;
+  --color-technical: #4da3ff;
+  --color-technical-bg: #4da3ff1a;
+  --color-essay: #ff8a8a;
+  --color-essay-bg: #ff8a8a1a;
+  --color-project: #6eddd4;
+  --color-project-bg: #6eddd41a;
 
   --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.3);
   --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.4);
@@ -151,12 +151,13 @@ a {
   margin: 0 auto;
   padding: 0 var(--spacing-lg);
   position: relative;
-  background: linear-gradient(to bottom, transparent 0%, transparent 180px, var(--color-bg) 350px);
 }
 
 .content-wrapper {
   max-width: var(--max-width);
   margin: 0 auto;
+  background: var(--color-bg);
+  box-shadow: 0 0 32px 32px var(--color-bg);
 }
 
 /* Typography */
@@ -340,8 +341,9 @@ a {
 [data-reveal] {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity var(--duration-normal) var(--ease-out),
-              transform var(--duration-normal) var(--ease-out);
+  transition:
+    opacity var(--duration-normal) var(--ease-out),
+    transform var(--duration-normal) var(--ease-out);
 }
 
 [data-reveal].is-visible {
