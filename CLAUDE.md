@@ -42,15 +42,15 @@ src/
 
 ## Deployment
 
-- **Host:** DigitalOcean droplet (`benwsmith-com`, ID 566827475)
-- **IP:** 146.190.61.214
+- **Host:** DigitalOcean droplet (`benwsmith-com`, ID 567462810)
+- **IP:** 146.190.160.114
 - **Region:** sfo3, Ubuntu 24.04, nginx
-- **DNS:** Cloudflare (A record → 146.190.61.214)
+- **DNS:** Cloudflare (A record → 146.190.160.114)
 - **Deploy command:**
   ```bash
-  npm run build && rsync -avz --delete dist/ root@146.190.61.214:/var/www/html/
+  npm run build && rsync -avz --delete dist/ root@146.190.160.114:/var/www/html/
   ```
-- **SSH:** `ssh root@146.190.61.214` (uses `~/.ssh/id_rsa`)
+- **SSH:** `ssh root@146.190.160.114` (uses `~/.ssh/id_ed25519`)
 
 ## Design System
 
