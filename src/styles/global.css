@@ -263,6 +263,23 @@ a {
   background: var(--color-bg-off);
 }
 
+.prose figure {
+  margin: var(--spacing-lg) 0;
+}
+
+.prose figure img {
+  margin: 0;
+  width: 100%;
+}
+
+.prose figcaption {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-top: var(--spacing-sm);
+  line-height: 1.5;
+}
+
 .prose a {
   color: var(--color-accent);
   text-decoration: underline;

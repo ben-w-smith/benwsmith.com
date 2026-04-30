@@ -1,0 +1,113 @@
+<svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="640" height="400" fill="#14141f" rx="6"/>
+
+  <!-- Horizontal grid lines (40%, 60%, 80%) -->
+  <!-- Y: 25%=340, 95%=35. Range=70%, span=305px. y = 340 - ((score-25)/70)*305 -->
+  <!-- 40%: 340 - (15/70)*305 = 340 - 65.4 = 274.6 -->
+  <!-- 60%: 340 - (35/70)*305 = 340 - 152.5 = 187.5 -->
+  <!-- 80%: 340 - (55/70)*305 = 340 - 239.6 = 100.4 -->
+  <line x1="70" y1="274.6" x2="590" y2="274.6" stroke="#252535" stroke-width="0.5"/>
+  <line x1="70" y1="187.5" x2="590" y2="187.5" stroke="#252535" stroke-width="0.5"/>
+  <line x1="70" y1="100.4" x2="590" y2="100.4" stroke="#252535" stroke-width="0.5"/>
+
+  <!-- Y-axis labels -->
+  <text x="63" y="278" text-anchor="end" fill="#5a5a6e" font-size="10">40%</text>
+  <text x="63" y="191" text-anchor="end" fill="#5a5a6e" font-size="10">60%</text>
+  <text x="63" y="104" text-anchor="end" fill="#5a5a6e" font-size="10">80%</text>
+
+  <!-- X-axis labels: Jul'24(m1), Jan'25(m7), Jul'25(m13), Jan'26(m19) -->
+  <!-- x = 70 + (month/22)*520 -->
+  <!-- m1: 93.6  m7: 235.5  m13: 377.3  m19: 519.1 -->
+  <text x="93.6" y="358" text-anchor="middle" fill="#5a5a6e" font-size="10">Jul '24</text>
+  <text x="235.5" y="358" text-anchor="middle" fill="#5a5a6e" font-size="10">Jan '25</text>
+  <text x="377.3" y="358" text-anchor="middle" fill="#5a5a6e" font-size="10">Jul '25</text>
+  <text x="519.1" y="358" text-anchor="middle" fill="#5a5a6e" font-size="10">Jan '26</text>
+
+  <!-- Tick marks -->
+  <line x1="93.6" y1="340" x2="93.6" y2="344" stroke="#3a3a4e" stroke-width="0.5"/>
+  <line x1="235.5" y1="340" x2="235.5" y2="344" stroke="#3a3a4e" stroke-width="0.5"/>
+  <line x1="377.3" y1="340" x2="377.3" y2="344" stroke="#3a3a4e" stroke-width="0.5"/>
+  <line x1="519.1" y1="340" x2="519.1" y2="344" stroke="#3a3a4e" stroke-width="0.5"/>
+
+  <!-- ==================== DATA ==================== -->
+
+  <!-- Claude line -->
+  <!-- 3.5 Sonnet Jun'24(m0): 33.4% → (70, 303.5) -->
+  <!-- 3.5 Sonnet Oct'24(m4): 49.0% → (164.5, 235.6) -->
+  <!-- 3.7 Sonnet Feb'25(m8): 70.3% → (259.1, 143.0) -->
+  <!-- Opus 4 Mar'25(m9): 72.5% → (282.7, 133.4) -->
+  <!-- Opus 4.1 Jun'25(m12): 74.5% → (353.6, 124.7) -->
+  <!-- Opus 4.5 Sep'25(m15): 80.9% → (424.5, 96.8) -->
+  <!-- Opus 4.6 Dec'25(m18): 80.8% → (495.5, 97.3) -->
+  <!-- Opus 4.7 Apr'26(m22): 87.6% → (590, 67.7) -->
+  <polyline
+    points="70,303.5 164.5,235.6 259.1,143.0 282.7,133.4 353.6,124.7 424.5,96.8 495.5,97.3 590,67.7"
+    fill="none" stroke="#4DA3FF" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+
+  <!-- Claude dots -->
+  <circle cx="70" cy="303.5" r="3" fill="#4DA3FF"/>
+  <circle cx="164.5" cy="235.6" r="3" fill="#4DA3FF"/>
+  <circle cx="259.1" cy="143.0" r="3" fill="#4DA3FF"/>
+  <circle cx="282.7" cy="133.4" r="3" fill="#4DA3FF"/>
+  <circle cx="353.6" cy="124.7" r="3" fill="#4DA3FF"/>
+  <circle cx="424.5" cy="96.8" r="3" fill="#4DA3FF"/>
+  <circle cx="495.5" cy="97.3" r="3" fill="#4DA3FF"/>
+  <circle cx="590" cy="67.7" r="3.5" fill="#4DA3FF"/>
+
+  <!-- GPT line -->
+  <!-- GPT-4o Aug'24(m2): 33.0% → (117.3, 305.3) -->
+  <!-- o1-preview Sep'24(m3): 41.0% → (140.9, 270.4) -->
+  <!-- o1 agents Dec'24(m6): 64.6% → (211.8, 167.7) -->
+  <!-- GPT-5 May'25(m11): 74.9% → (330.0, 123.1) -->
+  <!-- GPT-5.1 Aug'25(m14): 76.3% → (400.9, 117.0) -->
+  <!-- GPT-5.2 Mar'26(m21): 80.0% → (566.4, 100.4) -->
+  <polyline
+    points="117.3,305.3 140.9,270.4 211.8,167.7 330.0,123.1 400.9,117.0 566.4,100.4"
+    fill="none" stroke="#6BCB9B" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+
+  <!-- GPT dots -->
+  <circle cx="117.3" cy="305.3" r="3" fill="#6BCB9B"/>
+  <circle cx="140.9" cy="270.4" r="3" fill="#6BCB9B"/>
+  <circle cx="211.8" cy="167.7" r="3" fill="#6BCB9B"/>
+  <circle cx="330.0" cy="123.1" r="3" fill="#6BCB9B"/>
+  <circle cx="400.9" cy="117.0" r="3" fill="#6BCB9B"/>
+  <circle cx="566.4" cy="100.4" r="3.5" fill="#6BCB9B"/>
+
+  <!-- GLM line (dashed) -->
+  <!-- GLM-4.7 Dec'25(m18): 73.8% → (495.5, 127.6) -->
+  <!-- GLM-5 Feb'26(m20): 77.8% → (542.7, 110.2) -->
+  <polyline
+    points="495.5,127.6 542.7,110.2"
+    fill="none" stroke="#FF8C5A" stroke-width="2"
+    stroke-dasharray="6,3" stroke-linecap="round" opacity="0.9"/>
+
+  <!-- GLM dots -->
+  <circle cx="495.5" cy="127.6" r="3" fill="#FF8C5A"/>
+  <circle cx="542.7" cy="110.2" r="3.5" fill="#FF8C5A"/>
+
+  <!-- GLM parameter annotations -->
+  <text x="495.5" y="143" text-anchor="middle" fill="#FF8C5A" font-size="9" opacity="0.8">358B params</text>
+  <text x="542.7" y="103" text-anchor="middle" fill="#FF8C5A" font-size="9" opacity="0.8">744B params</text>
+
+  <!-- ==================== LEGEND ==================== -->
+  <line x1="80" y1="48" x2="100" y2="48" stroke="#4DA3FF" stroke-width="2" stroke-linecap="round"/>
+  <text x="106" y="52" fill="#8b8b9e" font-size="10">Claude</text>
+
+  <line x1="160" y1="48" x2="180" y2="48" stroke="#6BCB9B" stroke-width="2" stroke-linecap="round"/>
+  <text x="186" y="52" fill="#8b8b9e" font-size="10">GPT</text>
+
+  <line x1="225" y1="48" x2="245" y2="48" stroke="#FF8C5A" stroke-width="2" stroke-dasharray="6,3" stroke-linecap="round"/>
+  <text x="251" y="52" fill="#8b8b9e" font-size="10">GLM (open-weight)</text>
+
+  <!-- Source -->
+  <text x="325" y="386" text-anchor="middle" fill="#3a3a4e" font-size="9">Source: SWE-bench Verified Leaderboard</text>
+</svg>
