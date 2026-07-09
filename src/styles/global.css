@@ -16,10 +16,10 @@
   --color-project: #4ecdc4;
   --color-project-bg: #4ecdc41a;
 
-  --font-size-label: 12px;
-  --font-size-body: 15px;
-  --font-size-title: 18px;
-  --font-size-hero-title: 28px;
+  --font-size-label: 13px;
+  --font-size-body: 16px;
+  --font-size-title: 19px;
+  --font-size-hero-title: 30px;
   --font-size-site-name: 48px;
 
   --font-weight-regular: 400;
@@ -62,8 +62,8 @@
 [data-theme="dark"] {
   --color-bg: #1a1a1a;
   --color-bg-off: #242424;
-  --color-text-primary: #e8e8e8;
-  --color-text-secondary: #999;
+  --color-text-primary: #f0f0f0;
+  --color-text-secondary: #aaa;
   --color-border: #333;
   --color-accent: #4da3ff;
 
