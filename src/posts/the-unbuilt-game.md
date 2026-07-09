@@ -1,6 +1,6 @@
 ---
 title: "The Unbuilt Game"
-date: 2026-06-30
+date: 2026-07-01
 category: Essay
 excerpt: "I spent a couple of weeks designing a real-time strategy game around a single bet. The sim told me the bet was too small to feel — and that turned out to be the most useful thing it could have said."
 ---
@@ -15,7 +15,7 @@ I stopped because the sim kept telling me something I didn't want to hear, and i
 
 The thing I keep coming back to is this: RTS didn't fade because it was too hard to *think* about. It faded because it was too hard to *do*. Take StarCraft II — the one I put real hours into, even if the original StarCraft owns the deeper pro legacy. At the top it's a real-time chess match, two players reading each other through the fog. But underneath that ceiling is a floor made of pure chores: build the worker, build the next worker, re-queue production, split your units so they don't clump and die to one spell. None of it is a decision. It's manual labor you run hundreds of times a match, and to run it at speed you've memorized a whole keyboard of shortcuts — a piano-esque dance across the hotkeys just to keep the machine fed. That's the chore. If your hands can't keep up, you lose to someone who out-clicked you, not out-thought you.
 
-And here's the part that reframed it for me: the fast-hands requirement hides what most players are actually losing on. Thompson's 2013 study of 3,360 players found the thing gating you below the pro tier isn't click speed — it's your perception-action cycle, how fast you *look at the right thing and decide*. Which, to me, says the keyboard dance was never the real difficulty — just a tax bolted on top of the part that already mattered.
+And here's the part that reframed it for me: the fast-hands requirement hides what most players are actually losing on. [Thompson's 2013 study of 3,360 players](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0075129) found the thing gating you below the pro tier isn't click speed — it's your perception-action cycle, how fast you *look at the right thing and decide*. Which, to me, says the keyboard dance was never the real difficulty — just a tax bolted on top of the part that already mattered.
 
 Up close, that tax is a brutal game of Simon Says: a memory-and-dexterity drill you run between your real moves, and if you botch it you don't get to make the real move at all. Losing to it leaves a specific, bitter taste — and the cleanest way to see why is chess. I can lose a game of chess and still respect the loss, because the decisions were mine and the fix is to think better next time. Simon Says doesn't give you that. You can read the board better than your opponent and still lose because your hands slipped on the minigame in between. Getting out-thought feels fair. Getting out-drilled doesn't.
 
