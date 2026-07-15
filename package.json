@@ -10,6 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check:draft": "node scripts/check-draft.mjs",
+    "prose-lint": "node scripts/prose-lint.mjs",
     "astro": "astro"
   },
   "dependencies": {
