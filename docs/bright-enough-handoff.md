@@ -2,6 +2,8 @@
 
 For the agent resuming this work with Ben on another machine. This file is the map; everything else is in the repo.
 
+**Quick start:** `git checkout draft/bright-enough && git pull`, read `src/posts/bright-enough.md`, then jump to "THE PENDING DECISION" below — confirm it with Ben before doing anything else.
+
 ## State at handoff
 
 - Branch: `draft/bright-enough` (tracks `origin/draft/bright-enough`). All work committed and pushed; working tree clean.
@@ -53,4 +55,5 @@ Also required if restructured: rewrite the frontmatter excerpt (currently fork-f
 
 - `origin/draft/inference-wall` — older draft; its post file is `src/posts/inference-wall-v2.md`, which breaks the branch↔filename convention (`/draft check` and `/draft publish` look up the file by branch slug). Rename when that draft resumes.
 - `origin/draft/the-cost-of-admission` — other unpublished draft, has prose-lint tooling merged in already.
+- The git remote uses the SSH host alias `github.com-personal` (`git@github.com-personal:ben-w-smith/benwsmith.com.git`), defined in `~/.ssh/config` on the machine this session ran on. If the other machine lacks that alias, clone via `git@github.com:ben-w-smith/benwsmith.com.git` instead — and either way, use git over SSH only.
 - gh CLI on Ben's machines is logged into his work account — use git over SSH only, no `gh` commands in this repo.
