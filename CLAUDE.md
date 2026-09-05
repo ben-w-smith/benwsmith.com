@@ -56,6 +56,11 @@ mermaid@11 from CDN, re-renders on theme toggle) and add scoped table styles —
   ```bash
   npm run build && rsync -avz --delete dist/ root@146.190.160.114:/var/www/html/
   ```
+- **/dbt-spec/ is auth-gated** (private — real staff names): nginx `location /dbt-spec/` block in
+  `/etc/nginx/sites-available/default` on the droplet requires basic auth; htpasswd at
+  `/etc/nginx/.htpasswd_dbtspec` (user `ben`), plus `X-Robots-Tag: noindex`. rsync deploys do
+  not touch nginx. Rotate the password with:
+  `printf 'ben:%s' "$(openssl passwd -apr1 NEWPASS)" | ssh root@146.190.160.114 'cat > /etc/nginx/.htpasswd_dbtspec && chown root:www-data /etc/nginx/.htpasswd_dbtspec && chmod 640 /etc/nginx/.htpasswd_dbtspec && systemctl reload nginx'`
 - **SSH:** `ssh root@146.190.160.114` (uses `~/.ssh/id_ed25519`)
 
 ## Design System
