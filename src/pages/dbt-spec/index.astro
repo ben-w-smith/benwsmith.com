@@ -1,0 +1,87 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const docs = (await getCollection("spec")).sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout title="DBT Dashboard v4 — Requirements Spec">
+  <article>
+    <header class="spec-header">
+      <span class="text-label">Requirements · 2026-09-05 · {docs.length} docs · 17 diagrams</span>
+      <h1 class="article-title">DBT Dashboard v4 — Requirements Spec</h1>
+      <p class="spec-intro">
+        Fresh-start requirements for the DBT Network of Utah class-management dashboard — built
+        from all three prior repos, the Linehan canon, and a five-round interview. The decision
+        to start fresh is final; this is what the fresh start must do.
+        <a href="/dbt-spec/00-overview/">Start with the decision log →</a>
+      </p>
+    </header>
+
+    <ol class="spec-list">
+      {docs.map((doc) => (
+        <li>
+          <a href={`/dbt-spec/${doc.id}/`} class="spec-card">
+            <span class="spec-order">{String(doc.data.order).padStart(2, "0")}</span>
+            <span class="spec-card-body">
+              <span class="spec-card-title">{doc.data.title}</span>
+              <span class="spec-card-desc">{doc.data.description}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </article>
+</BaseLayout>
+
+<style>
+  .spec-header {
+    margin-bottom: var(--spacing-xl);
+  }
+  .spec-intro {
+    margin-top: var(--spacing-md);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+  .spec-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  .spec-card {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: baseline;
+    padding: var(--spacing-md);
+    border: 1px solid color-mix(in srgb, var(--color-text-primary) 12%, transparent);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+  .spec-card:hover {
+    border-color: var(--color-accent);
+  }
+  .spec-order {
+    font-family: var(--font-family-mono, monospace);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+  .spec-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs, 4px);
+  }
+  .spec-card-title {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold, 600);
+    line-height: 1.4;
+  }
+  .spec-card-desc {
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+</style>

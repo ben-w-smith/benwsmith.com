@@ -17,6 +17,7 @@ Personal blog and portfolio site built with Astro 6 (static output).
 npm run dev         # Start dev server
 npm run build       # Production build to dist/
 npm run preview     # Preview production build locally
+npm run sync:spec   # Sync DBT v4 spec from ../dbtdashboardv4-spec into src/spec/ (spec repo is source of truth)
 ```
 
 ## Project Structure
@@ -25,11 +26,16 @@ npm run preview     # Preview production build locally
 src/
 ├── components/       # Astro UI components
 ├── layouts/          # BaseLayout.astro (HTML shell, scripts, styles)
-├── pages/            # File-based routing (index, about, blog/[...slug])
+├── pages/            # File-based routing (index, about, blog/[...slug], dbt-spec/[...slug])
 ├── posts/            # Markdown blog content
+├── spec/             # GENERATED — dbt v4 spec markdown (sync via npm run sync:spec; committed so builds are self-contained)
 ├── scripts/          # Client-side TypeScript (run in browser)
 └── styles/
     └── global.css    # Design tokens, animations, utility classes
+
+The /dbt-spec/ pages render mermaid diagrams client-side (`src/scripts/mermaid-diagrams.ts`,
+mermaid@11 from CDN, re-renders on theme toggle) and add scoped table styles — the blog's
+`.prose` never styled tables.
 ```
 
 ## Git Conventions
