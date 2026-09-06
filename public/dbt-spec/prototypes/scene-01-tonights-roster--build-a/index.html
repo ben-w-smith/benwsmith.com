@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scene 1 — Tonight's roster · DBT v4 prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS — copied verbatim from v1 ~/development/dbtdashboard
+   src/app/globals.css (:root, light — v1 defaultTheme="light")
+   + .design-sync/ds-additions.css (--eor-* v3 carry-over)
+   --badge-max re-labels v1's --badge-force-drop (v4 spec, 10 §0)
+   ============================================================ */
+:root{
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.50 0.17 260);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.46 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.50 0.17 260);
+
+  --primary-subtle: oklch(0.95 0.04 260);
+  --primary-subtle-foreground: oklch(0.42 0.17 260);
+  --success-subtle: oklch(0.95 0.05 150);
+  --success-subtle-foreground: oklch(0.40 0.12 150);
+  --warning-subtle: oklch(0.96 0.07 85);
+  --warning-subtle-foreground: oklch(0.42 0.12 80);
+  --error-subtle: oklch(0.95 0.05 27);
+  --error-subtle-foreground: oklch(0.45 0.18 27);
+
+  --module-er: oklch(0.80 0.10 318);
+  --module-er-fg: oklch(0.28 0.12 318);
+  --module-current: oklch(0.82 0.10 178);
+  --module-current-fg: oklch(0.30 0.12 178);
+
+  --status-active: oklch(0.82 0.10 178);
+  --status-active-fg: oklch(0.30 0.12 178);
+  --status-dropped: oklch(0.68 0.03 220);
+  --status-dropped-fg: oklch(0.30 0.02 220);
+
+  --alert-critical: oklch(0.85 0.14 25);
+  --alert-critical-fg: oklch(0.30 0.20 25);
+  --alert-warning: oklch(0.88 0.12 85);
+  --alert-warning-fg: oklch(0.30 0.20 85);
+
+  --attendance-present: oklch(0.78 0.14 145);
+  --attendance-present-fg: oklch(0.18 0.10 145);
+  --attendance-absent: oklch(0.76 0.14 25);
+  --attendance-absent-fg: oklch(0.18 0.12 25);
+  --attendance-late: oklch(0.82 0.12 85);
+  --attendance-late-fg: oklch(0.18 0.10 85);
+  --attendance-free: oklch(0.78 0.12 250);
+  --attendance-free-fg: oklch(0.18 0.08 250);
+
+  --badge-clear: oklch(0.78 0.14 145);
+  --badge-clear-fg: oklch(0.18 0.10 145);
+  --badge-warning: oklch(0.80 0.16 75);
+  --badge-warning-fg: oklch(0.22 0.12 75);
+  --badge-critical: oklch(0.65 0.22 25);
+  --badge-critical-fg: oklch(0.98 0 0);
+  /* v4: v1's --badge-force-drop re-labelled max (values unchanged) */
+  --badge-max: oklch(0.55 0.20 350);
+  --badge-max-fg: oklch(0.98 0 0);
+  --badge-force-drop: var(--badge-max);          /* v1 alias */
+
+  /* v3 carry-over (ds-additions.css) — end-of-round signal, DOM B-14 */
+  --eor-red: oklch(0.62 0.23 25);
+  --eor-red-foreground: oklch(0.985 0 0);
+  --eor-yellow: oklch(0.8 0.18 86);
+  --eor-yellow-foreground: oklch(0.28 0.07 80);
+
+  --radius: 0.625rem;
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-heading: "Newsreader", Georgia, "Times New Roman", serif;
+}
+
+/* ============ base ============ */
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-family:var(--font-sans)}
+body{background:var(--background);color:var(--foreground);font-size:16px;line-height:1.625;min-height:100vh}
+h1,h2,h3{font-family:var(--font-heading);letter-spacing:-.01em}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+a{color:var(--primary)}
+svg{display:block}
+
+/* ============ shell (v1 dashboard layout: fixed sidebar + main) ============ */
+.app{min-height:100vh;display:flex}
+.sidebar{position:fixed;top:0;left:0;z-index:50;height:100%;width:16rem;background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column}
+.sidebar .brand{padding:1.5rem;border-bottom:1px solid var(--border);font-family:var(--font-heading);font-weight:700;font-size:1.25rem;line-height:1.3}
+.sidebar .brand small{display:block;font-family:var(--font-sans);font-weight:400;font-size:.72rem;color:var(--muted-foreground);letter-spacing:.02em}
+.sidebar nav{flex:1;padding:1rem;overflow-y:auto}
+.sidebar .nav-label{padding:0 .75rem;margin-bottom:.25rem;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:color-mix(in oklab,var(--muted-foreground) 60%,transparent)}
+.sidebar a.nav{display:flex;align-items:center;gap:.75rem;padding:.5rem .75rem;border-radius:var(--radius-md);font-size:.875rem;font-weight:500;color:var(--muted-foreground);text-decoration:none;transition:background .15s,color .15s}
+.sidebar a.nav:hover{background:var(--muted);color:var(--foreground)}
+.sidebar a.nav.active{background:var(--primary-subtle);color:var(--primary-subtle-foreground);border-left:2px solid var(--primary);padding-left:calc(.75rem - 2px);font-weight:600}
+.sidebar a.nav .ico{width:1rem;height:1rem;opacity:.75;flex:none}
+.sidebar .foot{padding:1rem;border-top:1px solid var(--border);font-size:.8rem;color:var(--muted-foreground)}
+.sidebar .foot b{color:var(--foreground);font-weight:600}
+.main{flex:1;margin-left:16rem;padding:1.5rem 2rem 4rem;min-width:0}
+@media (max-width:1024px){.sidebar{display:none}.main{margin-left:0;padding:1.25rem}}
+
+/* ============ buttons (v1 button.tsx) ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.375rem;height:2rem;padding:0 .625rem;border-radius:var(--radius-lg);border:1px solid transparent;font-size:.875rem;font-weight:500;white-space:nowrap;transition:all .15s;user-select:none}
+.btn:focus-visible{outline:none;border-color:var(--ring);box-shadow:0 0 0 3px color-mix(in oklab,var(--ring) 50%,transparent)}
+.btn:disabled{pointer-events:none;opacity:.5}
+.btn-default{background:var(--primary);color:var(--primary-foreground);box-shadow:var(--shadow-sm)}
+.btn-default:hover{background:color-mix(in oklab,var(--primary) 80%,transparent)}
+.btn-outline{border-color:var(--border);background:var(--background)}
+.btn-outline:hover{background:var(--muted)}
+.btn-ghost{color:var(--foreground)}
+.btn-ghost:hover{background:var(--muted)}
+.btn-destructive{background:color-mix(in oklab,var(--destructive) 10%,transparent);color:var(--destructive)}
+.btn-destructive:hover{background:color-mix(in oklab,var(--destructive) 20%,transparent)}
+.btn-sm{height:1.75rem;padding:0 .625rem;font-size:.8rem;border-radius:min(var(--radius-md),12px)}
+.btn-xs{height:1.5rem;padding:0 .5rem;font-size:.75rem;gap:.25rem;border-radius:min(var(--radius-md),10px)}
+.btn-lg{height:2.25rem;padding:0 .625rem}
+
+/* ============ card (v1 card.tsx) ============ */
+.card{display:flex;flex-direction:column;gap:1rem;background:var(--card);border-radius:var(--radius-xl);box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--foreground) 10%,transparent);padding:1rem 0;font-size:.875rem}
+.card .card-head,.card .card-content{padding:0 1rem}
+.card .card-title{font-family:var(--font-heading);font-size:1rem;font-weight:500;line-height:1.35}
+.card .card-desc{font-size:.875rem;color:var(--muted-foreground)}
+.card .card-foot{display:flex;align-items:center;border-top:1px solid var(--border);background:color-mix(in oklab,var(--muted) 50%,transparent);padding:1rem;border-radius:0 0 var(--radius-xl) var(--radius-xl)}
+
+/* ============ badge (v1 badge.tsx — rounded-4xl pill, h-5) ============ */
+.badge{display:inline-flex;align-items:center;justify-content:center;gap:.25rem;height:1.25rem;padding:0 .5rem;border-radius:var(--radius-4xl);border:1px solid transparent;font-size:.75rem;font-weight:500;white-space:nowrap;flex:none}
+.badge-default{background:var(--primary);color:var(--primary-foreground)}
+.badge-secondary{background:var(--secondary);color:var(--secondary-foreground)}
+.badge-outline{border-color:var(--border);color:var(--foreground)}
+.badge-destructive{background:color-mix(in oklab,var(--destructive) 10%,transparent);color:var(--destructive)}
+.badge[hidden]{display:none}
+
+/* ============ attendance chips (v1 roster-table.tsx) ============ */
+.code-group{display:flex;gap:.375rem}
+.code-chip{min-height:2.75rem;min-width:2.75rem;padding:0 .5rem;border-radius:var(--radius-md);border:1px solid var(--border);background:var(--background);color:var(--muted-foreground);font-size:1rem;font-weight:500;transition:background .15s,color .15s,border-color .15s}
+.code-chip:hover{background:var(--muted)}
+.code-chip[aria-pressed="true"]{border-color:transparent}
+.code-chip[aria-pressed="true"][data-code="P"]{background:var(--attendance-present);color:var(--attendance-present-fg)}
+.code-chip[aria-pressed="true"][data-code="A"]{background:var(--attendance-absent);color:var(--attendance-absent-fg)}
+.code-chip[aria-pressed="true"][data-code="L"]{background:var(--attendance-late);color:var(--attendance-late-fg)}
+.code-chip[aria-pressed="true"][data-code="F"]{background:var(--attendance-free);color:var(--attendance-free-fg)}
+.code-chip.refused{cursor:not-allowed;opacity:.4}
+.code-chip.refused:hover{background:var(--background)}
+
+/* ============ ladder badge (v1 attendance-badge.tsx + client-header pill) ============ */
+.ladder-pill{display:inline-flex;align-items:center;gap:.375rem;padding:.125rem .625rem;border-radius:var(--radius-4xl);font-size:.75rem;font-weight:500;border:none;cursor:pointer;flex:none}
+.ladder-pill .dots{display:inline-flex;align-items:center;gap:.125rem}
+.ladder-pill .dot{display:inline-block;width:.5rem;height:.5rem;border-radius:9999px;background:currentColor}
+.ladder-clear{background:var(--badge-clear);color:var(--badge-clear-fg)}
+.ladder-warn{background:var(--badge-warning);color:var(--badge-warning-fg)}
+.ladder-critical{background:var(--badge-critical);color:var(--badge-critical-fg)}
+.ladder-max{background:var(--badge-max);color:var(--badge-max-fg)}
+.ladder-count{font-variant-numeric:tabular-nums;opacity:.85;font-weight:600}
+
+/* ============ end-of-round signal pills (v3 --eor-*) ============ */
+.eor-red{background:var(--eor-red);color:var(--eor-red-foreground)}
+.eor-yellow{background:var(--eor-yellow);color:var(--eor-yellow-foreground)}
+
+/* ============ attendance mark chip (read-only display) ============ */
+.mark-chip{display:inline-flex;align-items:center;gap:.25rem;height:1.5rem;padding:0 .5rem;border-radius:var(--radius-md);font-size:.78rem;font-weight:600}
+.mark-P{background:var(--attendance-present);color:var(--attendance-present-fg)}
+.mark-A{background:var(--attendance-absent);color:var(--attendance-absent-fg)}
+.mark-L{background:var(--attendance-late);color:var(--attendance-late-fg)}
+.mark-F{background:var(--attendance-free);color:var(--attendance-free-fg)}
+
+/* ============ inline advisories (record-never-enforce surfacing) ============ */
+.advisory{display:flex;gap:.5rem;align-items:flex-start;font-size:.78rem;line-height:1.45;border-radius:var(--radius-md);padding:.375rem .5rem;text-align:left}
+.advisory-warn{background:var(--warning-subtle);color:var(--warning-subtle-foreground)}
+.advisory-crit{background:var(--alert-critical);color:var(--alert-critical-fg)}
+.advisory-warnband{background:var(--alert-warning);color:var(--alert-warning-fg)}
+.advisory-info{background:var(--secondary);color:var(--secondary-foreground)}
+.advisory-error{background:var(--error-subtle);color:var(--error-subtle-foreground)}
+.advisory b{font-weight:650}
+
+/* ============ roster table (v1 roster-table.tsx shell) ============ */
+table.roster{width:100%;font-size:1rem;border-collapse:collapse}
+table.roster thead tr{border-bottom:1px solid var(--border);text-align:left;font-size:.875rem;font-weight:500;color:var(--muted-foreground)}
+table.roster th{padding:0 1rem .5rem 0;font-weight:500}
+table.roster tbody tr{border-bottom:1px solid color-mix(in oklab,var(--border) 60%,transparent)}
+table.roster tbody{border-top:1px solid transparent}
+table.roster td{padding:.75rem 1rem .75rem 0;vertical-align:middle}
+table.roster tr.max-row td{border-top:2px solid var(--badge-max);border-bottom:2px solid var(--badge-max)}
+table.roster tr.closed-row td{padding-top:.6rem;padding-bottom:.6rem;background:color-mix(in oklab,var(--muted) 40%,transparent)}
+.name-cell{display:flex;flex-direction:column;gap:.15rem;min-width:13rem}
+.name-line{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.name-line .client-name{font-weight:500}
+.client-name.linked{cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;text-decoration-color:var(--muted-foreground)}
+.sub-line{font-size:.75rem;color:var(--muted-foreground)}
+.trail-btn{font-size:.72rem;color:var(--primary);text-decoration:underline;text-underline-offset:2px;padding:0;text-align:left}
+.legend{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem 1rem;font-size:.875rem;color:var(--muted-foreground);padding:0 1rem}
+.legend .keys{display:flex;gap:1rem;flex-wrap:wrap}
+
+/* ============ night header (identity first — card line 2) ============ */
+.night-id{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .625rem}
+.night-id .class-name{font-family:var(--font-heading);font-size:1.35rem;font-weight:600;line-height:1.25}
+.section-chip{display:inline-flex;align-items:center;gap:.25rem;height:1.75rem;padding:0 .625rem;border-radius:var(--radius-md);background:var(--primary-subtle);color:var(--primary-subtle-foreground);font-size:.85rem;font-weight:700;letter-spacing:.02em}
+.meta-line{display:flex;flex-wrap:wrap;gap:.375rem .5rem;align-items:center;font-size:.85rem;color:var(--muted-foreground)}
+.meta-line .sep{opacity:.4}
+.module-chip{background:var(--module-er);color:var(--module-er-fg);font-weight:600}
+.module-chip .wk{opacity:.75;font-weight:500}
+.format-chip{background:var(--module-current);color:var(--module-current-fg);font-weight:500}
+
+/* ============ prototype scaffolding (NOT product UI — dashed chrome) ============ */
+.proto{border:1.5px dashed var(--muted-foreground);border-radius:var(--radius-xl);padding:.875rem 1rem;background:color-mix(in oklab,var(--secondary) 55%,transparent);margin-bottom:1rem}
+.proto .proto-tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:.5rem}
+.proto-row{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
+.proto-group-label{font-size:.72rem;font-weight:600;color:var(--muted-foreground);margin-right:.15rem}
+.seg{display:inline-flex;align-items:center;gap:.1875rem;padding:.1875rem;border-radius:var(--radius-lg);background:var(--muted)}
+.seg button{position:relative;display:inline-flex;align-items:center;height:1.6rem;padding:0 .55rem;border:1px solid transparent;border-radius:var(--radius-md);font-size:.78rem;font-weight:500;color:color-mix(in oklab,var(--foreground) 60%,transparent);white-space:nowrap}
+.seg button:hover{color:var(--foreground)}
+.seg button[aria-pressed="true"]{background:var(--background);color:var(--foreground);box-shadow:var(--shadow-sm)}
+.req-strip{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;margin-top:.6rem;font-size:.75rem;color:var(--muted-foreground)}
+.req-chip{display:inline-flex;align-items:center;height:1.25rem;padding:0 .45rem;border-radius:var(--radius-4xl);border:1px solid var(--border);font-size:.7rem;font-weight:600;font-variant-numeric:tabular-nums}
+.req-chip.open{border-color:color-mix(in oklab,var(--badge-warning) 55%,transparent);background:var(--warning-subtle);color:var(--warning-subtle-foreground)}
+.frame-desc{margin-top:.4rem;font-size:.8rem;color:var(--muted-foreground);max-width:72ch}
+
+/* ============ popover (v1 popover.tsx) ============ */
+.pop{position:absolute;z-index:80;width:18rem;display:flex;flex-direction:column;gap:.625rem;background:var(--popover);color:var(--popover-foreground);padding:.625rem;border-radius:var(--radius-lg);box-shadow:var(--shadow-md),inset 0 0 0 1px color-mix(in oklab,var(--foreground) 10%,transparent);font-size:.875rem}
+.pop .pop-title{font-family:var(--font-heading);font-weight:500}
+.pop .pop-row{display:flex;justify-content:space-between;gap:.75rem;font-size:.8rem;border-bottom:1px dashed color-mix(in oklab,var(--border) 80%,transparent);padding-bottom:.3rem}
+.pop .pop-row:last-child{border-bottom:none;padding-bottom:0}
+.pop .pop-row .k{color:var(--muted-foreground);flex:none}
+.pop .pop-row .v{text-align:right}
+.pop-hit{position:fixed;inset:0;z-index:70}
+
+/* ============ sheet (v1 sheet.tsx, side=right) ============ */
+.sheet-overlay{position:fixed;inset:0;z-index:90;background:rgb(0 0 0/.1);backdrop-filter:blur(2px)}
+.sheet{position:fixed;top:0;right:0;bottom:0;z-index:95;width:75%;max-width:24rem;display:flex;flex-direction:column;gap:1rem;background:var(--popover);color:var(--popover-foreground);border-left:1px solid var(--border);box-shadow:var(--shadow-lg);padding:1rem;overflow-y:auto}
+.sheet .sheet-title{font-family:var(--font-heading);font-size:1rem;font-weight:500}
+.sheet .sheet-desc{font-size:.85rem;color:var(--muted-foreground)}
+.sheet textarea{width:100%;min-height:9rem;border:1px solid var(--input);border-radius:var(--radius-md);background:var(--background);padding:.5rem;font:inherit;font-size:.9rem;resize:vertical}
+.sheet textarea:focus{outline:none;border-color:var(--ring);box-shadow:0 0 0 3px color-mix(in oklab,var(--ring) 50%,transparent)}
+.sheet .sheet-close{position:absolute;top:.75rem;right:.75rem;height:1.75rem;width:1.75rem;display:grid;place-items:center;border-radius:var(--radius-md)}
+.sheet .sheet-close:hover{background:var(--muted)}
+.sheet .fld{display:flex;flex-direction:column;gap:.3rem;font-size:.85rem}
+.sheet .fld .k{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted-foreground)}
+
+/* ============ dialog (v1 dialog.tsx) ============ */
+.dlg-overlay{position:fixed;inset:0;z-index:100;background:rgb(0 0 0/.1);backdrop-filter:blur(2px)}
+.dlg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:110;width:100%;max-width:min(28rem,calc(100% - 2rem));display:grid;gap:1rem;background:var(--popover);color:var(--popover-foreground);padding:1rem;border-radius:var(--radius-xl);box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--foreground) 10%,transparent)}
+.dlg .dlg-title{font-family:var(--font-heading);font-size:1rem;font-weight:500;line-height:1}
+.dlg .dlg-desc{font-size:.875rem;color:var(--muted-foreground)}
+.dlg .dlg-foot{margin:-1rem -1rem -1rem;display:flex;flex-direction:column-reverse;gap:.5rem;border-top:1px solid var(--border);background:color-mix(in oklab,var(--muted) 50%,transparent);padding:1rem;border-radius:0 0 var(--radius-xl) var(--radius-xl)}
+@media(min-width:640px){.dlg .dlg-foot{flex-direction:row;justify-content:flex-end}}
+
+/* ============ toasts (v1 sonner.tsx token mapping) ============ */
+#toaster{position:fixed;bottom:1rem;right:1rem;z-index:200;display:flex;flex-direction:column;gap:.5rem;width:22.5rem;max-width:calc(100vw - 2rem)}
+.toast{display:flex;gap:.55rem;align-items:flex-start;background:var(--popover);color:var(--popover-foreground);border:1px solid var(--border);border-radius:var(--radius);padding:.65rem .75rem;font-size:.82rem;line-height:1.45;box-shadow:var(--shadow-md);animation:toast-in .18s ease-out}
+.toast .t-ico{flex:none;margin-top:.1rem;width:1rem;height:1rem}
+.toast .t-title{font-weight:600}
+@keyframes toast-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.toast.leaving{opacity:0;transition:opacity .25s}
+
+/* ============ misc ============ */
+.stack{display:flex;flex-direction:column;gap:1rem}
+.row-wrap{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.page-head{margin-bottom:1rem}
+.page-head h1{font-size:1.875rem;font-weight:700;line-height:1.2}
+.crumb{font-size:.8rem;color:var(--muted-foreground);margin-bottom:.25rem}
+.crumb .here{color:var(--foreground);font-weight:500}
+.summary-strip{display:flex;flex-wrap:wrap;gap:.4rem .6rem;align-items:center}
+.count-num{font-variant-numeric:tabular-nums;font-weight:700}
+.unrecorded-tag{display:inline-flex;align-items:center;height:1.15rem;padding:0 .4rem;border-radius:var(--radius-4xl);background:var(--secondary);color:var(--muted-foreground);font-size:.68rem;font-weight:500;border:1px dashed var(--border)}
+.refusal{border:1px solid color-mix(in oklab,var(--destructive) 35%,transparent);background:var(--error-subtle);color:var(--error-subtle-foreground);border-radius:var(--radius-lg);padding:.875rem 1rem;display:flex;gap:.65rem;align-items:flex-start}
+.refusal .r-title{font-weight:700;font-size:.9rem}
+.refusal p{font-size:.85rem;line-height:1.5}
+.planned-chip{display:inline-flex;align-items:center;gap:.25rem;height:1.25rem;padding:0 .45rem;border-radius:var(--radius-4xl);background:var(--status-waiting-list,var(--secondary));color:var(--status-waiting-list-fg,var(--secondary-foreground));font-size:.7rem;font-weight:500}
+details.assumptions{border:1px solid var(--border);border-radius:var(--radius-lg);padding:.6rem .9rem;font-size:.82rem;color:var(--muted-foreground);background:var(--card)}
+details.assumptions summary{cursor:pointer;font-weight:600;color:var(--foreground)}
+details.assumptions ul{margin:.5rem 0 .25rem 1.1rem}
+details.assumptions li{margin-bottom:.3rem}
+.rules-foot{font-size:.75rem;color:var(--muted-foreground);display:flex;flex-wrap:wrap;gap:.3rem 1.1rem;margin-top:1.25rem;padding-top:.75rem;border-top:1px dashed var(--border)}
+.subtable-title{font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted-foreground);padding:0 1rem}
+.mini-note{font-size:.72rem;color:var(--muted-foreground);line-height:1.45}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">DBT Network of Utah<small>Staff dashboard · v4 prototype</small></div>
+    <nav>
+      <div class="nav-label">Clinical</div>
+      <a class="nav" href="#" data-inert="Dashboard">▤ Dashboard</a>
+      <a class="nav active" href="#" data-inert="Classes">▦ Classes</a>
+      <a class="nav" href="#" data-inert="Clients">◎ Clients</a>
+      <div class="nav-label" style="margin-top:1rem">Operations</div>
+      <a class="nav" href="#" data-inert="Pipeline">◍ Pipeline</a>
+      <a class="nav" href="#" data-inert="Settings">⚙ Settings</a>
+    </nav>
+    <div class="foot">Signed in as <b>Dez O.</b><br>Teacher · Adult PM — Section 2<br><span style="opacity:.7">D-08 · two Teachers per class</span></div>
+  </aside>
+
+  <main class="main">
+    <div class="page-head">
+      <div class="crumb">Classes / Adult DBT (Tue·Thu) PM / <span class="here">Attendance — tonight</span></div>
+      <h1>Tonight's roster</h1>
+    </div>
+
+    <!-- night identity — SEE FIRST priority 1 (card line 2) -->
+    <section class="card" style="margin-bottom:1rem">
+      <div class="card-head">
+        <div class="night-id">
+          <span class="class-name">Adult DBT · Tue/Thu PM</span>
+          <span class="section-chip" id="hdr-section">SECTION 2 of 2</span>
+          <span class="badge badge-outline" id="hdr-date">Tue · Sep 8, 2026</span>
+          <span class="badge badge-outline" id="hdr-time">6:00–7:30 PM</span>
+          <span class="badge module-chip" id="hdr-module">Emotion Regulation <span class="wk">· wk 3 of 8</span></span>
+          <span class="badge format-chip" id="hdr-format">Virtual · Zoom</span>
+          <span class="badge badge-secondary" id="hdr-lock" hidden></span>
+        </div>
+        <div class="meta-line" style="margin-top:.5rem">
+          <span>Teachers tonight: Dez O. + Brittany K. (D-08)</span><span class="sep">·</span>
+          <a href="#" id="link-cancel" style="font-size:.8rem">This night is not happening → <b>Scene 11</b></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- state switcher — prototype scaffolding, not product UI -->
+    <section class="proto">
+      <span class="proto-tag">Prototype · state switcher — not product UI</span>
+      <div class="proto-row" id="switcher-states"><span class="proto-group-label">States (card line 4):</span></div>
+      <div class="proto-row" style="margin-top:.4rem" id="switcher-edges"><span class="proto-group-label">Edge cases (visible treatments):</span></div>
+      <div class="req-strip" id="frame-info"></div>
+    </section>
+
+    <div class="stack" id="frame-root"></div>
+
+    <details class="assumptions" style="margin-top:1.5rem">
+      <summary>ASSUMPTIONS &amp; prototype notes (click to expand)</summary>
+      <ul>
+        <li><b>ASSUMPTION</b> — Components are re-rendered as static HTML/CSS using v1's exact tokens and class geometry (<code>roster-table.tsx</code> chips, <code>attendance-badge.tsx</code> pill, ui <code>badge/button/card/sheet/popover/dialog</code>, sonner token mapping) rather than importing v1 React. No new colours, radii, spacing, or type: every token is copied from <code>v1 src/app/globals.css</code> (+ <code>.design-sync/ds-additions.css</code> for <code>--eor-*</code>).</li>
+        <li><b>ASSUMPTION</b> — v1's <code>--badge-force-drop</code> is re-labelled <b>max</b> per the v4 spec (10 §0); token values unchanged. v1's badge glyph (✓ / 1–2–3 dots) is kept and paired with v4's rung labels (warn@2 / critical@3 / max@4 — D-09) and the series count.</li>
+        <li><b>ASSUMPTION</b> — v1's ladder counted <i>consecutive</i> no-shows; v4 is <i>cumulative per series</i> (REQ-CL-10). At 1 miss the badge shows ✓ clear with count “1” — v4 has no rung at 1. The flag-history popover shows the arithmetic either way.</li>
+        <li><b>ASSUMPTION</b> — MAX rows keep normal row styling (no strikethrough/tint, which v1 reserved for a decided force-drop): the system never drops anyone (D-09, record-never-enforce), so the alarm rides the badge + advance-warning advisory, not the row.</li>
+        <li><b>ASSUMPTION</b> — Roster people, contacts, providers, dates (pinned to Tue Sep 8 2026, 7:55 PM) and miss histories are fictional sample data.</li>
+        <li><b>ASSUMPTION</b> — Late and Present share one derivation (LATE = present, D-10); the chip set keeps v1's single-letter Y/N/L + FREE geometry with v4 spoken labels Present / Absent / Late / Free-pass.</li>
+        <li>Light mode only (v1 <code>defaultTheme="light"</code>). Fonts load from Google Fonts (Geist, Newsreader — same families v1 loads via next/font); offline they fall back to system faces.</li>
+      </ul>
+    </details>
+
+    <div class="rules-foot">
+      <span><b>Rules in effect:</b></span>
+      <span>Record, never enforce</span><span>Humans decide</span><span>Append-only corrections</span><span>Statuses derived at read time</span><span>Refuse explicitly — never retarget</span>
+    </div>
+  </main>
+</div>
+
+<div id="layer-pop"></div>
+<div id="layer-sheet"></div>
+<div id="layer-dlg"></div>
+<div id="toaster"></div>
+
+<script>
+"use strict";
+/* ================= data (fictional; ladder inputs per REQ-SO-21) ================= */
+const NOW = { eff: "Tue · Sep 8, 2026", effShort: "Sep 8", recorded: "just now", by: "Dez O." };
+
+const CLIENTS = [
+  { id:"ashley",  name:"Ashley R.",  phone:"(801) 555-0142", email:"ashley.r@…",  provider:"M. Reyes, LCSW", contract:false, eor:null,
+    misses:[{d:"Aug 13",t:"Absent"},{d:"Aug 25",t:"Absent"},{d:"Aug 27",t:"IT miss",src:"Provider-logged"}],
+    cancelled:[{d:"Sep 3",why:"Zoom outage — night cancelled"}] },
+  { id:"marcus",  name:"Marcus J.",  phone:"(801) 555-0187", email:"marcus.j@…",  provider:"M. Reyes, LCSW", contract:false, eor:null,
+    misses:[{d:"Aug 20",t:"Absent"},{d:"Sep 1",t:"Free-pass",src:"series free-pass used"}], cancelled:[] },
+  { id:"denise",  name:"Denise O.",  phone:"(801) 555-0119", email:"denise.o@…",  provider:"T. Okoye, CMHC", contract:false, eor:null,
+    misses:[], cancelled:[],
+    planned:{label:"Planned absence · Sep 10–22 · vacation", note:"Visible to staff; reason-blind to the ladder — a missed night still counts (REQ-SO-25, O-21)."} },
+  { id:"trevor",  name:"Trevor W.",  phone:"(801) 555-0163", email:"trevor.w@…",  provider:"S. Whitfield, LCSW (contract)", contract:true, eor:null,
+    misses:[{d:"Aug 13",t:"Absent"},{d:"Aug 25",t:"Absent"},{d:"Sep 1",t:"Absent"},{d:"Sep 2",t:"IT miss",src:"Provider-logged"}], cancelled:[] },
+  { id:"kayla",   name:"Kayla B.",   phone:"(801) 555-0128", email:"kayla.b@…",   provider:"T. Okoye, CMHC", contract:false, eor:null, misses:[], cancelled:[] },
+  { id:"jordan",  name:"Jordan P.",  phone:"(801) 555-0154", email:"jordan.p@…",  provider:"M. Reyes, LCSW", contract:false, eor:null,
+    misses:[{d:"Aug 27",t:"Absent"}], cancelled:[] },
+  { id:"priya",   name:"Priya N.",   phone:"(801) 555-0176", email:"priya.n@…",   provider:"S. Whitfield, LCSW (contract)", contract:true, eor:"yellow", misses:[], cancelled:[] },
+  { id:"darnell", name:"Darnell C.", phone:"(801) 555-0135", email:"darnell.c@…", provider:"T. Okoye, CMHC", contract:false, eor:"red",
+    misses:[], cancelled:[], planned:{label:"Planned absence · Sep 10 · surgery", note:"Reason-blind to the ladder (REQ-SO-25, O-21)."} },
+  { id:"tomas",   name:"Tomás R.",   phone:"(801) 555-0191", email:"tomas.r@…",   provider:"M. Reyes, LCSW", contract:false, eor:null,
+    misses:[{d:"Aug 13",t:"Absent"},{d:"Aug 20",t:"Absent"},{d:"Aug 27",t:"Absent"}], cancelled:[] },
+];
+const BY_ID = Object.fromEntries(CLIENTS.map(c=>[c.id,c]));
+BY_ID["brandy"] = { id:"brandy", name:"Brandy K.", phone:"(801) 555-0102", email:"brandy.k@…", provider:"S. Whitfield, LCSW (contract)", contract:true, eor:null, misses:[], cancelled:[] };
+
+const CODES = [
+  {code:"P", label:"Y", spoken:"Present"},
+  {code:"L", label:"L", spoken:"Late"},
+  {code:"A", label:"N", spoken:"Absent"},
+  {code:"F", label:"FREE", spoken:"Free-pass"},
+];
+
+/* ================= ladder (v4: cumulative per series — REQ-CL-10/REQ-SO-21/22) ================= */
+function ladderOf(client, extraMark){
+  const items = client.misses.map(m=>({...m, live:false}));
+  if(extraMark==="A"||extraMark==="F") items.push({d:NOW.effShort+" (tonight)",t:extraMark==="F"?"Free-pass":"Absent",live:true});
+  const n = items.length;
+  if(n>=4) return {rung:"max", dots:3, label:"MAX", cls:"ladder-max", n, items};
+  if(n===3) return {rung:"critical", dots:2, label:"CRITICAL", cls:"ladder-critical", n, items};
+  if(n===2) return {rung:"warn", dots:1, label:"WARN", cls:"ladder-warn", n, items};
+  return {rung:"clear", dots:0, label:"Clear", cls:"ladder-clear", n, items};
+}
+
+/* ================= tiny UI plumbing ================= */
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function toast(title, body, kind){
+  const t=document.createElement("div"); t.className="toast";
+  const ico = kind==="error"
+    ? `<svg class="t-ico" viewBox="0 0 16 16" fill="var(--destructive)"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 3a.9.9 0 01.9 1v3a.9.9 0 11-1.8 0V5A.9.9 0 018 4zm0 7.2a1 1 0 110 2 1 1 0 010-2z"/></svg>`
+    : kind==="warn"
+    ? `<svg class="t-ico" viewBox="0 0 16 16" fill="var(--badge-warning)"><path d="M8 1.5 15 14H1L8 1.5zM8 6a.8.8 0 00-.8.8v2.4a.8.8 0 001.6 0V6.8A.8.8 0 008 6zm0 6a1 1 0 110 2 1 1 0 010-2z"/></svg>`
+    : `<svg class="t-ico" viewBox="0 0 16 16" fill="var(--badge-clear)"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm3.2 5.1l-3.8 4.6a.7.7 0 01-1.06.03L4.6 8.9a.7.7 0 111.04-.94l1.2 1.3 3.3-4a.7.7 0 111.06.9z"/></svg>`;
+  t.innerHTML = `${ico}<div>${title?`<span class="t-title">${title}</span> — `:""}${body}</div>`;
+  $("#toaster").appendChild(t);
+  setTimeout(()=>{t.classList.add("leaving"); setTimeout(()=>t.remove(),300)}, 5200);
+}
+function closePop(){ $("#layer-pop").innerHTML=""; }
+function popover(anchor, html){
+  closePop();
+  const hit=document.createElement("div"); hit.className="pop-hit"; hit.onclick=closePop; $("#layer-pop").appendChild(hit);
+  const p=document.createElement("div"); p.className="pop"; p.innerHTML=html;
+  $("#layer-pop").appendChild(p);
+  const r=anchor.getBoundingClientRect();
+  let x=Math.min(r.left, innerWidth-19.5*16), y=r.bottom+6;
+  p.style.left=x+"px"; p.style.top=y+"px";
+  if(y+p.offsetHeight>innerHeight-8) p.style.top=(r.top-p.offsetHeight-6)+"px";
+}
+function closeSheet(){ $("#layer-sheet").innerHTML=""; }
+function sheet(html){
+  closeSheet();
+  $("#layer-sheet").innerHTML = `<div class="sheet-overlay" onclick="closeSheet()"></div><div class="sheet" role="dialog">${html}</div>`;
+}
+function dialog(title, desc, buttons){
+  $("#layer-dlg").innerHTML = `<div class="dlg-overlay" onclick="closeDlg()"></div>
+  <div class="dlg" role="alertdialog"><div class="dlg-title">${title}</div><div class="dlg-desc">${desc}</div>
+  <div class="dlg-foot">${buttons}</div></div>`;
+}
+function closeDlg(){ $("#layer-dlg").innerHTML=""; }
+function deadEnd(scene, name){ dialog(`Scene ${scene} · ${name}`,
+  `Not built in this prototype — Scene 1 (Tonight's roster) only. This is the labelled hand-off the scene card defines.`,
+  `<button class="btn btn-outline" onclick="closeDlg()">Back to the roster</button>`); }
+
+document.querySelectorAll("[data-inert]").forEach(a=>a.addEventListener("click",e=>{
+  e.preventDefault(); toast("Outside this prototype", `“${a.dataset.inert}” is not part of Scene 1.`, "warn");
+}));
+
+/* ================= state definitions ================= */
+const FRAMES = {
+  unmarked:{ btn:"1 · Unmarked", reqs:["REQ-SO-01","REQ-SO-02","REQ-SO-03"], desc:"7:55 PM — class starting, nobody marked. Four marking controls per row (v1 chip geometry, v4 codes). Ladder badges, end-of-round signals, contact info and planned-absence annotations all ride the row.",
+    marks:{}, live:true },
+  partial:{ btn:"2 · Partially marked", reqs:["REQ-SO-05","O-08"], desc:"Mid-class, 6 of 9 marked. Unmarked clients are named and labelled “unrecorded” — a hygiene state, never a miss (O-08: housekeeping, not accusation).",
+    marks:{kayla:"P", ashley:"L", marcus:"P", trevor:"A", jordan:"P", denise:"P"}, live:true, showUnrecorded:true },
+  full:{ btn:"3 · Fully marked", reqs:["REQ-SO-01","REQ-SO-02","REQ-SO-21","REQ-SO-22"], desc:"9:02 PM — all 9 marked. Jordan's absence lands as his 2nd series miss: the WARN flag is derived live and rides the row, advisory only (→ Scene 5). Corrections stay append-only.",
+    marks:{kayla:"P", priya:"L", darnell:"P", tomas:"P", jordan:"A", denise:"P", ashley:"P", marcus:"P", trevor:"A"}, live:true, summary:true, closeCta:true },
+  backfilled:{ btn:"4 · Backfilled", reqs:["REQ-SO-04","O-23","REQ-SO-05"], desc:"Viewing the previous class night (Tue Sep 1) opened on Sep 4. Every row carries BOTH timestamps — effective date and recorded-at — and backfilling has no cutoff (O-23). Two clients left unrecorded: named, still not misses (REQ-SO-05).",
+    marks:{kayla:"P", priya:"P", darnell:"P", jordan:"P", ashley:"P", marcus:"F", trevor:"A"}, live:false, backfill:true, showUnrecorded:true },
+  cancelled:{ btn:"5 · Cancelled", reqs:["REQ-SO-17","REQ-SO-18"], desc:"The night was cancelled at 3:58 PM (snow). No marking controls anywhere — the roster is reference-only. Undo is one click and itself recorded. Week numbering keeps its gap (weeks run 2, 4, 5 — REQ-SO-18).",
+    marks:{}, cancelled:true },
+  guard:{ btn:"6 · Guard-blocked", reqs:["REQ-SO-03","REQ-SO-06"], desc:"Writes outside the guards are refused explicitly and the date is never silently retargeted (v1 bug ATT-20, designed out). Three guards: future date · off-night · closed membership window. Refusal states why and offers the sanctioned out-of-roster path where one exists.",
+    marks:{}, guard:true, guardSub:"future" },
+  freepass:{ btn:"7 · Free-pass already used", reqs:["REQ-SO-01","O-19","REQ-SO-21"], desc:"Marcus' series free-pass was used Sep 1. Recording a second one is never blocked — it records as a fact and counts toward the ladder like any absence (record, never enforce). Beside the control: the open question O-19 asks whether the 4th button is still wanted at all.",
+    marks:{marcus:"F"}, live:true, freepassAdvisory:"marcus" },
+  flagged:{ btn:"8 · Flagged rows", reqs:["REQ-SO-21","REQ-SO-22","REQ-CL-17","REQ-CL-10"], desc:"Ladder state riding rows, never gating controls. Trevor is at MAX (4 series misses, one of them Provider-logged) — unmistakable, yet the row stays normal because the system never drops anyone. Ashley and Tomás sit at CRITICAL(3), each carrying the advance warning BEFORE the 4th miss lands (Tomás' leapfrog scenario is frame E3). Jordan at 1 miss has no rung (v4 is cumulative from 2). Priya/Darnell show the personal end-of-round red/yellow signal.",
+    marks:{}, flaggedView:true },
+
+  edge_section:{ btn:"E1 · Wrong identical section", reqs:["REQ-SO-06"], desc:"Ryan belongs to the identical Section 1 (Tue/Thu pair) and showed up tonight in Section 2. Every prior generation refused this; practice does it routinely. v4 records a sanctioned out-of-roster attendance fact — no silent refusal, no silent absorption (08 §2).",
+    marks:{kayla:"P", ashley:"P", trevor:"A"}, live:true, outOfRoster:true },
+  edge_concurrent:{ btn:"E2 · Concurrent marking", reqs:["REQ-SO-02"], desc:"Brittany marked Denise PRESENT from her laptop one minute after you marked LATE. Last write wins and the superseded write stays in the audit trail: “already marked by X”, both values visible, correction is soft-delete + append (08 §2).",
+    marks:{denise:"P"}, live:true, conflict:"denise" },
+  edge_jump:{ btn:"E3 · Backfill jumps clear → max", reqs:["REQ-SO-04","REQ-SO-21","REQ-SO-22"], desc:"Dez forgot to mark for seven nights (Aug 11 – Sep 1) and backfilled in one sitting on Sep 4. Tomás R.'s derived ladder jumped clear → max with the Owner never seeing the intermediates — so the flag history is shown under the badge, not just the end state (08 §2). His Sep 1 absence is the 4th miss, landing live.",
+    marks:{kayla:"P", priya:"P", darnell:"P", jordan:"P", ashley:"P", tomas:"A"}, live:true, backfill:true, jumpStory:"tomas" },
+};
+let CURRENT = "unmarked";
+
+/* ================= render ================= */
+function chips(row, frame, client){
+  if(frame.cancelled) return `<span class="sub-line">— no marking controls · night cancelled</span>`;
+  const live = row.marks[client.id];
+  const refused = frame.guard && (frame.guardSub!=="window" || client.id==="brandy");
+  return `<div class="code-group" role="group" aria-label="Mark ${esc(client.name)}">` +
+    CODES.map(c=>{
+      const pressed = live===c.code;
+      if(refused) return `<button class="code-chip refused" data-code="${c.code}" data-client="${client.id}" aria-pressed="false" title="Refused — membership window closed">${c.label}</button>`;
+      return `<button class="code-chip" data-code="${c.code}" data-client="${client.id}" aria-pressed="${pressed}" title="${c.spoken}">${c.label}</button>`;
+    }).join("") + `</div>`;
+}
+
+function ladderBadge(client, frame, row){
+  const extra = frame.live ? row.marks[client.id] : null;
+  const L = ladderOf(client, extra);
+  const glyph = L.rung==="clear"
+    ? `<span style="font-weight:700">✓</span>`
+    : `<span class="dots">${'<span class="dot"></span>'.repeat(L.dots)}</span>`;
+  const countNote = L.rung==="clear" && L.n>0 ? `<span class="ladder-count">${L.n} in series</span>` : "";
+  return `<button class="ladder-pill ${L.cls}" data-pop="history" data-client="${client.id}" title="Miss ladder — show arithmetic">
+    ${glyph}<span>${L.label}</span>${L.rung!=="clear"?`<span class="ladder-count">${L.n} in series</span>`:countNote}</button>`;
+}
+
+function eorPill(client){
+  if(client.eor==="red")   return `<button class="badge eor-red" data-pop="eor" data-client="${client.id}">RED · end-of-round</button>`;
+  if(client.eor==="yellow")return `<button class="badge eor-yellow" data-pop="eor" data-client="${client.id}">YELLOW · end-of-round</button>`;
+  return "";
+}
+
+function plannedChip(client){
+  if(!client.planned) return "";
+  return `<button class="planned-chip" style="background:var(--status-waiting-list);color:var(--status-waiting-list-fg)" data-pop="planned" data-client="${client.id}">🗓 ${esc(client.planned.label.split("·")[0].trim())}</button>`;
+}
+
+function noteCell(client, row, frame){
+  if(frame.cancelled) return `<span class="sub-line">—</span>`;
+  const n = row.notes[client.id];
+  const base = `<button class="btn btn-ghost btn-sm" data-note="${client.id}" style="border:1px dashed color-mix(in oklab,var(--muted-foreground) 30%,transparent);color:var(--muted-foreground)">＋ Add session note</button>`;
+  if(!n) return base;
+  return `<div style="max-width:16rem"><span style="display:block;font-size:.75rem;color:var(--muted-foreground);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(n)}</span>
+    <button class="btn btn-ghost btn-xs" data-note="${client.id}">✎ edit</button></div>`;
+}
+
+function contactBtn(client){
+  return `<button class="btn btn-outline btn-xs" data-pop="contact" data-client="${client.id}">contact</button>`;
+}
+
+function rowTrail(client, row){
+  const t = row.trail[client.id];
+  if(!t || !t.length) return "";
+  return `<button class="trail-btn" data-pop="trail" data-client="${client.id}">${t.length} correction${t.length>1?"s":""} · append trail</button>`;
+}
+
+function advanceWarning(client, row, frame){
+  const extra = frame.live ? row.marks[client.id] : null;
+  const L = ladderOf(client, extra);
+  if(L.n===3) return `<div class="advisory advisory-crit" style="max-width:17rem"><span>⚠</span><span><b>Next Absent or Free-pass reaches MAX.</b> Visible before the 4th miss lands (REQ-SO-22). Advisory — the control stays live.</span></div>`;
+  if(L.n>=4) return `<div class="advisory advisory-crit" style="max-width:17rem"><span>⚑</span><span><b>MAX reached — ${L.n} series misses.</b> Humans decide from here; nothing drops automatically (D-09). → <a href="#" data-dead="5" data-name="Miss-ladder escalation">Scene 5</a></span></div>`;
+  if(L.rung==="warn") return `<div class="advisory advisory-warnband" style="max-width:17rem"><span>●</span><span><b>WARN (2 in series)</b> — derived live from tonight's mark. Advisory only. → <a href="#" data-dead="5" data-name="Miss-ladder escalation">Scene 5</a></span></div>`;
+  return "";
+}
+
+function render(){
+  const frame = FRAMES[CURRENT];
+  const row = { marks:{...frame.marks}, notes: frame.notes||{}, trail: frame.trail = frame.trail||{} };
+
+  /* header variants */
+  $("#hdr-date").textContent = frame.backfill ? "Effective: Tue · Sep 1, 2026"
+    : frame.guard ? guardDateLabel(frame)
+    : "Tue · Sep 8, 2026";
+  $("#hdr-time").textContent = frame.backfill ? "6:00–7:30 PM" : (CURRENT==="guard" ? guardTimeLabel(frame) : "6:00–7:30 PM");
+  $("#hdr-section").textContent = "SECTION 2 of 2";
+  const lock=$("#hdr-lock"); lock.hidden=true; lock.textContent="";
+  if(frame.cancelled){ lock.hidden=false; lock.className="badge eor-red"; lock.textContent="CANCELLED — snow day"; }
+  if(frame.guard && frame.guardSub!=="window"){ lock.hidden=false; lock.className="badge badge-destructive"; lock.textContent = frame.guardSub==="future" ? "GUARD — future date" : "GUARD — off-night"; }
+
+  /* summary strip */
+  let summary="";
+  const ids = frame.outOfRoster ? [...CLIENTS.map(c=>c.id)] : CLIENTS.map(c=>c.id);
+  const marked = ids.filter(id=>row.marks[id]);
+  const unmarked = ids.filter(id=>!row.marks[id]);
+  if(frame.summary){
+    const P=marked.filter(id=>["P","L"].includes(row.marks[id])).length;
+    const L=marked.filter(id=>row.marks[id]==="L").length;
+    const A=marked.filter(id=>row.marks[id]==="A").length;
+    const F=marked.filter(id=>row.marks[id]==="F").length;
+    summary=`<div class="card"><div class="card-content"><div class="summary-strip">
+      <span class="badge badge-secondary">9 of 9 marked</span>
+      <span class="badge mark-chip mark-P">Present incl. Late: <b class="count-num">${P}</b>${L?` (of which Late: ${L} — LATE = present, D-10)`:""}</span>
+      <span class="badge mark-chip mark-A">Absent: <b class="count-num">${A}</b> — count toward the ladder</span>
+      ${F?`<span class="badge mark-chip mark-F">Free-pass: <b class="count-num">${F}</b></span>`:""}
+      <span class="badge badge-outline">Close the night → <a href="#" data-dead="2" data-name="Close the night" style="color:inherit">Scene 2</a></span>
+      <span class="badge badge-outline">Notes owed → <a href="#" data-dead="3" data-name="Session notes queue" style="color:inherit">Scene 3</a></span>
+    </div></div></div>`;
+  }
+
+  /* unrecorded counter strip (O-08 hygiene) */
+  let counterStrip="";
+  if(frame.showUnrecorded && !frame.cancelled){
+    counterStrip=`<div class="card"><div class="card-content"><div class="summary-strip">
+      <span class="badge badge-secondary"><span class="count-num">${marked.length}</span> of ${ids.length} marked</span>
+      <span class="advisory advisory-info" style="padding:.15rem .5rem"><b>${unmarked.length} unrecorded</b>&nbsp;— unrecorded ≠ missed. Naming them is housekeeping, not accusation (O-08); a past night with unrecorded clients raises the “nights unrecorded” advisory (REQ-SO-05), never a miss.</span>
+    </div></div></div>`;
+  }
+
+  /* backfill banner */
+  let backfillBanner="";
+  if(frame.backfill){
+    backfillBanner=`<div class="card"><div class="card-content">
+      <div class="row-wrap">
+        <span class="badge badge-default">Backfilled night</span>
+        <span style="font-size:.85rem">Effective date <b>Tue Sep 1</b> · Recorded <b>Fri Sep 4, 9:14 AM by Dez O.</b> — both timestamps kept on every row. <b>No cutoff</b> (O-23).</span>
+      </div>
+      ${frame.jumpStory?`<div class="advisory advisory-warn" style="margin-top:.5rem"><span>⚑</span><span><b>Seven nights backfilled in one sitting (Aug 11 – Sep 1).</b> ${esc(BY_ID[frame.jumpStory].name)}'s derived ladder jumped clear → MAX without the Owner seeing intermediates — flag history is shown below the badge, not just the end state (08 §2).</span></div>`:""}
+    </div></div>`;
+  }
+
+  /* cancelled banner */
+  let cancelBanner="";
+  if(frame.cancelled){
+    cancelBanner=`<div class="card"><div class="card-content">
+      <div class="row-wrap" style="justify-content:space-between">
+        <div class="row-wrap">
+          <span class="badge eor-red">CANCELLED</span>
+          <span style="font-size:.9rem"><b>Tue Sep 8 did not happen</b> — snow day. Cancelled by Admin · 3:58 PM (recorded). No attendance exists; the rotation clock is frozen; this night is not closable (<a href="#" data-dead="2" data-name="Close the night" style="color:inherit">Scene 2</a>). Week numbering keeps the gap: weeks run <b>2, 4, 5</b> (REQ-SO-18).</span>
+        </div>
+        <button class="btn btn-outline" id="btn-undo-cancel">↩ Undo cancellation</button>
+      </div>
+      <div class="mini-note" style="margin-top:.4rem">Undo is one click, always available, and itself recorded (REQ-SO-17 / D-14). Authoring a cancellation lives in <a href="#" data-dead="11" data-name="Cancel a night" style="color:inherit">Scene 11</a>.</div>
+    </div></div>`;
+  }
+
+  /* guard panel */
+  let guardPanel="";
+  if(frame.guard){
+    const subs=[["future","Future date"],["offnight","Off-night"],["window","Closed membership window"]];
+    guardPanel=`<div class="card"><div class="card-content">
+      <div class="seg" style="margin-bottom:.6rem">${subs.map(([k,l])=>`<button data-guard="${k}" aria-pressed="${frame.guardSub===k}">${l}</button>`).join("")}</div>
+      <div id="guard-body"></div>
+    </div></div>`;
+  }
+
+  /* refusal banner for date-level guards */
+  let dateRefusal="";
+  if(frame.guard && frame.guardSub!=="window"){
+    const why = frame.guardSub==="future"
+      ? `<b>Refused — this date hasn't happened.</b> Attendance is recorded when it occurs, never in advance. The write was <b>not</b> made and the date was <b>not</b> retargeted (REQ-SO-03; v1 bug ATT-20 designed out).`
+      : `<b>Refused — the Adult PM class does not meet on ${frame.guardSub==="offnight"?"Sundays":"this weekday"}.</b> This is an off-night for this class; an attendance row here would fabricate history. The write was <b>not</b> made (REQ-SO-03).`;
+    dateRefusal=`<div class="refusal"><span style="font-size:1.1rem">⛔</span><div><div class="r-title">Cannot mark — guard refused the write</div><p>${why}</p>
+      <p style="margin-top:.3rem;opacity:.85">Marking controls are inert below. Nothing was silently retargeted to the nearest valid night.</p></div></div>`;
+  }
+
+  /* O-19 card */
+  let o19="";
+  if(frame.freepassAdvisory){
+    o19=`<div class="card"><div class="card-content"><div class="advisory advisory-warn"><span>?</span><div>
+      <b>OPEN · O-19 — is the Free-pass button still wanted?</b> With billing out of scope (D-05/D-07) and every absence counting toward the ladder (D-10), the pass is purely a recorded fact — it no longer shields anyone. Recommendation: keep it (distinguishes “texted ahead” from “ghosted”). This screen shows it; it does not decide it.
+    </div></div></div></div>`;
+  }
+
+  /* out-of-roster panel */
+  let oor="";
+  if(frame.outOfRoster){
+    const done = frame.oorRecorded;
+    oor=`<div class="card"><div class="card-head"><div class="card-title">Attended out-of-roster tonight <span class="badge badge-outline">REQ-SO-06</span></div>
+      <div class="card-desc">A client from the <b>identical</b> Tue/Thu Section 1 showed up in Section 2. Not a refusal, not a silent roster edit — a recorded fact with the anomaly spelled out.</div></div>
+      <div class="card-content">
+        ${done?`
+          <table class="roster" style="font-size:.9rem"><tbody>
+            <tr><td style="padding:.5rem 1rem .5rem 0"><div class="name-line"><span class="client-name">Ryan V.</span>
+              <span class="badge badge-secondary">out-of-roster fact</span><span class="badge mark-chip mark-P">Present</span></div>
+              <div class="sub-line">Member of Adult PM — <b>Section 1</b> · attended Section 2, Tue Sep 8 · recorded by Dez O. · counts toward <b>his</b> series ladder</div></td></tr>
+          </tbody></table>`
+        :`<div class="row-wrap">
+            <span style="font-size:.9rem"><b>Ryan V.</b> — Adult PM · Section 1 · arrived 7:52 PM</span>
+            <button class="btn btn-default btn-sm" id="btn-oor">Record out-of-roster attendance fact</button>
+          </div>
+          <div class="mini-note" style="margin-top:.35rem">The fact names the wrong-section reality on the record. It never edits Section 1's own roster (append-only; REQ-SO-02).</div>`}
+      </div></div>`;
+  }
+
+  /* roster table */
+  const showBrandy = frame.guard && frame.guardSub==="window";
+  const rosterIds = CLIENTS.map(c=>c.id);
+  let brandyRow="";
+  if(showBrandy){
+    brandyRow=`<tr class="closed-row"><td style="padding-right:1rem">
+      <div class="name-line"><span class="client-name">Brandy K.</span>
+      <span class="badge" style="background:var(--status-dropped);color:var(--status-dropped-fg)">DROPPED · Aug 30</span>
+      <span class="badge badge-outline">window closed</span></div>
+      <div class="sub-line">Membership window: placed Jan 12 → closed Aug 30. Derived at read time — never a stored status.</div>
+      <div class="advisory advisory-error" style="margin-top:.4rem;max-width:30rem"><span>⛔</span><span><b>Refused — marking a client outside an open membership window (REQ-SO-03).</b> She showed up tonight anyway. Sanctioned path: <button class="trail-btn" style="color:var(--error-subtle-foreground);text-decoration-color:currentColor" onclick="toast('Out-of-roster fact recorded (REQ-SO-06)','Brandy K. · attended out-of-roster · Tue Sep 8 — appended as a fact. Her closed window is unchanged.','warn')">record out-of-roster attendance fact →</button></span></div>
+    </td><td style="padding-right:1rem">${chips(frame,frame,BY_ID["brandy"])}</td><td></td><td><span class="sub-line">—</span></td><td><span class="sub-line">—</span></td><td></td></tr>`;
+  }
+
+  const rowsHtml = rosterIds.map(id=>{
+    const c = BY_ID[id];
+    const marked = row.marks[id];
+    const unrec = (frame.showUnrecorded && !marked && !frame.cancelled) ? `<span class="unrecorded-tag">unrecorded — not a miss (O-08)</span>` : "";
+    const freepassAdv = (frame.freepassAdvisory===id) ? `<div class="advisory advisory-warn" style="margin-top:.35rem;max-width:19rem"><span>✦</span><span><b>Free-pass already used this series (Sep 1).</b> This one records anyway, as a fact — and counts toward the ladder like any absence (REQ-SO-01, D-10). Never blocked.</span></div>`:"";
+    const conflict = (frame.conflict===id) ? `<div class="advisory advisory-warnband" style="margin-top:.35rem;max-width:21rem"><span>⇄</span><span><b>Already marked by Brittany K. · PRESENT · 8:02 PM.</b> Your LATE (8:01 PM) was superseded — last write wins; both retained in history. <button class="trail-btn" onclick="correctDenise()">Correct to Late</button> (soft-delete + append, REQ-SO-02)</span></div>`:"";
+    const jumpHist = (frame.jumpStory===id) ? `<div style="margin-top:.35rem">${historyHtml(c, row, true)}</div>`:"";
+    return `<tr class="${ladderOf(c, frame.live?row.marks[id]:null).rung==='max'?'max-row':''}">
+      <td style="padding-right:1rem">
+        <div class="name-cell">
+          <div class="name-line">
+            <span class="client-name linked" data-dead="8" data-name="Client profile" title="Open client profile — Scene 8">${esc(c.name)}</span>
+            ${ladderBadge(c, frame, row)}
+            ${eorPill(c)}
+            ${plannedChip(c)}
+          </div>
+          <div class="sub-line">Ind. provider: ${esc(c.provider)}${c.contract?` · <b>contract — no SimplePractice</b>, contact directly (kb 245)`:""}</div>
+          ${rowTrail(c,row)}${unrec}${freepassAdv}${conflict}${jumpHist}
+        </div>
+      </td>
+      <td style="padding-right:1rem">${chips({...frame, marks:row.marks}, frame, c)}</td>
+      <td style="padding-right:1rem">${advanceWarning(c,row,frame)}</td>
+      <td style="padding-right:1rem;min-width:11rem">${frame.backfill?stamp(row,id):`<span class="sub-line">${marked?"recorded "+NOW.recorded:"—"}</span>`}</td>
+      <td style="padding-right:1rem">${noteCell(c,row,frame)}</td>
+      <td>${contactBtn(c)}</td>
+    </tr>`;
+  }).join("");
+
+  $("#frame-root").innerHTML =
+    summary + counterStrip + backfillBanner + cancelBanner + guardPanel + dateRefusal + o19 + oor +
+    `<div class="card">
+      <div class="card-content" style="padding-top:1rem">
+        <table class="roster">
+          <thead><tr><th>Client</th><th>Mark attendance</th><th>Advisory</th><th>Recorded</th><th>Session note</th><th></th></tr></thead>
+          <tbody>${rowsHtml}${brandyRow}</tbody>
+        </table>
+      </div>
+      <div class="legend" style="margin-top:.5rem">
+        <div class="keys">
+          <span><b>Y</b> Present</span><span><b>L</b> Late — LATE = present (D-10)</span>
+          <span><b>N</b> Absent — counts toward the ladder</span><span><b>FREE</b> Free-pass — counts too; one per series</span>
+        </div>
+        <span>Ladder: ✓ clear · ● warn@2 · ●● critical@3 · ●●● max@4 — advisory only (D-09)</span>
+      </div>
+      <div class="card-foot" style="justify-content:space-between;gap:1rem;flex-wrap:wrap">
+        <span style="font-size:.85rem">One live row per client per night · corrections = soft-delete + append (REQ-SO-02) · statuses derived at read time</span>
+        ${frame.closeCta?`<button class="btn btn-default btn-lg" data-dead="2" data-name="Close the night">Close the night → Scene 2</button>`: frame.cancelled?`<span class="badge badge-outline">Not closable — the night did not happen</span>`:`<button class="btn btn-outline" data-dead="2" data-name="Close the night">Close the night → Scene 2</button>`}
+      </div>
+    </div>`;
+
+  /* guard body content */
+  if(frame.guard){
+    const gb=$("#guard-body");
+    const sub=frame.guardSub;
+    if(sub==="window"){
+      gb.innerHTML=`<div class="advisory advisory-info" style="margin-bottom:.6rem"><span>i</span><span>Guards are per-client too. Brandy's window closed Aug 30 (DROPPED) — her row refuses the write and states why. Everyone else's controls stay live: a client-level guard never blanks the whole roster.</span></div>`;
+    } else {
+      gb.innerHTML=`<div class="advisory advisory-info"><span>i</span><span>${sub==="future"?"Trying to mark <b>Thu Sep 10</b> — a date that hasn't occurred.":"Trying to mark <b>Sun Sep 13</b> — not one of this class's nights (Tue·Thu)."} The whole write is refused; the date is never nudged to the nearest valid night.</span></div>`;
+    }
+    gb.querySelectorAll("[data-guard]").forEach(b=>b.onclick=()=>{frame.guardSub=b.dataset.guard; render();});
+  }
+
+  /* frame info strip */
+  $("#frame-info").innerHTML =
+    `<span style="font-weight:600">Frame “${frame.btn.split("· ")[1]||frame.btn}” — satisfies:</span>` +
+    frame.reqs.map(r=>`<span class="req-chip ${r.startsWith("O-")?"open":""}">${r}</span>`).join("") +
+    `<span class="frame-desc" style="flex-basis:100%">${frame.desc}</span>`;
+
+  bindRowEvents(frame, row);
+}
+
+function stamp(row,id){
+  const fresh = row.fresh && row.fresh[id];
+  return `<span class="sub-line">${fresh ? "recorded <b>just now</b> (backfill)" : "recorded Sep 4, 9:14–9:17 AM"}<br>effective <b>Tue Sep 1</b></span>`;
+}
+
+function guardDateLabel(frame){ return frame.guardSub==="offnight" ? "Sun · Sep 13, 2026 — off-night" : frame.guardSub==="future" ? "Thu · Sep 10, 2026 — future" : "Tue · Sep 8, 2026"; }
+function guardTimeLabel(frame){ return frame.guardSub==="offnight" ? "6:00–7:30 PM · does not meet" : frame.guardSub==="future" ? "6:00–7:30 PM · hasn't occurred" : "6:00–7:30 PM"; }
+
+/* ================= interactions ================= */
+function bindRowEvents(frame, row){
+  document.getElementById("frame-root").querySelectorAll(".code-chip:not(.refused)").forEach(btn=>{
+    btn.onclick=()=>{
+      const id=btn.dataset.client, code=btn.dataset.code;
+      const prev=row.marks[id];
+      if(prev===code) return;
+      if(prev){ // correction: soft-delete + append — never in-place (REQ-SO-02)
+        row.trail[id]=row.trail[id]||[];
+        row.trail[id].push({from:prev, to:code, at:"8:58 PM"});
+        toast("Corrected — append-only (REQ-SO-02)", `${BY_ID[id].name}: prior ${label(prev)} row retired (not edited); new ${label(code)} row appended. Nothing hard-deletes.`);
+      } else {
+        const spoken=CODES.find(c=>c.code===code).spoken;
+        toast("Recorded", `${BY_ID[id].name} · ${spoken} · effective ${frame.backfill?"Tue Sep 1":"Tue Sep 8"} · recorded just now${frame.backfill?" (backfill — both timestamps kept, REQ-SO-04)":""}.`);
+        if(frame.backfill){ row.fresh=row.fresh||{}; row.fresh[id]=true; }
+      }
+      const L=ladderOf(BY_ID[id], code);
+      const before=ladderOf(BY_ID[id], prev||null);
+      if(L.n>before.n && L.rung!=="clear"){
+        const map={warn:["WARN reached (2 in series)","Advisory only. → Scene 5.","warn"], critical:["CRITICAL reached (3 in series)","Advisory only. → Scene 5.","warn"], max:["MAX reached (4 in series)","Humans decide — nothing drops automatically (D-09). → Scene 5.","error"]};
+        const m=map[L.rung]; toast(m[0], `${BY_ID[id].name} — ${m[1]}`, m[2]);
+      }
+      row.marks[id]=code;
+      frame.marks[id]=code;
+      render();
+    };
+  });
+  document.querySelectorAll("[data-note]").forEach(b=>b.onclick=()=>openNote(b.dataset.note, row, frame));
+  document.querySelectorAll("[data-dead]").forEach(el=>el.addEventListener("click",e=>{e.preventDefault(); deadEnd(el.dataset.dead, el.dataset.name);}));
+  $("#link-cancel").onclick=e=>{e.preventDefault(); deadEnd(11,"Cancel a night");};
+  const uc=$("#btn-undo-cancel");
+  if(uc) uc.onclick=()=>{ dialog("Undo cancellation?", "One click, always available — and itself recorded: “Cancellation undone by Dez O. · 4:12 PM” (REQ-SO-17, D-14). Attendance and notes are untouched by either act.",
+    `<button class="btn btn-outline" onclick="closeDlg()">Keep cancelled</button><button class="btn btn-default" onclick="doUndo()">Undo — night is on again</button>`); };
+  const oorBtn=$("#btn-oor");
+  if(oorBtn) oorBtn.onclick=()=>{ frame.oorRecorded=true; render(); toast("Out-of-roster fact recorded (REQ-SO-06)","Ryan V. · attended Section 2 while member of Section 1 · Tue Sep 8. Appended as a fact — never a silent refusal, never a silent roster edit."); };
+  document.querySelectorAll("[data-guard]").forEach(b=>b.onclick=()=>{frame.guardSub=b.dataset.guard; render();});
+
+  /* popovers */
+  document.querySelectorAll("[data-pop]").forEach(el=>{
+    el.onclick=e=>{ e.stopPropagation(); showPop(el.dataset.pop, el.dataset.client, el); };
+  });
+}
+function label(code){ return CODES.find(c=>c.code===code).spoken; }
+function correctDenise(){
+  toast("Corrected — append-only (REQ-SO-02)","Denise O.: Brittany's PRESENT retired (not edited); your LATE appended as the new live row. Both stay in the trail.");
+  const f=FRAMES.edge_concurrent; f.conflict=null; render(); f.conflict="denise";
+}
+function doUndo(){
+  closeDlg();
+  toast("Recorded — cancellation undone (REQ-SO-17)","Tue Sep 8 restored to planned by Dez O. · 4:12 PM. The undo is itself a recorded act. Rotation clock unfrozen.");
+  const f=FRAMES.cancelled; const wasCancelled=f.cancelled; f.cancelled=false; CURRENT="unmarked"; render(); f.cancelled=wasCancelled;
+  toast("Night is open again","Marking controls are back. Closing later stays available (→ Scene 2).");
+}
+
+function historyHtml(c, row, inline){
+  const extra = FRAMES[CURRENT].live ? row.marks[c.id] : null;
+  const L = ladderOf(c, extra);
+  const items = L.items.map(m=>`<div class="pop-row"><span class="k">${esc(m.d)}${m.live?" · tonight":""}</span><span class="v">${esc(m.t)}${m.src?` <span class="sub-line">(${esc(m.src)})</span>`:""}</span></div>`).join("");
+  const cancels = (c.cancelled||[]).map(x=>`<div class="pop-row"><span class="k">${esc(x.d)}</span><span class="v"><s>${esc(x.why)}</s> — skipped, not counted (REQ-SO-21)</span></div>`).join("")
+    || `<div class="pop-row"><span class="k">Cancelled nights</span><span class="v">none in this series — nothing skipped</span></div>`;
+  const planned = c.planned?`<div class="pop-row"><span class="k">Planned</span><span class="v">${esc(c.planned.label)} — reason-blind to the ladder</span></div>`:"";
+  const jump = inline?`<div class="advisory advisory-warn" style="margin-top:.3rem"><span>⚑</span><span><b>History, not just state:</b> Aug 11 clear (0) → Aug 20 warn (2) → Aug 27 critical (3) → Sep 1 max (4). The Owner never saw the intermediates land; the append trail preserves them (08 §2, REQ-SO-04).</span></div>`:"";
+  return `<div><div class="pop-title">Miss ladder — ${esc(c.name)}</div>
+    <div class="sub-line">Cumulative in the current series ≡ round · resets at the round's first session (REQ-CL-10). Absent + Free-pass + Provider-logged IT misses count; Late/Present never; cancelled nights skipped (REQ-SO-21).</div>
+    ${items}${cancels}${planned}
+    <div class="pop-row"><span class="k">Derived now</span><span class="v"><b>${L.label}</b> · ${L.n} in series · advisory only (D-09)</span></div>
+    ${jump}</div>`;
+}
+
+function showPop(kind, id, anchor){
+  const c = BY_ID[id];
+  if(kind==="history"){
+    const row = currentRow;
+    popover(anchor, historyHtml(c, row, FRAMES[CURRENT].jumpStory===id));
+  }
+  if(kind==="contact"){
+    popover(anchor, `<div class="pop-title">${esc(c.name)} — contact</div>
+      <div class="pop-row"><span class="k">Phone</span><span class="v">${esc(c.phone)}</span></div>
+      <div class="pop-row"><span class="k">Email</span><span class="v">${esc(c.email)}</span></div>
+      <div class="pop-row"><span class="k">Ind. therapist</span><span class="v">${esc(c.provider)}</span></div>
+      ${c.contract?`<div class="advisory advisory-info"><span>i</span><span>Contract provider — <b>no SimplePractice account</b>; reach them directly (kb 245). That is why contact lives on the roster row.</span></div>`:""}`);
+  }
+  if(kind==="planned"){
+    popover(anchor, `<div class="pop-title">Planned absence</div>
+      <div class="pop-row"><span class="k">Annotation</span><span class="v">${esc(c.planned.label)}</span></div>
+      <div class="advisory advisory-warn"><span>?</span><span><b>OPEN · O-21.</b> Visible to staff; <b>reason-blind to the ladder</b> — a missed night during the window still counts (REQ-SO-25). Does this actually cut the Owner's override volume?</span></div>`);
+  }
+  if(kind==="eor"){
+    const isRed=c.eor==="red";
+    popover(anchor, `<div class="pop-title">End-of-round signal — ${isRed?"RED":"YELLOW"}</div>
+      <div class="pop-row"><span class="k">Basis</span><span class="v"><b>personal coverage</b>, not the class calendar (REQ-CL-17)</span></div>
+      <div class="pop-row"><span class="k">Meaning</span><span class="v">${isRed?"final module of this client's rotation":"second-to-last module of this client's rotation"}</span></div>
+      <div class="advisory advisory-info"><span>i</span><span>Prompt for the round-2 conversation (DOM B-14). Mid-rotation joiners evaluate on their own coverage — both of these joined late, so neither signal matches where the <i>class</i> is (ER · wk 3 of 8). The conversation itself lives in <a href="#" data-dead="12" data-name="Graduation &amp; exit" onclick="event.preventDefault();deadEnd(12,'Graduation & exit')" style="color:inherit">Scene 12</a>.</span></div>`);
+  }
+  if(kind==="trail"){
+    const t=(currentRow.trail[id])||[];
+    popover(anchor, `<div class="pop-title">Corrections — ${esc(c.name)}</div>
+      <div class="sub-line">Append-only: the old row is soft-deleted and a new row appended. The legal record is never edited in place (REQ-SO-02, DOM A-10).</div>
+      ${t.map(x=>`<div class="pop-row"><span class="k"><s>${label(x.from)}</s> retired ${esc(x.at)}</span><span class="v">${label(x.to)} — live</span></div>`).join("")}`);
+  }
+}
+
+function openNote(id, row, frame){
+  const c=BY_ID[id];
+  sheet(`
+    <button class="sheet-close" onclick="closeSheet()">✕</button>
+    <div><div class="sheet-title">Session note — ${esc(c.name)}</div>
+    <div class="sheet-desc">Pre-bound: Adult PM · <b>Section 2</b> · ${frame.backfill?"Tue Sep 1 (effective)":"Tue Sep 8, 2026"} · author Dez O. (Teacher)</div></div>
+    <div class="fld"><span class="k">Note</span><textarea id="note-body" placeholder="What happened in class tonight…">${row.notes[id]?esc(row.notes[id]):""}</textarea></div>
+    <div class="mini-note">Session notes are per client per night; multiple authors allowed (REQ-SO-12). Notes on absent clients are a primary use — absence communication. The queue of owed notes after close lives in <a href="#" onclick="event.preventDefault();deadEnd(3,'Session notes queue')">Scene 3</a>.</div>
+    <div class="row-wrap" style="justify-content:flex-end">
+      <button class="btn btn-outline" onclick="closeSheet()">Cancel</button>
+      <button class="btn btn-default" id="note-save">Save note</button>
+    </div>`);
+  $("#note-save").onclick=()=>{
+    row.notes[id]=$("#note-body").value.trim()||"(empty note)";
+    frame.notes=row.notes;
+    closeSheet(); render();
+    toast("Note saved","Session note appended — client, session, date and author bound. Never detaches from its session (REQ-SO-15).");
+  };
+}
+
+/* switcher */
+(function(){
+  const ss=$("#switcher-states"), se=$("#switcher-edges");
+  Object.entries(FRAMES).forEach(([k,f])=>{
+    const b=document.createElement("button"); b.textContent=f.btn; b.dataset.k=k;
+    (k.startsWith("edge")?se:ss).appendChild(b);
+    b.onclick=()=>{ CURRENT=k; closePop(); closeSheet(); $("#toaster").innerHTML=""; render(); };
+  });
+  const obs=new MutationObserver(()=>{});
+  const paint=()=>{
+    document.querySelectorAll("#switcher-states button,#switcher-edges button").forEach(b=>{
+      b.setAttribute("aria-pressed", String(b.dataset.k===CURRENT));
+    });
+  };
+  const _render=render;
+  render=function(){ _render(); paint(); };
+})();
+
+let currentRow=null;
+const _bind=bindRowEvents;
+bindRowEvents=function(frame,row){ currentRow=row; _bind(frame,row); };
+
+render();
+</script>
+</body>
+</html>
