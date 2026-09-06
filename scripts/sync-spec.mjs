@@ -37,6 +37,8 @@ const DESCRIPTIONS = {
     "The missed-use-case catalog — scenarios absent from all three prior repos.",
   "09-references.md":
     "Full citations: repo path:line sources, prior agentic opinions, external Linehan sources.",
+  "10-scene-inventory.md":
+    "Scene inventory — 13 staff moments with five-line wireframe cards for prototyping in Claude Design; build order, navigation map, review protocol, prompt seed.",
 };
 
 const slugFor = (file) => (file === "README.md" ? "00-overview" : file.replace(/\.md$/, ""));

@@ -60,6 +60,7 @@ that decision; it specifies what the fresh start must do.
 | [07-open-decisions.md](/dbt-spec/07-open-decisions/) | The open-decision register — every unresolved question, each with a recommendation and impact. |
 | [08-missed-use-cases.md](/dbt-spec/08-missed-use-cases/) | The missed-use-case catalog — scenarios absent from all three prior repos. |
 | [09-references.md](/dbt-spec/09-references/) | Full citations: repo documents (path:line), prior agentic opinions (locations), external Linehan sources (URLs, books). |
+| [10-scene-inventory.md](/dbt-spec/10-scene-inventory/) | Scene inventory — 13 staff moments, each with a five-line wireframe card for prototyping in Claude Design; build order, navigation map, review protocol, prompt seed. |
 
 Diagrams are GitHub/VS Code/Obsidian-renderable mermaid. Terms follow the glossary below.
 
