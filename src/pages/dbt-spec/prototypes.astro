@@ -1,0 +1,143 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+/*
+ * Index for the scene prototypes. The prototypes themselves are plain static
+ * files under public/dbt-spec/prototypes/ — they are built from v1's design
+ * system, not this site's, so they are deliberately NOT Astro pages.
+ * Living under /dbt-spec/ puts them inside the existing nginx basic-auth
+ * + X-Robots-Tag: noindex gate.
+ */
+const prototypes = [
+  {
+    scene: 1,
+    title: "Tonight's roster",
+    href: "/dbt-spec/prototypes/scene-01-tonights-roster/",
+    actor: "Teacher · class night begins",
+    reqs: "REQ-SO-01…06 · REQ-SO-21/22/25 · REQ-CL-10/17",
+    opens: "O-08 · O-19 · O-21 · O-23",
+    states: [
+      ["unmarked", "1 · Unmarked"],
+      ["partial", "2 · Partially marked"],
+      ["full", "3 · Fully marked"],
+      ["backfilled", "4 · Backfilled"],
+      ["cancelled", "5 · Cancelled"],
+      ["guard", "6 · Guard-blocked"],
+      ["freepass", "7 · Free-pass used"],
+      ["flagged", "8 · Flagged row"],
+    ],
+  },
+];
+---
+<BaseLayout title="DBT Dashboard v4 — Scene Prototypes">
+  <article>
+    <header class="spec-header">
+      <span class="text-label">Prototypes · {prototypes.length} of 13 scenes</span>
+      <h1 class="article-title">DBT Dashboard v4 — Scene Prototypes</h1>
+      <p class="spec-intro">
+        Clickable prototypes for the scenes in
+        <a href="/dbt-spec/10-scene-inventory/">the scene inventory</a>. Each one builds a single
+        staff moment out of v1's real design system and makes every state reachable from a
+        visible switcher, annotated with the REQ-ID it satisfies. A prototype is a question,
+        not an answer — where a screen and the spec disagree, the spec wins.
+      </p>
+    </header>
+
+    <ol class="spec-list">
+      {prototypes.map((p) => (
+        <li>
+          <a href={p.href} class="spec-card">
+            <span class="spec-order">{String(p.scene).padStart(2, "0")}</span>
+            <span class="spec-card-body">
+              <span class="spec-card-title">{p.title}</span>
+              <span class="spec-card-desc">{p.actor}</span>
+              <span class="proto-meta">{p.reqs}</span>
+              <span class="proto-meta">Opens made visible: {p.opens}</span>
+            </span>
+          </a>
+          <div class="proto-states">
+            {p.states.map(([hash, label]) => (
+              <a href={`${p.href}#${hash}`} class="proto-state">{label}</a>
+            ))}
+          </div>
+        </li>
+      ))}
+    </ol>
+  </article>
+</BaseLayout>
+
+<style>
+  .spec-header { margin-bottom: var(--spacing-xl); }
+  .spec-intro {
+    margin-top: var(--spacing-md);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+  .spec-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg, 24px);
+  }
+  .spec-card {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: baseline;
+    padding: var(--spacing-md);
+    border: 1px solid color-mix(in srgb, var(--color-text-primary) 12%, transparent);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+  .spec-card:hover { border-color: var(--color-accent); }
+  .spec-order {
+    font-family: var(--font-family-mono, monospace);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+  .spec-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs, 4px);
+  }
+  .spec-card-title {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold, 600);
+    line-height: 1.4;
+  }
+  .spec-card-desc {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .proto-meta {
+    font-family: var(--font-family-mono, monospace);
+    font-size: 0.72rem;
+    color: var(--color-text-secondary);
+    opacity: 0.75;
+  }
+  .proto-states {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: var(--spacing-sm, 8px);
+    padding-left: var(--spacing-md);
+  }
+  .proto-state {
+    font-size: 0.75rem;
+    padding: 3px 9px;
+    border-radius: 999px;
+    text-decoration: none;
+    color: var(--color-text-secondary);
+    border: 1px solid color-mix(in srgb, var(--color-text-primary) 12%, transparent);
+    transition: border-color var(--duration-fast) var(--ease-out),
+                color var(--duration-fast) var(--ease-out);
+  }
+  .proto-state:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+</style>
