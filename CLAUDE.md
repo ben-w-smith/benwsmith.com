@@ -58,9 +58,20 @@ mermaid@11 from CDN, re-renders on theme toggle) and add scoped table styles —
   ```
 - **/dbt-spec/ is auth-gated** (private — real staff names): nginx `location /dbt-spec/` block in
   `/etc/nginx/sites-available/default` on the droplet requires basic auth; htpasswd at
-  `/etc/nginx/.htpasswd_dbtspec` (user `ben`), plus `X-Robots-Tag: noindex`. rsync deploys do
-  not touch nginx. Rotate the password with:
-  `printf 'ben:%s' "$(openssl passwd -apr1 NEWPASS)" | ssh root@146.190.160.114 'cat > /etc/nginx/.htpasswd_dbtspec && chown root:www-data /etc/nginx/.htpasswd_dbtspec && chmod 640 /etc/nginx/.htpasswd_dbtspec && systemctl reload nginx'`
+  `/etc/nginx/.htpasswd_dbtspec` (users `ben`, `brittany`), plus `X-Robots-Tag: noindex`. rsync
+  deploys do not touch nginx. `location /dbt-spec/` is a prefix match and there are no regex
+  locations on the server, so nested paths and their assets (js/css/woff2) inherit the gate —
+  re-check that if a static-asset `location ~*` block is ever added, since regex locations win.
+- **Rewriting the /dbt-spec/ users** — the file must contain every user, so write it whole:
+  ```bash
+  B=$(openssl passwd -apr1 'PASS1'); R=$(openssl passwd -apr1 'PASS2')
+  printf '%s\n%s\n' "ben:$B" "brittany:$R" | ssh root@146.190.160.114 \
+    'cat > /etc/nginx/.htpasswd_dbtspec && chown root:www-data /etc/nginx/.htpasswd_dbtspec \
+     && chmod 640 /etc/nginx/.htpasswd_dbtspec && nginx -t && systemctl reload nginx'
+  ```
+  Back up first (`cp -a` alongside), then verify with
+  `curl -s -o /dev/null -w '%{http_code}' -u user:pass https://benwsmith.com/dbt-spec/prototypes/`
+  — expect 200 for each user, 401 with no credentials and 401 with a wrong password.
 - **SSH:** `ssh root@146.190.160.114` (uses `~/.ssh/id_ed25519`)
 
 ## Design System
