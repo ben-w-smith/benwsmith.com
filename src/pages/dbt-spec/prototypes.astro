@@ -27,6 +27,24 @@ const prototypes = [
       ["flagged", "8 · Flagged row"],
     ],
   },
+  {
+    scene: 3,
+    title: "Write session notes",
+    href: "/dbt-spec/prototypes/scene-03-write-session-notes/",
+    actor: "Teacher · post-class or next day",
+    reqs: "REQ-SO-12…16",
+    opens: "O-10 · O-11",
+    states: [
+      ["empty", "1 · Queue empty"],
+      ["populated", "2 · Populated"],
+      ["draft", "3 · Composer draft"],
+      ["saved", "4 · Saved"],
+      ["edited", "5 · Edited"],
+      ["notmine", "6 · Not mine"],
+      ["multi", "7 · Multiple notes"],
+      ["orphan", "8 · Orphan-attempt"],
+    ],
+  },
 ];
 ---
 <BaseLayout title="DBT Dashboard v4 — Scene Prototypes">

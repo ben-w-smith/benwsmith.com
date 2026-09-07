@@ -1,0 +1,421 @@
+/* tokens.css — v1's design tokens, copied VERBATIM from
+   ~/development/dbtdashboard/src/app/globals.css lines 65-457 (the :root and
+   .dark blocks). Not hand-edited: no colour in this prototype is invented.
+
+   Appended below the copy: the three font-family definitions and --eor-red /
+   --eor-yellow, taken verbatim from .design-sync/ds-additions.css (v1's
+   --font-sans is a circular reference and v1 has no end-of-round signal; both
+   fixes already live in the design system, not invented here). */
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.50 0.17 260);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.46 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.50 0.17 260);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* ===== Canonical semantic spine (2026-06-13) — see design spec =====
+     Interaction = brand aqua-indigo (--primary). Feedback = success/warning/error.
+     Use these for NEW work. Older data tokens (status/module/attendance/badge/
+     alert) remain and are already hue-aligned to this spine. Contrast AA-verified. */
+  --primary-subtle: oklch(0.95 0.04 260);
+  --primary-subtle-foreground: oklch(0.42 0.17 260);
+
+  --success: oklch(0.54 0.14 150);
+  --success-foreground: oklch(0.985 0 0);
+  --success-subtle: oklch(0.95 0.05 150);
+  --success-subtle-foreground: oklch(0.40 0.12 150);
+
+  --warning: oklch(0.78 0.16 80);
+  --warning-foreground: oklch(0.28 0.06 80);
+  --warning-subtle: oklch(0.96 0.07 85);
+  --warning-subtle-foreground: oklch(0.42 0.12 80);
+
+  --error: oklch(0.58 0.22 27);
+  --error-foreground: oklch(0.985 0 0);
+  --error-subtle: oklch(0.95 0.05 27);
+  --error-subtle-foreground: oklch(0.45 0.18 27);
+
+  /* Pipeline status colors - light mode */
+  --status-inquiry: oklch(0.94 0.02 230);
+  --status-inquiry-fg: oklch(0.42 0.07 230);
+  --status-intake: oklch(0.89 0.06 215);
+  --status-intake-fg: oklch(0.35 0.10 215);
+  --status-pretreatment: oklch(0.83 0.10 215);
+  --status-pretreatment-fg: oklch(0.32 0.14 215);
+  --status-waiting-list: oklch(0.76 0.13 222);
+  --status-waiting-list-fg: oklch(0.28 0.14 222);
+  --status-internal-waiting: oklch(0.72 0.13 238);
+  --status-internal-waiting-fg: oklch(0.25 0.12 238);
+  --status-active: oklch(0.82 0.10 178);
+  --status-active-fg: oklch(0.30 0.12 178);
+  --status-graduated: oklch(0.82 0.10 288);
+  --status-graduated-fg: oklch(0.35 0.12 288);
+  --status-dropped: oklch(0.68 0.03 220);
+  --status-dropped-fg: oklch(0.30 0.02 220);
+
+  /* Alert/Warning colors - light mode */
+  --alert-critical: oklch(0.85 0.14 25);
+  --alert-critical-fg: oklch(0.30 0.20 25);
+  --alert-warning: oklch(0.88 0.12 85);
+  --alert-warning-fg: oklch(0.30 0.20 85);
+
+  /* Module colors - light mode */
+  --module-ie: oklch(0.80 0.08 112);
+  --module-ie-fg: oklch(0.25 0.10 112);
+  --module-er: oklch(0.80 0.10 318);
+  --module-er-fg: oklch(0.28 0.12 318);
+  --module-dt: oklch(0.85 0.07 40);
+  --module-dt-fg: oklch(0.30 0.08 40);
+  --module-mp: oklch(0.83 0.08 198);
+  --module-mp-fg: oklch(0.28 0.10 198);
+
+  /* Module state colors (generic, used when specific module is unknown) */
+  --module-current: oklch(0.82 0.10 178);
+  --module-current-fg: oklch(0.30 0.12 178);
+  --module-complete: oklch(0.78 0.14 145);
+  --module-complete-fg: oklch(0.18 0.10 145);
+  --module-upcoming: oklch(0.89 0.06 215);
+  --module-upcoming-fg: oklch(0.35 0.10 215);
+
+  /* Attendance code colors - light mode */
+  --attendance-present: oklch(0.78 0.14 145);
+  --attendance-present-fg: oklch(0.18 0.10 145);
+  --attendance-absent: oklch(0.76 0.14 25);
+  --attendance-absent-fg: oklch(0.18 0.12 25);
+  --attendance-late: oklch(0.82 0.12 85);
+  --attendance-late-fg: oklch(0.18 0.10 85);
+  --attendance-free: oklch(0.78 0.12 250);
+  --attendance-free-fg: oklch(0.18 0.08 250);
+
+  /* Attendance badge threshold colors */
+  --badge-clear: oklch(0.78 0.14 145);
+  --badge-clear-fg: oklch(0.18 0.10 145);
+  --badge-warning: oklch(0.80 0.16 75);
+  --badge-warning-fg: oklch(0.22 0.12 75);
+  --badge-critical: oklch(0.65 0.22 25);
+  --badge-critical-fg: oklch(0.98 0 0);
+  --badge-force-drop: oklch(0.55 0.20 350);
+  --badge-force-drop-fg: oklch(0.98 0 0);
+
+  /* Pipeline dot colors - light mode */
+  --dot-inquiry: oklch(0.70 0.09 230);
+  --dot-intake: oklch(0.65 0.14 215);
+  --dot-pretreatment: oklch(0.65 0.16 215);
+  --dot-waiting: oklch(0.60 0.18 222);
+  --dot-internal-waiting: oklch(0.58 0.18 238);
+  --dot-active: oklch(0.60 0.16 178);
+  --dot-graduated: oklch(0.60 0.16 288);
+  --dot-dropped: oklch(0.55 0.04 220);
+
+  /* Post-grad program colors - light mode */
+  --program-next-steps: oklch(0.94 0.06 300);
+  --program-next-steps-fg: oklch(0.45 0.14 300);
+  --program-shame-resiliency: oklch(0.94 0.05 250);
+  --program-shame-resiliency-fg: oklch(0.45 0.12 250);
+  --program-booster: oklch(0.94 0.07 65);
+  --program-booster-fg: oklch(0.45 0.16 65);
+  --program-emdr: oklch(0.94 0.06 185);
+  --program-emdr-fg: oklch(0.45 0.14 185);
+
+  /* Gift tracking colors - light mode */
+  --gift-keychain: oklch(0.94 0.05 250);
+  --gift-keychain-fg: oklch(0.50 0.12 250);
+  --gift-cardset: oklch(0.94 0.06 300);
+  --gift-cardset-fg: oklch(0.50 0.14 300);
+  --gift-complete: oklch(0.94 0.08 145);
+  --gift-complete-fg: oklch(0.40 0.16 145);
+
+  /* Role colors - light mode */
+  --role-owner: oklch(0.94 0.06 300);
+  --role-owner-fg: oklch(0.40 0.14 300);
+  --role-admin: oklch(0.94 0.04 250);
+  --role-admin-fg: oklch(0.45 0.12 250);
+  --role-clinician: oklch(0.94 0.06 145);
+  --role-clinician-fg: oklch(0.40 0.14 145);
+  --role-teacher: oklch(0.83 0.08 198);
+  --role-teacher-fg: oklch(0.35 0.10 198);
+
+  /* Analytical chart palette - light mode */
+  --analytical-1: oklch(0.65 0.18 25);
+  --analytical-2: oklch(0.68 0.15 55);
+  --analytical-3: oklch(0.65 0.14 145);
+  --analytical-4: oklch(0.62 0.12 175);
+  --analytical-5: oklch(0.65 0.14 240);
+  --analytical-6: oklch(0.62 0.16 310);
+
+  /* Stat card accents - light mode */
+  --stat-completion: oklch(0.62 0.16 145);
+  --stat-completion-fg: oklch(0.30 0.14 145);
+  --stat-duration: oklch(0.62 0.14 260);
+  --stat-duration-fg: oklch(0.30 0.12 260);
+  --stat-phq9: oklch(0.62 0.14 240);
+
+  /* Outcome direction indicators - light mode */
+  --outcome-improved: oklch(0.92 0.05 145);
+  --outcome-improved-fg: oklch(0.30 0.12 145);
+  --outcome-improved-border: oklch(0.72 0.16 145);
+  --outcome-worsened: oklch(0.92 0.05 25);
+  --outcome-worsened-fg: oklch(0.35 0.15 25);
+  --outcome-worsened-border: oklch(0.65 0.18 25);
+
+  /* Retention heatmap levels - light mode */
+  --retention-excellent: oklch(0.55 0.16 155);
+  --retention-excellent-fg: oklch(0.98 0 0);
+  --retention-good: oklch(0.88 0.10 155);
+  --retention-good-fg: oklch(0.25 0.08 155);
+  --retention-fair: oklch(0.88 0.10 85);
+  --retention-fair-fg: oklch(0.30 0.10 85);
+  --retention-critical: oklch(0.50 0.22 25);
+  --retention-critical-fg: oklch(0.98 0 0);
+
+  /* Info/notice banner — re-pointed into the brand (primary) family so the app
+     has ONE coherent blue (was a separate hue-240 blue). Light mode. */
+  --info-banner: oklch(0.95 0.04 260);
+  --info-banner-fg: oklch(0.42 0.17 260);
+  --info-banner-border: oklch(0.85 0.05 260);
+  --info-accent: oklch(0.50 0.17 260);
+  --info-accent-fg: oklch(0.985 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.70 0.18 260);
+  --primary-foreground: oklch(0.145 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.70 0.18 260);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+
+  /* ===== Canonical semantic spine (dark) =====
+     Dark --success/--error solids sit at a tight ~4.5:1 with white text — do not
+     raise L/chroma without re-checking WCAG AA. These tokens back the @theme
+     utilities (bg-success, border-t-error, …); keep @theme + values in sync. */
+  --primary-subtle: oklch(0.55 0.20 260 / 0.2);
+  --primary-subtle-foreground: oklch(0.82 0.13 260);
+
+  --success: oklch(0.537 0.16 150);
+  --success-foreground: oklch(0.985 0 0);
+  --success-subtle: oklch(0.50 0.16 150 / 0.25);
+  --success-subtle-foreground: oklch(0.85 0.14 150);
+
+  --warning: oklch(0.82 0.18 80);
+  --warning-foreground: oklch(0.15 0.03 80);
+  --warning-subtle: oklch(0.65 0.18 80 / 0.25);
+  --warning-subtle-foreground: oklch(0.88 0.14 80);
+
+  --error: oklch(0.584 0.22 27);
+  --error-foreground: oklch(0.985 0 0);
+  --error-subtle: oklch(0.55 0.22 27 / 0.25);
+  --error-subtle-foreground: oklch(0.90 0.16 27);
+
+  /* Pipeline status colors - dark mode */
+  --status-inquiry: oklch(0.55 0.05 230 / 0.2);
+  --status-inquiry-fg: oklch(0.83 0.04 230);
+  --status-intake: oklch(0.55 0.08 215 / 0.2);
+  --status-intake-fg: oklch(0.80 0.06 215);
+  --status-pretreatment: oklch(0.55 0.12 215 / 0.2);
+  --status-pretreatment-fg: oklch(0.82 0.10 215);
+  --status-waiting-list: oklch(0.55 0.14 222 / 0.2);
+  --status-waiting-list-fg: oklch(0.82 0.12 222);
+  --status-internal-waiting: oklch(0.55 0.14 238 / 0.25);
+  --status-internal-waiting-fg: oklch(0.82 0.12 238);
+  --status-active: oklch(0.50 0.12 178 / 0.2);
+  --status-active-fg: oklch(0.82 0.10 178);
+  --status-graduated: oklch(0.55 0.12 288 / 0.2);
+  --status-graduated-fg: oklch(0.82 0.10 288);
+  --status-dropped: oklch(0.50 0.04 220 / 0.2);
+  --status-dropped-fg: oklch(0.72 0.03 220);
+
+  /* Alert/Warning colors - dark mode */
+  --alert-critical: oklch(0.55 0.20 25 / 0.3);
+  --alert-critical-fg: oklch(0.88 0.16 25);
+  --alert-warning: oklch(0.65 0.20 85 / 0.3);
+  --alert-warning-fg: oklch(0.92 0.14 85);
+
+  /* Module colors - dark mode */
+  --module-ie: oklch(0.55 0.10 112 / 0.2);
+  --module-ie-fg: oklch(0.82 0.08 112);
+  --module-er: oklch(0.55 0.12 318 / 0.2);
+  --module-er-fg: oklch(0.82 0.10 318);
+  --module-dt: oklch(0.55 0.08 40 / 0.2);
+  --module-dt-fg: oklch(0.85 0.06 40);
+  --module-mp: oklch(0.55 0.10 198 / 0.2);
+  --module-mp-fg: oklch(0.82 0.08 198);
+
+  /* Module state colors (generic) - dark mode */
+  --module-current: oklch(0.50 0.12 178 / 0.2);
+  --module-current-fg: oklch(0.82 0.10 178);
+  --module-complete: oklch(0.50 0.14 145 / 0.25);
+  --module-complete-fg: oklch(0.88 0.10 145);
+  --module-upcoming: oklch(0.55 0.08 215 / 0.2);
+  --module-upcoming-fg: oklch(0.80 0.06 215);
+
+  /* Attendance code colors - dark mode */
+  --attendance-present: oklch(0.50 0.18 145 / 0.25);
+  --attendance-present-fg: oklch(0.88 0.14 145);
+  --attendance-absent: oklch(0.55 0.20 25 / 0.25);
+  --attendance-absent-fg: oklch(0.92 0.16 25);
+  --attendance-late: oklch(0.65 0.20 85 / 0.25);
+  --attendance-late-fg: oklch(0.92 0.14 85);
+  --attendance-free: oklch(0.55 0.16 250 / 0.25);
+  --attendance-free-fg: oklch(0.85 0.12 250);
+
+  /* Attendance badge threshold colors */
+  --badge-clear: oklch(0.50 0.14 145 / 0.25);
+  --badge-clear-fg: oklch(0.88 0.10 145);
+  --badge-warning: oklch(0.60 0.18 75 / 0.25);
+  --badge-warning-fg: oklch(0.92 0.12 75);
+  --badge-critical: oklch(0.55 0.22 25 / 0.3);
+  --badge-critical-fg: oklch(0.92 0.16 25);
+  --badge-force-drop: oklch(0.50 0.20 350 / 0.3);
+  --badge-force-drop-fg: oklch(0.92 0.14 350);
+
+  /* Pipeline dot colors - dark mode */
+  --dot-inquiry: oklch(0.70 0.09 230);
+  --dot-intake: oklch(0.65 0.14 215);
+  --dot-pretreatment: oklch(0.65 0.16 215);
+  --dot-waiting: oklch(0.60 0.18 222);
+  --dot-internal-waiting: oklch(0.58 0.18 238);
+  --dot-active: oklch(0.60 0.16 178);
+  --dot-graduated: oklch(0.60 0.16 288);
+  --dot-dropped: oklch(0.55 0.04 220);
+
+  /* Post-grad program colors - dark mode */
+  --program-next-steps: oklch(0.55 0.14 300 / 0.2);
+  --program-next-steps-fg: oklch(0.80 0.12 300);
+  --program-shame-resiliency: oklch(0.55 0.12 250 / 0.2);
+  --program-shame-resiliency-fg: oklch(0.80 0.10 250);
+  --program-booster: oklch(0.55 0.16 65 / 0.2);
+  --program-booster-fg: oklch(0.85 0.14 65);
+  --program-emdr: oklch(0.55 0.14 185 / 0.2);
+  --program-emdr-fg: oklch(0.80 0.12 185);
+
+  /* Gift tracking colors - dark mode */
+  --gift-keychain: oklch(0.55 0.12 250 / 0.2);
+  --gift-keychain-fg: oklch(0.80 0.10 250);
+  --gift-cardset: oklch(0.55 0.14 300 / 0.2);
+  --gift-cardset-fg: oklch(0.80 0.12 300);
+  --gift-complete: oklch(0.50 0.16 145 / 0.2);
+  --gift-complete-fg: oklch(0.85 0.12 145);
+
+  /* Role colors - dark mode */
+  --role-owner: oklch(0.55 0.14 300 / 0.2);
+  --role-owner-fg: oklch(0.80 0.12 300);
+  --role-admin: oklch(0.55 0.12 250 / 0.2);
+  --role-admin-fg: oklch(0.75 0.10 250);
+  --role-clinician: oklch(0.50 0.14 145 / 0.2);
+  --role-clinician-fg: oklch(0.80 0.10 145);
+  --role-teacher: oklch(0.55 0.10 198 / 0.2);
+  --role-teacher-fg: oklch(0.82 0.08 198);
+
+  /* Analytical chart palette - dark mode (solid for chart fills) */
+  --analytical-1: oklch(0.70 0.14 25);
+  --analytical-2: oklch(0.72 0.12 55);
+  --analytical-3: oklch(0.70 0.12 145);
+  --analytical-4: oklch(0.68 0.10 175);
+  --analytical-5: oklch(0.70 0.12 240);
+  --analytical-6: oklch(0.68 0.14 310);
+
+  /* Stat card accents - dark mode */
+  --stat-completion: oklch(0.55 0.16 145 / 0.3);
+  --stat-completion-fg: oklch(0.82 0.12 145);
+  --stat-duration: oklch(0.55 0.14 260 / 0.3);
+  --stat-duration-fg: oklch(0.82 0.10 260);
+  --stat-phq9: oklch(0.65 0.12 240);
+
+  /* Outcome direction indicators - dark mode */
+  --outcome-improved: oklch(0.50 0.14 145 / 0.25);
+  --outcome-improved-fg: oklch(0.85 0.12 145);
+  --outcome-improved-border: oklch(0.60 0.14 145);
+  --outcome-worsened: oklch(0.55 0.18 25 / 0.25);
+  --outcome-worsened-fg: oklch(0.90 0.14 25);
+  --outcome-worsened-border: oklch(0.60 0.16 25);
+
+  /* Retention heatmap levels - dark mode */
+  --retention-excellent: oklch(0.45 0.14 155 / 0.4);
+  --retention-excellent-fg: oklch(0.85 0.10 155);
+  --retention-good: oklch(0.45 0.10 155 / 0.25);
+  --retention-good-fg: oklch(0.80 0.08 155);
+  --retention-fair: oklch(0.50 0.12 85 / 0.25);
+  --retention-fair-fg: oklch(0.82 0.10 85);
+  --retention-critical: oklch(0.45 0.20 25 / 0.45);
+  --retention-critical-fg: oklch(0.90 0.14 25);
+
+  /* Info/notice banner — re-pointed into the brand (primary) family. Dark mode. */
+  --info-banner: oklch(0.55 0.20 260 / 0.18);
+  --info-banner-fg: oklch(0.82 0.13 260);
+  --info-banner-border: oklch(0.55 0.18 260 / 0.4);
+  --info-accent: oklch(0.70 0.18 260);
+  --info-accent-fg: oklch(0.145 0 0);
+}
+
+:root {
+  --font-geist-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-geist-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-newsreader: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-geist-sans);
+
+  --eor-red: oklch(0.62 0.23 25);
+  --eor-red-foreground: oklch(0.985 0 0);
+  --eor-yellow: oklch(0.8 0.18 86);
+  --eor-yellow-foreground: oklch(0.28 0.07 80);
+}
+
+.dark {
+  --eor-red: oklch(0.6 0.22 25);
+  --eor-red-foreground: oklch(0.985 0 0);
+  --eor-yellow: oklch(0.75 0.17 85);
+  --eor-yellow-foreground: oklch(0.28 0.07 80);
+}
