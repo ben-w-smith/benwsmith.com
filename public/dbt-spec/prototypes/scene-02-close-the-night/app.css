@@ -1,0 +1,490 @@
+/* app.css — layout glue only.
+   Every colour is a var() from tokens.css. Every measurement mirrors v1's own
+   component idiom (see the class names quoted in comments), so nothing here is
+   a new visual language:
+     Badge   -> h-5 rounded-4xl px-2 py-0.5 text-xs font-medium border-transparent
+     Button  -> h-8 rounded-lg px-2.5 text-sm font-medium
+     Code btn-> min-h-11 min-w-11 rounded-md border px-2 text-base font-medium
+                (verbatim from class/roster-table.tsx)
+     Table   -> w-full text-base / thead border-b text-sm text-muted-foreground
+                / tbody divide-y
+   Radii come from v1's scale: --radius 0.625rem, md = 0.8x, lg = 1x, 4xl = 2.6x. */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+h1, h2, h3 { font-family: var(--font-newsreader); font-weight: 600; margin: 0; }
+.mono { font-family: var(--font-geist-mono); }
+
+/* ---------- prototype chrome (not part of the screen under test) ---------- */
+
+.chrome {
+  position: sticky; top: 0; z-index: 40;
+  background: var(--sidebar); color: var(--sidebar-foreground);
+  border-bottom: 1px solid var(--sidebar-border);
+}
+.chrome-row {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 10px 20px;
+}
+.chrome-title { font-family: var(--font-newsreader); font-size: 15px; font-weight: 600; }
+.chrome-sub { font-size: 12px; color: var(--muted-foreground); }
+.chrome-spacer { flex: 1 1 auto; }
+
+.stateswitch { display: flex; gap: 6px; flex-wrap: wrap; padding: 0 20px 10px; }
+.stateswitch button {
+  height: 28px; padding: 0 10px; font-size: 12px; font-weight: 500;
+  font-family: inherit; cursor: pointer;
+  border-radius: var(--radius-lg); border: 1px solid var(--border);
+  background: var(--background); color: var(--muted-foreground);
+  transition: all .12s;
+}
+.stateswitch button:hover { background: var(--muted); color: var(--foreground); }
+.stateswitch button[aria-pressed="true"] {
+  background: var(--primary); color: var(--primary-foreground);
+  border-color: transparent;
+}
+
+.reqstrip {
+  padding: 10px 20px; font-size: 12px;
+  background: var(--info-banner); color: var(--info-banner-fg);
+  border-bottom: 1px solid var(--info-banner-border);
+  display: flex; gap: 16px; flex-wrap: wrap; align-items: baseline;
+}
+.reqstrip b { font-weight: 600; }
+.reqstrip .satisfies { font-family: var(--font-geist-mono); font-size: 11px; }
+
+/* ---------- page ---------- */
+
+main { max-width: 1180px; margin: 0 auto; padding: 20px; }
+
+.card {
+  background: var(--card); color: var(--card-foreground);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+}
+.card + .card { margin-top: 16px; }
+.card-head { padding: 16px 18px 12px; }
+.card-body { padding: 0 18px 16px; }
+
+/* Session identity — the "unambiguous class/section/date" header (08 §4). */
+.identity { display: flex; gap: 18px; align-items: flex-start; flex-wrap: wrap; }
+.identity-main { flex: 1 1 380px; min-width: 320px; }
+.identity h1 { font-size: 26px; line-height: 1.2; }
+.identity .when { margin-top: 4px; font-size: 15px; color: var(--muted-foreground); }
+.identity .when strong { color: var(--foreground); font-weight: 600; }
+
+/* The disambiguation rail: the sibling section is shown, named, and NOT active. */
+.siblings { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.sibling {
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  padding: 7px 11px; font-size: 12px; line-height: 1.35;
+  background: var(--background); color: var(--muted-foreground);
+  min-width: 168px;
+}
+.sibling.is-here {
+  border-color: transparent; outline: 2px solid var(--ring);
+  background: var(--primary-subtle); color: var(--primary-subtle-foreground);
+}
+.sibling .sib-name { display: block; font-weight: 600; color: inherit; }
+.sibling.is-here .sib-name::after { content: " — you are here"; font-weight: 500; }
+
+.meta-col { flex: 0 0 auto; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.teachers { font-size: 12px; color: var(--muted-foreground); text-align: right; }
+
+/* ---------- badges (Badge idiom) ---------- */
+
+.badge {
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  height: 20px; width: fit-content; flex-shrink: 0;
+  padding: 2px 8px; border-radius: var(--radius-4xl);
+  border: 1px solid transparent;
+  font-size: 12px; font-weight: 500; white-space: nowrap;
+}
+.badge-outline { border-color: var(--border); color: var(--foreground); }
+.badge-muted { background: var(--muted); color: var(--muted-foreground); }
+.badge.tall { height: auto; padding: 3px 9px; }
+
+.mod-dt { background: var(--module-dt); color: var(--module-dt-fg); }
+.mod-er { background: var(--module-er); color: var(--module-er-fg); }
+.mod-ie { background: var(--module-ie); color: var(--module-ie-fg); }
+.mod-mp { background: var(--module-mp); color: var(--module-mp-fg); }
+
+.role-teacher { background: var(--role-teacher); color: var(--role-teacher-fg); }
+.status-active { background: var(--status-active); color: var(--status-active-fg); }
+.status-dropped { background: var(--status-dropped); color: var(--status-dropped-fg); }
+
+.eor-red { background: var(--eor-red); color: var(--eor-red-foreground); }
+.eor-yellow { background: var(--eor-yellow); color: var(--eor-yellow-foreground); }
+
+.lad-clear { background: var(--badge-clear); color: var(--badge-clear-fg); }
+.lad-warning { background: var(--badge-warning); color: var(--badge-warning-fg); }
+.lad-critical { background: var(--badge-critical); color: var(--badge-critical-fg); }
+.lad-max { background: var(--badge-force-drop); color: var(--badge-force-drop-fg); }
+
+/* Open-decision marker — ASSUMPTION (composed: Badge + Popover, no v1 analogue). */
+.omark {
+  font-family: var(--font-geist-mono); font-size: 10px; font-weight: 600;
+  height: 17px; padding: 0 6px; border-radius: var(--radius-4xl);
+  background: var(--info-banner); color: var(--info-banner-fg);
+  border: 1px dashed var(--info-banner-border);
+  display: inline-flex; align-items: center; cursor: help;
+  vertical-align: middle;
+}
+.omark:hover { background: var(--info-accent); color: var(--info-accent-fg); border-style: solid; }
+
+/* ---------- advisory banners (composed from the alert / info tokens) ---------- */
+
+.notice {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 11px 14px; border-radius: var(--radius-md);
+  font-size: 13px; line-height: 1.5; margin-bottom: 12px;
+  border: 1px solid transparent;
+}
+.notice .n-body { flex: 1 1 auto; }
+.notice strong { font-weight: 600; }
+.notice-info { background: var(--info-banner); color: var(--info-banner-fg); border-color: var(--info-banner-border); }
+.notice-warn { background: var(--alert-warning); color: var(--alert-warning-fg); }
+.notice-crit { background: var(--alert-critical); color: var(--alert-critical-fg); }
+.notice-muted { background: var(--muted); color: var(--muted-foreground); border-color: var(--border); }
+.notice-dropped { background: var(--status-dropped); color: var(--status-dropped-fg); }
+
+/* ---------- buttons (Button idiom) ---------- */
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  height: 32px; padding: 0 10px; flex-shrink: 0;
+  border-radius: var(--radius-lg); border: 1px solid transparent;
+  font-family: inherit; font-size: 14px; font-weight: 500; white-space: nowrap;
+  cursor: pointer; transition: all .12s; background: transparent; color: inherit;
+}
+.btn:active { transform: translateY(1px); }
+.btn-default { background: var(--primary); color: var(--primary-foreground); }
+.btn-default:hover { opacity: .85; }
+.btn-outline { border-color: var(--border); background: var(--background); color: var(--foreground); }
+.btn-outline:hover { background: var(--muted); }
+.btn-secondary { background: var(--secondary); color: var(--secondary-foreground); }
+.btn-secondary:hover { opacity: .85; }
+.btn-ghost { color: var(--muted-foreground); }
+.btn-ghost:hover { background: var(--muted); color: var(--foreground); }
+.btn-lg { height: 36px; padding: 0 14px; }
+.btn-sm { height: 28px; padding: 0 10px; font-size: 13px; }
+.btn-xs { height: 24px; padding: 0 8px; font-size: 12px; border-radius: var(--radius-md); }
+
+/* ---------- roster table (table idiom from roster-table.tsx) ---------- */
+
+.legendrow {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 8px 16px; font-size: 13px; color: var(--muted-foreground); margin-bottom: 10px;
+}
+.legendrow .legend { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.legendrow .legend b { color: var(--foreground); font-weight: 500; }
+
+.roster { width: 100%; border-collapse: collapse; font-size: 16px; }
+.roster thead tr { border-bottom: 1px solid var(--border); }
+.roster th {
+  text-align: left; padding-bottom: 8px; padding-right: 16px;
+  font-size: 13px; font-weight: 500; color: var(--muted-foreground);
+}
+.roster tbody tr { border-top: 1px solid var(--border); }
+.roster tbody tr:first-child { border-top: none; }
+.roster td { padding: 12px 16px 12px 0; vertical-align: top; }
+.roster tr.row-max { background: color-mix(in oklab, var(--muted) 40%, transparent); }
+.roster tr.row-outside { background: color-mix(in oklab, var(--muted) 30%, transparent); }
+
+.namecell { display: flex; flex-direction: column; gap: 5px; }
+.nameline { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.clientlink {
+  display: inline-flex; align-items: center; min-height: 22px;
+  color: inherit; text-decoration: none; text-underline-offset: 2px;
+  font-weight: 500; cursor: pointer;
+}
+.clientlink:hover { text-decoration: underline; }
+.subline { font-size: 12px; color: var(--muted-foreground); }
+
+/* attendance code group — verbatim sizing from roster-table.tsx */
+.codegroup { display: flex; gap: 6px; }
+.codebtn {
+  min-height: 44px; min-width: 44px; padding: 0 8px;
+  border-radius: var(--radius-md); border: 1px solid var(--border);
+  background: var(--background); color: var(--muted-foreground);
+  font-family: inherit; font-size: 16px; font-weight: 500;
+  cursor: pointer; transition: background-color .12s, color .12s;
+}
+.codebtn:hover { background: var(--muted); }
+.codebtn[aria-pressed="true"] { border-color: transparent; }
+.codebtn.on-present { background: var(--attendance-present); color: var(--attendance-present-fg); }
+.codebtn.on-absent  { background: var(--attendance-absent);  color: var(--attendance-absent-fg); }
+.codebtn.on-late    { background: var(--attendance-late);    color: var(--attendance-late-fg); }
+.codebtn.on-free    { background: var(--attendance-free);    color: var(--attendance-free-fg); }
+/* Advisory-only rings. NOTHING here sets [disabled]. */
+.codebtn.advisory { border-style: dashed; border-color: var(--warning); }
+
+.rowadvisory { margin-top: 6px; font-size: 12px; line-height: 1.45; max-width: 320px; }
+.rowadvisory.warn { color: var(--warning-subtle-foreground); }
+.rowadvisory.crit { color: var(--error-subtle-foreground); }
+.rowadvisory.mut  { color: var(--muted-foreground); }
+
+.laddercell { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.laddermath {
+  font-family: var(--font-geist-mono); font-size: 11px; color: var(--muted-foreground);
+  background: none; border: none; padding: 0; cursor: pointer; text-align: left;
+}
+.laddermath:hover { color: var(--foreground); text-decoration: underline; }
+
+.notebtn {
+  height: 28px; gap: 4px; padding: 0 9px;
+  border: 1px dashed color-mix(in oklab, var(--muted-foreground) 30%, transparent);
+  border-radius: var(--radius-lg); background: transparent;
+  color: var(--muted-foreground); font-family: inherit; font-size: 13px; cursor: pointer;
+}
+.notebtn:hover { border-color: var(--foreground); color: var(--foreground); }
+.notebtn.has-note { border-style: solid; border-color: var(--border); }
+
+/* ---------- action bar ---------- */
+
+.actionbar {
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+  padding: 14px 18px; border-top: 1px solid var(--border);
+  background: color-mix(in oklab, var(--muted) 35%, transparent);
+  border-bottom-left-radius: var(--radius-lg); border-bottom-right-radius: var(--radius-lg);
+}
+.actionbar .spacer { flex: 1 1 auto; }
+.actionbar .closehint { font-size: 12px; color: var(--muted-foreground); max-width: 420px; }
+
+/* ---------- popover / sheet / dialog (ui idiom) ---------- */
+
+.pop {
+  position: absolute; z-index: 60; min-width: 250px; max-width: 360px;
+  background: var(--popover); color: var(--popover-foreground);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  box-shadow: 0 10px 30px -8px rgb(0 0 0 / .25);
+  padding: 12px 14px; font-size: 13px; line-height: 1.5;
+}
+.pop h4 { font-family: var(--font-newsreader); font-size: 14px; margin-bottom: 6px; }
+.pop dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; }
+.pop dt { color: var(--muted-foreground); font-size: 12px; }
+.pop dd { margin: 0; font-size: 12px; }
+.pop .popclose { position: absolute; top: 6px; right: 8px; }
+
+.scrim { position: fixed; inset: 0; background: rgb(0 0 0 / .4); z-index: 50; }
+
+.sheet {
+  position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 92vw); z-index: 60;
+  background: var(--card); color: var(--card-foreground);
+  border-left: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  box-shadow: -12px 0 40px -16px rgb(0 0 0 / .35);
+}
+.sheet header { padding: 18px 20px 12px; border-bottom: 1px solid var(--border); }
+.sheet .sheetbody { padding: 16px 20px; overflow-y: auto; flex: 1 1 auto; }
+.sheet footer { padding: 14px 20px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+
+.dialog {
+  position: fixed; z-index: 60; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: min(520px, 92vw);
+  background: var(--card); color: var(--card-foreground);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  box-shadow: 0 24px 60px -20px rgb(0 0 0 / .45);
+  padding: 22px;
+}
+.dialog h2 { font-size: 19px; margin-bottom: 8px; }
+.dialog p { font-size: 14px; color: var(--muted-foreground); margin: 0 0 14px; }
+.dialog .dlgactions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+
+textarea.ta {
+  width: 100%; border-radius: var(--radius-md); border: 1px solid var(--input);
+  background: var(--background); color: var(--foreground);
+  padding: 8px; font-family: inherit; font-size: 14px; resize: vertical;
+}
+
+/* ---------- toasts (sonner idiom) ---------- */
+
+.toasts {
+  position: fixed; bottom: 20px; right: 20px; z-index: 70;
+  display: flex; flex-direction: column; gap: 8px; width: min(400px, 92vw);
+}
+.toast {
+  background: var(--popover); color: var(--popover-foreground);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 11px 13px; font-size: 13px; line-height: 1.45;
+  box-shadow: 0 10px 30px -10px rgb(0 0 0 / .3);
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.toast .bar { width: 3px; align-self: stretch; border-radius: 2px; background: var(--muted-foreground); }
+.toast.t-error .bar { background: var(--error); }
+.toast.t-warn .bar { background: var(--warning); }
+.toast.t-ok .bar { background: var(--success); }
+.toast .undo { margin-left: auto; }
+
+.tt { font-family: var(--font-geist-mono); font-size: 11px; color: var(--muted-foreground); }
+.hr { height: 1px; background: var(--border); margin: 12px 0; border: none; }
+.stack { display: flex; flex-direction: column; gap: 6px; }
+.rowflex { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+.popanchor { position: relative; }
+.deadend { text-decoration: underline dotted; text-underline-offset: 3px; cursor: pointer; }
+
+/* A guarded night: the controls announce that they will refuse, but none of them
+   is disabled — the refusal has to be spoken, not implied by grey. */
+.codegroup.refusing .codebtn { border-style: dashed; color: color-mix(in oklab, var(--error) 70%, var(--muted-foreground)); }
+
+.notebtn { white-space: nowrap; }
+.roster th { white-space: nowrap; }
+
+/* ==========================================================================
+   Scene 2 additions — close the night.
+   Everything below is layout glue over the SAME tokens and the SAME idiom
+   quoted in the file header. No colour, radius, or type size is introduced
+   that is not already a var() from tokens.css.
+   ========================================================================== */
+
+/* The one sentence of truth (card line 2, priority 1). Type size is v1's h1
+   (26px, already used by .identity h1); the counts ride the Badge idiom. */
+.truth {
+  font-family: var(--font-newsreader); font-weight: 600;
+  font-size: 26px; line-height: 1.28; letter-spacing: -0.01em;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px;
+}
+.truth .seg { display: inline-flex; align-items: baseline; gap: 7px; white-space: nowrap; }
+.truth .n { font-family: var(--font-geist-mono); font-weight: 600; }
+.truth .sep { color: var(--muted-foreground); font-weight: 400; }
+.truth .zero { color: var(--muted-foreground); }
+.truthsub { margin-top: 8px; font-size: 14px; color: var(--muted-foreground); max-width: 62ch; }
+
+/* Derived-status pill for the night itself. Reuses --status-* (pipeline) —
+   the only status palette v1 has. */
+.nightstatus { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.st-open      { background: var(--status-internal-waiting); color: var(--status-internal-waiting-fg); }
+.st-closed    { background: var(--status-active);           color: var(--status-active-fg); }
+.st-reopened  { background: var(--status-pretreatment);     color: var(--status-pretreatment-fg); }
+.st-cancelled { background: var(--status-dropped);          color: var(--status-dropped-fg); }
+.st-amended   { background: var(--status-graduated);        color: var(--status-graduated-fg); }
+
+/* Collapsible (v1 `collapsible`): a summary row that toggles a named list. */
+.collapsible { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+.collapsible + .collapsible { margin-top: 10px; }
+.collapsible.tone-info  { border-color: var(--info-banner-border); background: var(--info-banner); }
+.collapsible.tone-muted { background: color-mix(in oklab, var(--muted) 45%, transparent); }
+.collapsible > .ctrigger {
+  width: 100%; display: flex; align-items: center; gap: 10px; text-align: left;
+  padding: 11px 14px; background: none; border: none; cursor: pointer;
+  font-family: inherit; font-size: 13px; line-height: 1.5; color: inherit;
+}
+.collapsible.tone-info > .ctrigger { color: var(--info-banner-fg); }
+.collapsible.tone-muted > .ctrigger { color: var(--muted-foreground); }
+.collapsible > .ctrigger:hover { background: color-mix(in oklab, currentColor 7%, transparent); }
+.collapsible > .ctrigger .chev { font-family: var(--font-geist-mono); font-size: 11px; opacity: .8; }
+.collapsible > .ctrigger .ctext { flex: 1 1 auto; }
+.collapsible > .cbody { padding: 0 14px 12px 36px; font-size: 13px; line-height: 1.55; }
+
+/* The named-unmarked list. Each person is a person, not a tally. */
+.namelist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.namelist li { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.namelist .who { font-weight: 500; }
+
+/* The does / does-not ledger (card line 2, priority 3). Two columns of the
+   same list idiom; the tint is --success-subtle / --muted, both existing. */
+.ledger { display: grid; grid-template-columns: repeat(auto-fit, minmax(272px, 1fr)); gap: 12px; }
+.ledger .col { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 14px; }
+.ledger .col.will { background: var(--success-subtle); border-color: transparent; }
+.ledger .col.wont { background: color-mix(in oklab, var(--muted) 55%, transparent); }
+.ledger h3 { font-size: 13px; font-family: var(--font-sans); font-weight: 600; margin-bottom: 8px; }
+.ledger .col.will h3 { color: var(--success-subtle-foreground); }
+.ledger .col.wont h3 { color: var(--muted-foreground); }
+.ledger ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+.ledger li { font-size: 13px; line-height: 1.45; display: flex; gap: 8px; align-items: flex-start; }
+.ledger li .mk { font-family: var(--font-geist-mono); font-size: 12px; flex: 0 0 auto; opacity: .85; }
+.ledger .col.wont li { color: var(--muted-foreground); }
+
+/* select (v1 `select`) — who actually ran the night. */
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field > label { font-size: 12px; color: var(--muted-foreground); font-weight: 500; }
+select.sel {
+  height: 32px; min-width: 220px; padding: 0 8px;
+  border-radius: var(--radius-md); border: 1px solid var(--input);
+  background: var(--background); color: var(--foreground);
+  font-family: inherit; font-size: 14px;
+}
+select.sel:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
+
+.leaders { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+
+/* Append-only event log for the night. Monospace column = v1's audit idiom. */
+.eventlog { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.eventlog li {
+  display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap;
+  padding: 8px 0; border-top: 1px solid var(--border); font-size: 13px;
+}
+.eventlog li:first-child { border-top: none; }
+.eventlog .ev-when { font-family: var(--font-geist-mono); font-size: 11px; color: var(--muted-foreground); flex: 0 0 172px; }
+.eventlog .ev-what { font-weight: 500; }
+.eventlog .ev-who { color: var(--muted-foreground); }
+.eventlog .ev-void { text-decoration: line-through; color: var(--muted-foreground); }
+
+/* Amendment pair: the voided row and the row that replaced it, both visible. */
+.amend { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+.amend .arow { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; padding: 9px 12px; font-size: 13px; }
+.amend .arow + .arow { border-top: 1px solid var(--border); }
+.amend .arow.voided { background: color-mix(in oklab, var(--muted) 45%, transparent); color: var(--muted-foreground); }
+.amend .arow.live { background: var(--success-subtle); color: var(--success-subtle-foreground); }
+.amend .arow .lab { font-family: var(--font-geist-mono); font-size: 11px; flex: 0 0 84px; }
+
+/* Handoff strip (card line 5) — dead ends out of this scene. */
+.handoffs { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
+.handoff {
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  padding: 11px 13px; background: var(--background); text-align: left;
+  font-family: inherit; font-size: 13px; line-height: 1.45; color: var(--foreground);
+  cursor: pointer;
+}
+.handoff:hover { background: var(--muted); }
+.handoff .hscene { font-family: var(--font-geist-mono); font-size: 11px; color: var(--muted-foreground); display: block; margin-bottom: 3px; }
+.handoff.is-pending { border-style: dashed; color: var(--muted-foreground); cursor: default; }
+.handoff.is-pending:hover { background: var(--background); }
+
+/* A control that will REFUSE (cancelled night). Same rule as scene 1: it is
+   styled as refusing, never [disabled], and it speaks when pressed. */
+.btn.refusing {
+  border: 1px dashed var(--error);
+  color: var(--error-subtle-foreground); background: var(--error-subtle);
+}
+.btn.refusing:hover { background: var(--error-subtle); opacity: .9; }
+
+.dlgsection { margin: 0 0 14px; }
+.dlgsection h3 { font-size: 13px; font-family: var(--font-sans); font-weight: 600; margin-bottom: 6px; }
+.dialog.wide { width: min(660px, 94vw); max-height: 88vh; overflow-y: auto; }
+.dialog .dlg-meta { font-size: 12px; color: var(--muted-foreground); margin-top: 10px; }
+
+.subcard { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 14px; }
+.subcard + .subcard { margin-top: 10px; }
+.subcard h3 { font-size: 13px; font-family: var(--font-sans); font-weight: 600; margin-bottom: 6px; }
+
+.sectionlabel {
+  font-size: 12px; font-weight: 500; color: var(--muted-foreground);
+  text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px;
+}
+.muted { color: var(--muted-foreground); }
+.small { font-size: 12px; line-height: 1.5; }
+.mt10 { margin-top: 10px; } .mt14 { margin-top: 14px; }
+
+/* A multi-select needs its own height; v1's select is single-line only, so this
+   is the same border/radius/type with the height released. */
+select.sel[multiple] { height: auto; min-height: 96px; padding: 6px; line-height: 1.6; }
+select.sel[multiple] option { padding: 2px 4px; }
