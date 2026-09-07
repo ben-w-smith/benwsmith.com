@@ -1,13 +1,14 @@
 ---
 title: "07 — Open Decision Register"
 order: 7
-description: "Open-decision register O-01…O-28, each with a recommendation, impact, and suggested owner."
+description: "Open-decision register O-01…O-33, each with a recommendation, impact, and suggested owner."
 ---
 
 Everything the interview left open, with a recommendation and impact. Nothing here is silently
 decided. **Confirm-before-build** items are the ones that change shapes (topology); the rest
 can ride as defaults until the practice weighs in. Suggested owners: Ben / Christy (owner) /
-Brittany (clinician-tier).
+Brittany (clinician-tier). O-01…O-28 came out of the interview; O-29…O-33 surfaced from
+prototyping Scenes 1–3 (prototype review 2026-09-07).
 
 | # | Decision | Recommendation | Impact if wrong | Owner |
 |---|----------|----------------|-----------------|-------|
@@ -39,7 +40,12 @@ Brittany (clinician-tier).
 | **O-26** | **Pause semantics** (multi-week class dark). | No pause entity; absence of taught nights + visible planned-vs-taught drift. | Scheduling honesty. | Ben |
 | **O-27** | **1-week break: scheduled gap or planning slack?** | Planning slack absorbed into projected dates (simpler; holiday flex folds in). | Calendar projection math. | Ben |
 | **O-28** | **Summer/seasonal schedule** practice-wide changes. | Practice-wide holiday calendar (also powers bulk-cancel across all classes). | Bulk operations. | Christy |
+| **O-29** | **Notes queue at close: snapshot or derived?** 04 §2.2's close/lock diagram says closing "snapshots the unwritten-notes queue" (node E1); REQ-SO-13 defines the queue as derived at read time (attended + no note by this author). The Scene 2 prototype text says "snapshots" on screen while its README and the Scene 3 build implement derived (prototype review 2026-09-07, Scene 2). | Derived at read time; the close event records the count owed at close as a fact, not a list. | A stored snapshot drifts from reality once notes are written after close; queue arithmetic disagrees with Scene 3. | Ben |
+| **O-30** | **"By this author": is the owed queue personal or class-level?** REQ-SO-13 reads "no note by this author" — if Teacher A already wrote tonight's note on a client, does Teacher B still owe one? (prototype review 2026-09-07, Scene 3). | Personal, per-author, matching the REQ text; surface the other author's note inline so B can decline with one click. | Decides whether the queue is a personal to-do list or a class completeness check — different UI and different completion semantics. | Christy |
+| **O-31** | **Owner/Admin editing another author's note: is the author notified?** REQ-SO-14 grants Owner/Admin edit rights over any note with soft-delete + append; nothing says whether the original author is told (prototype review 2026-09-07, Scene 3). | Yes — a passive notice in the author's queue; no approval step. | Silent edits to clinical notes erode trust; an approval step would slow corrections needlessly. | Christy |
+| **O-32** | **Retroactive ladder tiers via backfill.** REQ-SO-04 allows backfilling past nights; a seven-night backfill can move a client clear→warn→critical→max in one sitting, tiers nobody could act on live (prototype review 2026-09-07, Scenes 1 and 5). | Same weight — the facts are the facts — with flag history showing which tiers were reached retroactively; notify the class's Teachers and the client's Provider once, at the end of the backfill sitting. | Either a max flag with no accountability trail, or notification noise mid-backfill. | Brittany |
+| **O-33** | **Where is MODULE_COMPLETED marked?** REQ-CL-09/D-12: human marks, system suggests. The permission matrix (06) grants the act to Teachers on own classes; the suggestion payload is per-client. Neither doc says which screen owns the act (prototype review 2026-09-07, Scenes 6 and 8). | The act lives on the class's run-completion surface (Scene 6 / Thursday review) as a batch with per-client suggestions; the client profile (Scene 8) shows the result and allows a single-client correction. | Duplicate or conflicting completion controls across two screens. | Ben, confirm with Christy |
 
 **Sequence suggestion:** settle O-01 → O-03 first (they gate everything), then the
-topology set (O-02, O-04, O-05, O-22), then practice-facing items in one sitting with
-Christy/Brittany (O-06, O-13, O-15–O-21, O-24, O-25, O-28).
+topology set (O-02, O-04, O-05, O-22, O-29), then practice-facing items in one sitting with
+Christy/Brittany (O-06, O-13, O-15–O-21, O-24, O-25, O-28, O-30–O-33).

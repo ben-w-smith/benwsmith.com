@@ -7,7 +7,7 @@ description: "Scene inventory — 13 staff moments with five-line wireframe card
 **Prototyping checklist · Audience: Ben · Requirements-derived — the spec stays source of
 truth.**
 
-A **scene** is a moment in time: one person, one goal, one trigger ("Teacher at 7:55 PM with a
+A **scene** is a moment in time: one person, one goal, one trigger ("Teacher at 6:25 PM with a
 room waiting"). A **card** is that scene's structural wireframe in words — five numbered lines
 (who and when · see first · actions · states · goes next) plus the components, the open
 decisions the screen forces into the open, and the edge cases it must render. Each card, with
@@ -29,19 +29,19 @@ where a screen reveals a policy gap, it goes to [07-open-decisions.md](/dbt-spec
 
 | # | Scene | Actor | Trigger | REQs | Opens forced | Order |
 |---|-------|-------|---------|------|--------------|-------|
-| 1 | Tonight's roster | Teacher | Class night begins | REQ-SO-01..06 | O-08 · O-19 · O-21 · O-23 | 1 |
-| 2 | Close the night | Teacher | Roster marked | REQ-SO-07..11 | O-08 · O-13 | 2 |
-| 3 | Write session notes | Teacher | Post-class or next day | REQ-SO-12..16 | O-10 · O-11 | 3 |
+| 1 | Tonight's roster | Teacher | Class night begins | REQ-SO-01..06 | O-08 · O-19 · O-21 · O-23 · O-32 | 1 |
+| 2 | Close the night | Teacher | Roster marked | REQ-SO-07..11 | O-08 · O-13 · O-29 | 2 |
+| 3 | Write session notes | Teacher | Post-class or next day | REQ-SO-12..16 | O-10 · O-11 · O-29 · O-30 · O-31 | 3 |
 | 4 | Provider's morning after | Provider | Reads notes; logs a missed individual-therapy appointment | REQ-SO-16 · REQ-SO-24 · REQ-CL-11 | O-10 · O-15 | 4 |
-| 5 | Miss-ladder escalation | Owner | Client hits warn / critical / max | REQ-SO-21..25 · REQ-CL-10 | O-12 · O-21 · O-22 | 5 |
-| 6 | Thursday review | Owner / Admin | Weekly meeting | REQ-MM-09..14 · REQ-MM-17 · REQ-CL-03 · REQ-CL-04 · REQ-CL-13 | O-02 · O-07 · O-09 · O-16 · O-17 | 6 |
+| 5 | Miss-ladder escalation | Owner | Client hits warn / critical / max | REQ-SO-21..25 · REQ-CL-10 | O-12 · O-21 · O-22 · O-32 | 5 |
+| 6 | Thursday review | Owner / Admin | Weekly meeting | REQ-MM-09..14 · REQ-MM-17 · REQ-CL-03 · REQ-CL-04 · REQ-CL-13 | O-02 · O-07 · O-09 · O-16 · O-17 · O-33 | 6 |
 | 7 | Pipeline board | Admin | Placing and tracking candidates | REQ-CL-01..08 · REQ-MM-12 | O-01 · O-02 · O-06 · O-20 · O-24 | 7 |
-| 8 | Client profile | Any role | Looking up one person | REQ-CL-09..12 · REQ-CL-15..17 · REQ-CL-19 | O-09 · O-15 · O-18 · O-22 | 8 |
+| 8 | Client profile | Any role | Looking up one person | REQ-CL-09..12 · REQ-CL-15..17 · REQ-CL-19 | O-09 · O-15 · O-18 · O-22 · O-33 | 8 |
 | 9 | Weekly grid | Owner | Planning the week | REQ-MM-15 · REQ-MM-16 · REQ-MM-18 · REQ-MM-19 | O-26 · O-27 · O-28 | 9 |
 | 10 | Class & run editor | Owner / Admin | Create/edit class, chaining, Teachers | REQ-MM-01..08 · REQ-MM-17 · REQ-MM-19 · REQ-CL-14 | O-03 · O-04 · O-17 · O-27 | 12 |
 | 11 | Cancel a night | Teacher / Admin | Snow day, holiday, zoom collision | REQ-SO-17..20 · REQ-MM-18 | O-12 · O-14 · O-28 | 10 |
 | 12 | Graduation & exit | Owner | End of round | REQ-CL-05 · REQ-CL-06 · REQ-CL-12 · REQ-CL-15..18 · REQ-MM-11 | O-05 · O-06 · O-18 · O-24 · O-25 | 11 |
-| 13 | Roles & teacher assignment | Owner | Staff changes | [06-roles-and-permissions.md](/dbt-spec/06-roles-and-permissions/) matrix · REQ-MM-01 · REQ-MM-04 | O-10 · O-14 | 13 |
+| 13 | Roles & teacher assignment | Owner | Staff changes | [06-roles-and-permissions.md](/dbt-spec/06-roles-and-permissions/) matrix · REQ-MM-01 · REQ-MM-04 | O-10 · O-14 · O-31 | 13 |
 
 **Adjustments made after checking each REQ against its text** (footnote to the table):
 
@@ -100,7 +100,7 @@ Dashed = a path taken only when something is off-plan or discretionary.
 
 ## Scene 1 — Tonight's roster
 
-1. **Who and when.** A **Teacher** (D-08 — two per class, roles swap) at 7:55 PM on a laptop,
+1. **Who and when.** A **Teacher** (D-08 — two per class, roles swap) at 6:25 PM on a laptop,
    virtual room filling, one hand on the zoom controls. This is "the most-used flow in the
    product" [att 3]: it must work in sixty seconds without reading anything.
 2. **See first.** Class, section, and date, unambiguously — the two identical Adult PM sections
@@ -133,6 +133,8 @@ segmented `button` group for the four codes, `sheet` (row-docked note composer),
 - **O-19** — is the fourth button (Free-pass) still wanted with billing out (D-05/D-07)?
 - **O-21** — a planned-absence chip: visible to staff, reason-blind to the ladder (REQ-SO-25).
 - **O-23** — a backfilled night showing both timestamps, with no cutoff.
+- **O-32** — a retroactive backfill sitting jumping a client through several ladder tiers at
+  once; the row must show flag history, not just the resting tier.
 
 **Edge cases to show**
 
@@ -173,6 +175,8 @@ does/does-not list), `button` (close, ghost undo), `badge` (unmarked and notes-o
 
 - **O-08** — the hygiene prompt's tone: housekeeping, not accusation. False misses kill trust.
 - **O-13** — closing a zero-attendee night makes the clock question concrete for Brittany.
+- **O-29** — the notes-owed count shown here must be derived at close, not a stored snapshot,
+  or it drifts once notes are written after close.
 
 **Edge cases to show**
 
@@ -214,6 +218,11 @@ does/does-not list), `button` (close, ghost undo), `badge` (unmarked and notes-o
 - **O-10** — every clinical role reading every note (flat clinical, v1 GAPS 11-17): bless or
   scope.
 - **O-11** — a session note and a pinned standalone note side by side confirms both are wanted.
+- **O-29** — the owed-notes queue itself must be derived at read time, not the snapshot the
+  close screen implies.
+- **O-30** — whether "no note by this author" makes the queue personal-per-teacher or a
+  class-wide completeness check.
+- **O-31** — whether the author is notified when an Owner/Admin edits their note.
 
 **Edge cases to show**
 
@@ -299,6 +308,8 @@ for own caseload), `badge` (ladder badge with source label), `dialog` (log misse
 - **O-12** — makeup vs original miss: annotate, never rewrite. Show it in the arithmetic.
 - **O-21** — whether a reason-blind annotation actually cuts Christy's override volume.
 - **O-22** — a miss tracing to an event recorded in error, with no void/amend vocabulary.
+- **O-32** — a retroactively reached max: same weight as a live one, with flag history and a
+  single end-of-backfill notice to Teachers and Provider.
 
 **Edge cases to show**
 
@@ -354,6 +365,8 @@ candidates with paperwork columns), `badge` (internal priority, paperwork, seat 
 - **O-16** — multifamily seat unit: does a teen plus two parents consume one seat or three?
 - **O-17** — capacity default (10 vs 12), per-class or per-run, floor of 5 as a launch-risk
   flag.
+- **O-33** — whether MODULE_COMPLETED is marked here, as a batch on the run-completion surface
+  with per-client suggestions, or only on the client profile (Scene 8).
 
 **Edge cases to show**
 
@@ -450,6 +463,8 @@ effective vs recorded-at), `collapsible` (event detail), `dialog` (mark module c
 - **O-15** — individual-therapy misses on the record, with the source labelled.
 - **O-18** — "X of N": within-round vs across-two-rounds; round 3+ renders "9 of 8".
 - **O-22** — a PLACED recorded wrong, or MODULE_COMPLETED twice, with no void/amend.
+- **O-33** — whether marking MODULE_COMPLETED belongs here at all, or this screen only shows
+  the result of a batch act done in Scene 6 with a single-client correction affordance.
 
 **Edge cases to show**
 
@@ -681,6 +696,8 @@ drop, with a required reason `select` plus `textarea`), `date-picker` (effective
 
 - **O-14** — who may cancel a night is a permission question; the checkbox makes it real.
 - **O-10** — "edit/delete any note" is where notes visibility and notes authority separate.
+- **O-31** — whether an Owner/Admin note edit generates a passive notice to the original
+  author; this is the permission screen that would host that toggle.
 - Every **(a)** cell in the 06 matrix — render them as unconfirmed, not as settled fact.
 
 **Edge cases to show**
@@ -695,7 +712,7 @@ drop, with a required reason `select` plus `textarea`), `date-picker` (effective
 
 Run one scene at a time with Christy and Brittany, prototype on screen, no slides.
 
-1. **Walk a real Tuesday.** Hand Christy the roster at 7:55 and say nothing. Watch for
+1. **Walk a real Tuesday.** Hand Christy the roster at 6:25 and say nothing. Watch for
    hesitation — where the hand stops is the finding, not what she says afterward.
 2. **Log every reaction against scene + REQ.** "She looked for the free-pass count" is
    REQ-SO-01/O-19 evidence. Reactions without an ID get one before the meeting ends.

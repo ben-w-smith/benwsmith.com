@@ -32,7 +32,7 @@ const DESCRIPTIONS = {
   "06-roles-and-permissions.md":
     "The five-role model (Owner/Admin/Provider/Teacher/Developer) and the permission matrix.",
   "07-open-decisions.md":
-    "Open-decision register O-01…O-28, each with a recommendation, impact, and suggested owner.",
+    "Open-decision register O-01…O-33, each with a recommendation, impact, and suggested owner.",
   "08-missed-use-cases.md":
     "The missed-use-case catalog — scenarios absent from all three prior repos.",
   "09-references.md":
